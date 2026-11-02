@@ -2,7 +2,7 @@
 
 **Plain-English security policies for any small nonprofit, including volunteer-run teams, tailored in about 15 minutes, free, and with nothing you type ever leaving your browser.**
 
-**Live site:** [LIVE SITE URL] · **Version:** 1.0.0 · **Report a security problem:** [SECURITY.md](SECURITY.md)
+**Live site:** [LIVE SITE URL] · **Version:** 1.0.0 · **[Download the app](#download-the-app)** · **Report a security problem:** [SECURITY.md](SECURITY.md)
 
 > **Not legal advice.** These are starting templates for discussion. Have your board approve them, and ask a lawyer to check your state's breach notification and record retention rules.
 
@@ -85,6 +85,19 @@ The app is a security tool, so it follows the practices it recommends:
 3. Replace the example organization's answers with your own. Pin the tab so it's harder to close by accident.
 4. Review each document, then copy or print them, and finish in one sitting.
 5. Edit the documents in Word or Google Docs, have your board approve them, and share them with your team. Keep the Incident Contact List confidential.
+
+## Download the app
+
+You can keep your own copy of the app on your computer. It's free, needs no installation and works without an internet connection.
+
+1. Go to the [latest release](../../releases/latest).
+2. Under **Assets**, download **Source code (zip)**.
+3. Unzip the file.
+4. Open the `app` folder and double-click `index.html`. The app opens in your browser.
+
+A downloaded copy doesn't update itself. To check for a newer version, compare the version number in the app's footer with the [latest release](../../releases/latest).
+
+Your answers are not saved in a downloaded copy either, so finish in one sitting. The site's security settings don't apply to a copy on your computer, because they are sent by the web host. The app still makes no network calls and saves nothing.
 
 ## Running it locally
 
