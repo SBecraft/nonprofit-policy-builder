@@ -31,6 +31,8 @@ function read(){
   const p = $('platform').value;
   return {
     org:v('org'), owner:v('owner'), contact:v('contact'),
+    backupLead:esc($('backupLead').value.trim()) || v('owner'), // the policy owner stands in if left blank
+    printPlace:esc($('printPlace').value.trim()), backupName:esc($('backupName').value.trim()),
     contactPhone:esc($('contactPhone').value.trim()), contactEmail:esc($('contactEmail').value.trim()),
     // phone and email together, for sentences; either one alone if the other is blank
     contactInfo:[$('contactPhone').value.trim(), $('contactEmail').value.trim()].filter(Boolean).map(esc).join(' · ') || '—',
@@ -41,7 +43,9 @@ function read(){
     crmRaw:$('crm').value, crm: $('crm').value==='other' ? esc($('crmOther').value.trim()) || '—' : esc($('crm').value),
     pm: $('pm').value==='other' ? $('pmOther').value.trim() || '—' : $('pm').value, // escaped where used
     volunteers:$('volunteers').checked,
-    byod:$('byod').checked, shared:$('shared').checked, turnover:$('turnover').checked,
+    staff:$('staff').checked, devices:$('devices').checked, itProvider:$('itProvider').checked, server:$('server').checked,
+    byod:$('byod').checked || !$('devices').checked, // with no organization devices, work happens on personal ones
+    shared:$('shared').checked, turnover:$('turnover').checked,
     online:$('online').checked, cards:$('cards').checked, insurance:$('insurance').checked,
     backup:$('backup').checked, office:$('office').checked,
     clients:$('clients').checked, paper:$('clients').checked && $('paperClients').checked // paper records only count if client records are kept
@@ -65,14 +69,18 @@ function head(a, pol, title){
 const BLANK = '____________________';
 // "Dana Ortiz, Operations Manager" needs a closing comma mid-sentence; a name alone does not
 const midSentence = s => s.includes(',') ? s + ',' : s;
+const listOf = items => items.length > 1 ? `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}` : items[0];
+// Who a policy covers. vol is the volunteer wording, which differs by policy.
+const scope = (a, vol) => listOf([a.staff && 'staff', 'board members', 'interns', 'contractors', a.volunteers && t(vol)].filter(Boolean));
+const printedAt = a => a.printPlace ? t(a.printPlace) : BLANK;
 const offboardWindow = a => a.turnover ? t('the same day') : 'within three business days';
 // Shared by the Onboarding and Offboarding forms
 const PASSWORD_NOTE = 'Never write passwords on these sheets. They belong in the password manager.';
 const checklistParts = a => ({
   donors: t(a.crmRaw==='spreadsheet' ? 'the donor spreadsheets folder' : a.crm),
   noPM: a.pm === 'none',
-  who: `staff, ${a.volunteers ? t('volunteers') + ', ' : ''}board members, interns or contractors`,
-  role: `Role (staff, ${a.volunteers ? 'volunteer, ' : ''}board, intern, contractor)`,
+  who: `${a.staff ? 'staff, ' : ''}${a.volunteers ? t('volunteers') + ', ' : ''}board members, interns or contractors`,
+  role: `Role (${a.staff ? 'staff, ' : ''}${a.volunteers ? 'volunteer, ' : ''}board, intern, contractor)`,
   stepCols: ['#', 'Step', 'Done (date, initials)'],
   steps: list => list.filter(Boolean).map((s, i) => [i + 1, s, '']),
 });
@@ -98,7 +106,7 @@ const build = {
 aup(a, pol){
   const setup = `
     <h3>5. Setting up devices and Wi-Fi</h3>
-    <p>These rules apply to every phone and computer used for ${a.org} work${a.byod ? t(', whether the organization owns it or you do') : ''}.</p>
+    <p>These rules apply to every phone and computer used for ${a.org} work${a.byod && a.devices ? t(', whether the organization owns it or you do') : ''}.</p>
     <ul>
       <li>Screens lock automatically after 15 minutes on computers and 2 minutes on phones, and unlock only with a PIN, password, fingerprint or face.</li>
       <li>Automatic updates are turned on for the operating system and apps.</li>
@@ -110,11 +118,17 @@ aup(a, pol){
     <ul>
       <li>${t('Default passwords on the Wi-Fi router, printers and other office equipment are changed.')}</li>
       <li>${t('Office Wi-Fi uses WPA2 or WPA3 with a strong password, and visitors and clients use a separate guest network.')}</li>
-    </ul>` : ''}
-    <p>Each organization device, who it is assigned to, and whether it meets these rules are recorded in the Asset Inventory.</p>`;
+    </ul>` : ''}${a.server ? `
+    <p>${t(`${midSentence(a.contact)} also makes sure that:`)}</p>
+    <ul>
+      <li>${t('The office server or storage device is kept in a locked space.')}</li>
+      <li>${t('Its updates are automatic, or are installed every month.')}</li>
+      <li>${t('Its default passwords are changed, and only named people have admin access.')}</li>
+    </ul>` : ''}${a.devices ? `
+    <p>Each organization device, who it is assigned to, and whether it meets these rules are recorded in the Asset Inventory.</p>` : ''}`;
   const personal = a.byod ? `
     <h3>6. Using your own phone or computer</h3>
-    <p>${t(`${a.volunteers ? 'Staff, board members and volunteers' : 'Staff and board members'} may use personal devices for ${a.org} work`)} if they follow section 5 and these rules:</p>
+    <p>${t(`${a.staff ? (a.volunteers ? 'Staff, board members and volunteers' : 'Staff and board members') : (a.volunteers ? 'Board members and volunteers' : 'Board members')} may use personal devices for ${a.org} work`)} if they follow section 5 and these rules:</p>
     <ul>
       <li>${a.platform==='other' ? 'Work email is opened in the official app or a web browser.' : t(`Work email and files are opened only in the official ${a.platformName} apps or a web browser.`)}</li>
       <li>Donor or client lists are never downloaded or saved to the device.</li>
@@ -128,10 +142,10 @@ aup(a, pol){
   <h3>1. Purpose</h3>
   <p>This policy explains how people may use ${a.org}'s accounts, devices and information. It protects the people we serve, our donors and our reputation.</p>
   <h3>2. Who it covers</h3>
-  <p>Everyone with access to ${a.org} systems: ${a.volunteers ? `staff, board members, interns, contractors and ${t('volunteers, including short-term and event volunteers')}` : 'staff, board members, interns and contractors'}.</p>
+  <p>Everyone with access to ${a.org} systems: ${scope(a, 'volunteers, including short-term and event volunteers')}.</p>
   <h3>3. Acceptable use</h3>
   <ul>
-    <li>Use ${a.org} accounts for organization work. Brief personal use of an organization device is fine if it doesn't interfere with work.</li>
+    <li>Use ${a.org} accounts for organization work.${a.devices ? " Brief personal use of an organization device is fine if it doesn't interfere with work." : ''}</li>
     <li>Keep organization files in ${a.platform==='m365' ? t('OneDrive or SharePoint') : a.platform==='google' ? t('Google Drive') : 'the approved shared storage'}, not in personal cloud accounts.</li>
     <li>Lock your screen when you step away.</li>
     <li>Avoid public Wi-Fi for donor records and online banking. Use your phone's hotspot when you can.</li>
@@ -140,7 +154,7 @@ aup(a, pol){
   <ul>
     <li>Sharing your personal login with anyone${a.shared ? ' ' + t('(approved shared accounts follow the Passwords &amp; MFA policy)') : ''}.</li>
     <li>Forwarding donor, client or volunteer information to personal email.</li>
-    <li>Installing software on organization devices without approval from ${a.contact}.</li>
+    ${a.devices ? `<li>Installing software on organization devices without approval from ${a.contact}.</li>` : ''}
     <li>Using organization accounts to support or oppose political candidates, which can put a 501(c)(3)'s tax-exempt status at risk.</li>
     <li>Harassment, illegal downloads, or anything that would embarrass ${a.org}.</li>
   </ul>
@@ -149,9 +163,9 @@ aup(a, pol){
   <h3>7. Suspicious emails and payment requests</h3>
   <p>Report suspicious messages to ${midSentence(a.contact)} at ${t(a.contactInfo)}. Never buy gift cards, send money, or change bank details because of an email or text, even one that appears to come from leadership. Confirm by calling the person at a number you already have.</p>
   <h3>8. Privacy</h3>
-  <p>Organization accounts and devices belong to ${a.org}. They may be reviewed when needed to protect the organization or respond to an incident.</p>
+  <p>Organization accounts${a.devices ? ' and devices' : ''} belong to ${a.org}. They may be reviewed when needed to protect the organization or respond to an incident.</p>
   <h3>9. When you leave</h3>
-  <p>Return any organization equipment assigned to you in the Asset Inventory. Your access will be removed ${offboardWindow(a)}. See the Offboarding Checklist for the full list of steps.</p>
+  <p>${a.devices ? 'Return any organization equipment assigned to you in the Asset Inventory. ' : ''}Your access will be removed ${offboardWindow(a)}. See the Offboarding Checklist for the full list of steps.</p>
   ${acknowledgment(10)}
   ${approval()}`;
 },
@@ -164,9 +178,9 @@ pw(a, pol){
     <h3>5. Shared accounts</h3>
     <p>${t('Some accounts, such as social media or event platforms, are shared by several people.')} They must follow these rules:</p>
     <ul>
-      <li>Each shared account has a named owner who is a staff member${a.volunteers ? ', not a volunteer' : ''}.</li>
+      <li>${a.staff ? `Each shared account has a named owner who is a staff member${a.volunteers ? ', not a volunteer' : ''}` : t('Each shared account has a named owner who is a board member')}.</li>
       <li>The password is stored ${a.pm==='none' ? 'in the approved password manager once one is chosen' : t('in a shared ' + esc(a.pm) + ' vault')}. It is never sent by text or email.</li>
-      <li>MFA codes go to an organization phone number or email, never ${a.volunteers ? "a volunteer's" : 'a'} personal number.</li>
+      <li>${a.staff ? `MFA codes go to an organization phone number or email, never ${a.volunteers ? "a volunteer's" : 'a'} personal number.` : t("MFA codes go to an email address the organization controls, not one person's personal phone, so the account isn't lost if that person leaves.")}</li>
       <li>${t('The password is changed whenever someone with access leaves.')}</li>
       <li>The owner reviews who has access every three months.</li>
     </ul>
@@ -221,31 +235,35 @@ data(a, pol){
         <li>${a.org} completes the PCI DSS self-assessment questionnaire its payment processor requires each year.</li>
       </ul>`
     : `<p>${t(`${a.org} does not take card details directly.`)} ${a.online ? t('Donors who want to give by card are sent to the online giving page.') + ' ' : ''}If someone reads you a card number, do not write it down.</p>`;
-  const people = ['donors', c && t('the people we serve'), 'staff', v && t('volunteers')].filter(Boolean).join(', ');
-  const trusted = ['Donors', c && t('the people we serve'), 'staff', v && t('volunteers')].filter(Boolean).join(', ');
+  const people = ['donors', c && t('the people we serve'), a.staff && 'staff', v && t('volunteers')].filter(Boolean).join(', ');
+  const trusted = ['Donors', c && t('the people we serve'), a.staff && 'staff', v && t('volunteers')].filter(Boolean).join(', ');
   const noTalk = [v && t('other volunteers'), c && t('clients')].filter(Boolean).join(' and ');
   const staffRecords = v ? `Staff and ${t('volunteer')} records` : 'Staff records';
+  const personnel = a.staff ? `${v ? `staff and ${t('volunteer')} records` : 'staff records'} such as Social Security numbers, background checks, payroll and tax details, and emergency contacts; `
+    : v ? t('volunteer records such as background checks and emergency contacts') + '; ' : '';
   return head(a,pol,'Data Protection Policy') + `
   <p>We protect personal and confidential information about everyone we work with (${people} and board members), plus our financial and grant records.</p>
   <h3>1. Purpose</h3>
   <p>${trusted} and funders all trust us with their information. This policy explains how that information is classified, stored, shared and destroyed.</p>
   <h3>2. Who it covers</h3>
-  <p>Everyone who can see or handle ${t(a.org)} information, on paper or online: ${v ? `staff, board members, interns, contractors and ${t('volunteers, including short-term and event volunteers')}` : 'staff, board members, interns and contractors'}.</p>
+  <p>Everyone who can see or handle ${t(a.org)} information, on paper or online: ${scope(a, 'volunteers, including short-term and event volunteers')}.</p>
   <h3>3. Types of information</h3>
   ${cardTable('levels', ['Level', 'Examples', 'Who can see it'], [
-    ['<b>Confidential</b>', `Donor giving history, home addresses, bank or card details; ${c ? t('client records such as household size, income, eligibility and case notes') + '; ' : ''}${v ? `staff and ${t('volunteer')} records` : 'staff records'} such as Social Security numbers, background checks, payroll and tax details, and emergency contacts; organization bank account details; confidential board matters`, 'Only people whose role requires it'],
-    ['<b>Internal</b>', `${v ? t('Volunteer') : 'Staff'} schedules, internal meeting notes, draft budgets, grant applications and funder reports before they are published`, v ? `Staff, board and ${t('active volunteers')}` : 'Staff and board members'],
+    ['<b>Confidential</b>', `Donor giving history, home addresses, bank or card details; ${c ? t('client records such as household size, income, eligibility and case notes') + '; ' : ''}${personnel}organization bank account details; confidential board matters`, 'Only people whose role requires it'],
+    ['<b>Internal</b>', `${v ? t('Volunteer') : a.staff ? 'Staff' : t('Board')} schedules, internal meeting notes, draft budgets, grant applications and funder reports before they are published`, a.staff ? (v ? `Staff, board and ${t('active volunteers')}` : 'Staff and board members') : (v ? `Board and ${t('active volunteers')}` : 'Board members')],
     ['<b>Public</b>', 'Website content, annual report, published event details, published grant reports', 'Anyone'],
   ])}
   <p>When unsure, treat information as Confidential.</p>
   <h3>4. Where information is kept</h3>
   <p>Each type of information has one approved place. Copies in spreadsheets, email or personal accounts are not allowed except for a specific, short-term task.</p>
   ${cardTable('places', ['Information', 'Approved place', 'Who can see it'], [
-    ['Donor records', donorPlace, 'Staff who manage donations and fundraising'],
+    ['Donor records', donorPlace, a.staff ? 'Staff who manage donations and fundraising' : t('People who manage donations and fundraising')],
     c ? [t('Client records'), `The Clients folder in ${fileStore}${a.paper ? ', ' + t('or a locked filing cabinet for paper intake forms') : ''}`, 'People who provide services to those clients'] : null,
-    [staffRecords, `The HR folder in ${fileStore}`, 'The executive director and whoever handles HR or payroll'],
-    ['Grant and financial records', `The Finance folder in ${fileStore} and online banking`, 'The executive director, treasurer and bookkeeper'],
-    ['Board records', `The Board folder in ${fileStore}, not personal email`, 'Board members and the executive director'],
+    a.staff ? [staffRecords, `The HR folder in ${fileStore}`, 'The executive director and whoever handles HR or payroll']
+      : v ? [t('Volunteer records'), `The Volunteers folder in ${fileStore}`, t('Board members who manage volunteers')] : null,
+    ['Grant and financial records', `The Finance folder in ${fileStore} and online banking`, a.staff ? 'The executive director, treasurer and bookkeeper' : t('The treasurer and bookkeeper')],
+    ['Board records', `The Board folder in ${fileStore}, not personal email`, a.staff ? 'Board members and the executive director' : 'Board members'],
+    a.server ? [t('Shared files kept on site'), t('The office server or storage device, in folders limited to the people listed'), t('Only people whose role requires it')] : null,
   ].filter(Boolean))}
   <p>Every system that holds confidential information is listed in the Asset Inventory.</p>
   <p>Folder names and roles are suggestions. Use the names and roles your organization already has, as long as access to each folder is limited to the people listed.</p>
@@ -269,7 +287,7 @@ data(a, pol){
     <li>${t(a.org)} does not sell, rent or trade donor lists or any personal information.</li>
     ${c ? `<li>${t("Client information is shared outside the organization only with the client's consent, or when the law requires it.")}</li>
     <li>${t('Funders receive client information as totals or with names removed, unless the grant agreement requires more and the client has agreed.')}</li>` : ''}
-    <li>Vendors that receive personal information (donor database, mail houses, event platforms, payroll services) must have a written agreement that covers how they protect it. Vendors with written agreements are marked in the Asset Inventory.</li>
+    <li>Vendors that receive personal information (donor database, mail houses, event platforms${a.staff ? ', payroll services' : ''}) must have a written agreement that covers how they protect it. Vendors with written agreements are marked in the Asset Inventory.</li>
     <li>Files sent outside the organization are shared through a protected link, never as an email attachment.</li>
     <li>Never paste confidential information into AI chatbots or other tools the organization hasn't approved.</li>
     <li>Requests from police, lawyers or government agencies go to ${t(midSentence(a.owner))} before anything is shared.</li>
@@ -279,7 +297,7 @@ data(a, pol){
   ${cardTable('retain', ['Record', 'How long to keep it'], [
     ['Donor gift and financial records', 'As long as tax and audit rules require (commonly seven years)'],
     ['Grant records', 'As long as the grant agreement requires (federal grants commonly require at least three years after the final report)'],
-    ['Staff payroll and tax records', 'As long as tax and employment laws require'],
+    a.staff ? ['Staff payroll and tax records', 'As long as tax and employment laws require'] : null,
     c ? [t('Client records'), t('Only as long as needed to provide services, or as long as a grant or law requires')] : null,
     v ? [t('Volunteer applications and background checks'), t('While the person is active, then for the period legal counsel recommends')] : null,
     ['Exports and copies made for a task', 'Deleted when the task is done'],
@@ -287,7 +305,7 @@ data(a, pol){
   <p>Check these periods with your accountant or legal counsel, because requirements vary by state and grant.</p>
   <ul>
     <li>Paper records are cross-cut shredded.</li>
-    <li>Computers and phones are wiped before reuse, donation or disposal. Record the date each device is wiped and disposed of in the Asset Inventory.</li>
+    ${a.devices ? '<li>Computers and phones are wiped before reuse, donation or disposal. Record the date each device is wiped and disposed of in the Asset Inventory.</li>' : ''}
   </ul>
   <h3>10. Reporting a problem</h3>
   <p>Report lost, stolen or misdirected information of any kind to ${t(midSentence(a.contact))} within one hour, following the Incident Response Plan. This includes ${a.paper ? t('a lost paper intake form') + ', ' : ''}a file sent to the wrong person, or a device that held confidential information.</p>
@@ -301,19 +319,26 @@ backup(a, pol){
     ? `<p>Free email accounts have no organization-wide backup. Important files are kept in ${storage}, and that storage is backed up.</p>`
     : `<p>${t(`${a.platformName} keeps deleted items only for a limited time. It is not a full backup.`)}</p>`;
   const service = a.backup
-    ? `<p>${t(`${a.org} uses a separate backup service that copies email and files automatically every day.`)}</p>`
+    ? `<p>${t(`${a.org} uses ${a.backupName ? a.backupName + ', ' : ''}a separate backup service that copies email and files automatically every day.`)}</p>`
     : `<p class="note"><b>Action needed:</b> ${t(`${a.org} does not yet have a separate backup. ${a.contact} will choose a backup service within 60 days.`)} Until then, ${a.contact} saves a copy of key files and donor records to an encrypted drive every week.</p>`;
   const donors = a.crmRaw==='spreadsheet'
     ? t('Donor spreadsheets are backed up with the other files, and a monthly copy is kept offline.')
     : t(`${a.crm} backs up its own systems, but may not restore one organization's records on request. Every month, ${a.contact} exports the donor records and saves the export with the backups.`);
+  const records = [
+    a.clients && t('Client'),
+    a.staff && (a.clients ? 'staff' : 'Staff'),
+    a.volunteers && t(a.clients || a.staff ? 'volunteer' : 'Volunteer'),
+    a.clients || a.staff || a.volunteers ? 'grant' : 'Grant',
+  ].filter(Boolean).join(', ');
   return head(a,pol,'Backup and Recovery Policy') + `
   <h3>1. Purpose</h3>
   <p>Ransomware, a deleted folder or a lost laptop can wipe out years of records. This policy makes sure ${a.org} can get its information back quickly.</p>
   <h3>2. What gets backed up</h3>
   <ul>
-    <li>Email and files in ${a.platform==='other' ? 'organization accounts and shared storage' : t(a.platformName)}</li>
+    <li>Email and files in ${a.platform==='other' ? 'organization accounts and shared storage' : t(a.platformName)}</li>${a.server ? `
+    <li>${t('Files on the office server or storage device')}</li>` : ''}
     <li>Donor records in ${t(a.crmRaw==='spreadsheet' ? 'spreadsheets' : a.crm)}</li>
-    <li>${a.clients ? t('Client') + ', staff' : 'Staff'}${a.volunteers ? ', ' + t('volunteer') : ''}, grant and board records, in the places listed in the Data Protection Policy</li>
+    <li>${records} and board records, in the places listed in the Data Protection Policy</li>
     <li>Financial and accounting records</li>
     <li>The website, if ${a.org} manages it rather than a host or developer</li>
     ${a.pm==='none' ? '' : `<li>${t(`${esc(a.pm)}: a second administrator has emergency access, so the vault isn't lost if one person leaves.`)}</li>`}
@@ -327,7 +352,8 @@ backup(a, pol){
   ${service}
   <ul>
     <li>${donors}</li>
-    <li>Backups run automatically. Don't rely on someone remembering.</li>
+    <li>Backups run automatically. Don't rely on someone remembering.</li>${a.server ? `
+    <li>${t('The office server or storage device is backed up every day, with one copy kept off-site or in the cloud. A copy kept next to it can be lost to the same fire, theft or ransomware.')}</li>` : ''}
     ${a.byod ? `<li>${t(`Work files are saved in ${storage}, not only on personal devices, so a lost device never loses work.`)}</li>` : ''}
   </ul>
   <h3>5. Protecting the backups</h3>
@@ -337,9 +363,9 @@ backup(a, pol){
     <li>Backups and donor exports are Confidential under the Data Protection Policy and are stored encrypted.</li>
   </ul>
   <h3>6. Testing restores</h3>
-  <p>A backup that has never been restored may not work. Every three months, ${a.contact} restores a sample file and a sample of donor records, and writes down the date and the result.</p>
+  <p>A backup that has never been restored may not work. Every three months, ${a.contact} restores a sample file and a sample of donor records, and writes down the date and the result.${a.server ? ' ' + t('Each test includes a file from the office server or storage device.') : ''}</p>
   <h3>7. Who is responsible</h3>
-  <p>${a.contact} owns the backups. ${a.owner} is the second person with access.${a.turnover ? ' ' + t('Backup access is never held by only one person. When someone with access leaves, it moves to another person the same day.') : ''}</p>
+  <p>${a.contact} owns the backups. ${a.backupLead} is the second person with access.${a.turnover ? ' ' + t('Backup access is never held by only one person. When someone with access leaves, it moves to another person the same day.') : ''}</p>
   <h3>8. Restoring after an incident</h3>
   <p>Follow the Incident Response Plan. After ransomware, make sure the infection is gone before restoring, or the restored files can be locked again.${a.insurance ? ' ' + t('Tell the cyber insurance carrier before restoring, so evidence is preserved.') : ''}</p>
   ${acknowledgment(9)}
@@ -350,15 +376,16 @@ ir(a, pol){
   return '<div class="onepage">' + head(a,pol,'Incident Response Plan') + `
   <p>Keep this page where everyone can find it, including a printed copy. If something seems wrong, report it. Reporting early is never a mistake.</p>
   <h3>Incident lead</h3>
-  <p>${t(a.contact)} · ${t(a.contactInfo)}<br>Backup: ${t(a.owner)}</p>
-  <p>Full contact details${a.insurance ? t(', including the cyber insurance carrier,') : ''} are on the Incident Contact List, kept by ${a.contact} and verified every three months. Printed copies are kept at ${BLANK}.</p>
+  <p>${t(a.contact)} · ${t(a.contactInfo)}<br>Backup: ${t(a.backupLead)}</p>
+  <p>Full contact details${a.insurance ? t(', including the cyber insurance carrier,') : ''} are on the Incident Contact List, kept by ${a.contact} and verified every three months. Printed copies are kept at ${printedAt(a)}.</p>
   <h3>What to report</h3>
   <p>Clicking a suspicious link or entering a password on an unfamiliar page, a lost or stolen device, ransom messages or locked files, unexpected account changes or MFA prompts, confidential information sent to the wrong person, website changes nobody made, or any request to change payment or bank details.</p>
   <h3>Step 1 · Report within one hour</h3>
   <p>Call or message the incident lead. Write down what happened and when. ${a.turnover && a.volunteers ? t('Volunteers report to their coordinator or straight to the incident lead.') : ''}</p>
   <h3>Step 2 · Contain</h3>
   <ul>
-    <li>Disconnect the affected device from Wi-Fi and the network. Do not turn it off or delete anything.</li>
+    <li>Disconnect the affected device from Wi-Fi and the network. Do not turn it off or delete anything.</li>${a.server ? `
+    <li>${t('Do the same with the office server or storage device if it may be affected.')}</li>` : ''}
     <li>Reset the affected password and sign the account out of all sessions in ${t(a.platformName)}.</li>
     <li>Don't use email to discuss the incident if email may be compromised. Use the phone, and confirm any urgent request by calling a number from the Incident Contact List.</li>
     <li>If money was sent, call the bank's fraud line (on the Incident Contact List) immediately. Fast calls give the best chance of recovering funds.</li>
@@ -369,7 +396,7 @@ ir(a, pol){
   <ol>
     ${a.insurance ? `<li>${t('Cyber insurance carrier first, before hiring outside help. Most policies require early notice and approved vendors.')}</li>` : ''}
     <li>${a.owner} and the board chair.</li>
-    <li>IT provider or website host, if their systems are involved.</li>
+    <li>${a.itProvider ? 'IT provider or website host' : t('Website host')}, if their systems are involved.</li>
     <li>Fraud or ransomware: FBI at ic3.gov. CISA accepts reports at cisa.gov/report.</li>
     <li>If personal information was exposed, legal counsel decides on notices to donors and regulators under state breach notification law.</li>
   </ol>
@@ -385,8 +412,8 @@ train(a, pol){
   const org = t(a.org), owner = t(a.owner), contact = t(a.contact);
   const logTool = {m365:'an Excel spreadsheet', google:'a Google Sheets spreadsheet'}[a.platform] || 'an Excel or Google Sheets spreadsheet';
   const logHome = {m365:'OneDrive or SharePoint', google:'Google Drive'}[a.platform] || 'the approved shared storage';
-  const everyone = a.volunteers ? `staff, board members, interns, contractors and ${t('volunteers')}` : 'staff, board members, interns and contractors';
-  const covered = a.volunteers ? `staff, board members, interns, contractors and ${t('volunteers, including short-term and event volunteers who use organization accounts')}` : 'staff, board members, interns and contractors';
+  const everyone = scope(a, 'volunteers');
+  const covered = scope(a, 'volunteers, including short-term and event volunteers who use organization accounts');
   const roles = [
     [`${owner} (policy owner)`, 'Approves the training plan and any practice phishing emails, makes time for training, and leads the yearly tabletop exercise'],
     [`${contact} (security contact)`, 'Runs or arranges training, sends quarterly reminders, coaches anyone who clicks a practice phishing email, and keeps the training log'],
@@ -418,7 +445,7 @@ train(a, pol){
     ['Scams and phishing', 'Spotting fake emails, texts and calls, including gift-card requests and messages pretending to be leadership', '14.2'],
     ['Passwords and MFA', "Using passphrases and the password manager, never reusing passwords, and never approving an MFA prompt they didn't start", '14.3'],
     ['Handling confidential information', 'Where confidential information may be kept, who can see it, and never sending it to personal email', '14.4'],
-    ['Safe use of AI tools', "Never pasting donor, client or staff information into AI chatbots or tools the organization hasn't approved", '14.4'],
+    ['Safe use of AI tools', `Never pasting ${a.staff ? 'donor, client or staff' : t(a.volunteers ? 'donor, client or volunteer' : 'donor or client')} information into AI chatbots or tools the organization hasn't approved`, '14.4'],
     ['Avoiding accidental exposure', 'Sending files to the wrong person, leaving screens unlocked, and saving donor lists on personal devices', '14.5'],
     ['Reporting problems', 'What to report, who to call, and why to report right away', '14.6'],
     ['Keeping devices updated', 'Turning on automatic updates and noticing when a device is out of date', '14.7'],
@@ -479,12 +506,12 @@ contacts(a, pol){
     <div>Last verified<b>${a.date}</b></div>
     <div>Next check<b>${a.check}</b></div>
   </div>
-  <p class="note"><b>Confidential:</b> Give this sheet only to people who may need it during an incident. Keep a printed copy at ${BLANK}, in case email or files are locked. <b>Call, don't email:</b> if email may be compromised, the attacker may be reading it.</p>
+  <p class="note"><b>Confidential:</b> Give this sheet only to people who may need it during an incident. Keep a printed copy at ${printedAt(a)}, in case email or files are locked. <b>Call, don't email:</b> if email may be compromised, the attacker may be reading it.</p>
   <h3>People</h3>
   ${table(['Role','Name','Office phone','After hours','Email'], [
     row('Incident lead', t(a.contact), a.contactPhone ? t(a.contactPhone) : '', '', a.contactEmail ? t(a.contactEmail) : ''),
-    row('Backup lead (if the lead is unreachable or compromised)', t(a.owner), '', '', ''),
-    row('Executive director', '', '', '', ''),
+    row('Backup lead (if the lead is unreachable or compromised)', t(a.backupLead), '', '', ''),
+    a.staff ? row('Executive director', '', '', '', '') : '',
     row('Board chair', '', '', '', ''),
     row('Communications contact (donors and media)', '', '', '', ''),
   ])}
@@ -492,8 +519,8 @@ contacts(a, pol){
   ${table(['System','Provider','Support phone','Account / admin site'], [
     row('Email and files', a.platform==='other' ? '' : t(a.platformName), '', adminSite ? t(adminSite) : ''),    row('Donor records', t(donorRecords), '', ''),
     processor ? row(t('Payment processor (report possible card data exposure right away)'), '', '', '') : '',
-    a.backup ? row(t('Backup service'), '', '', '') : '',
-    row('Website host or developer, IT provider', '', '', ''),
+    a.backup ? row(t('Backup service'), a.backupName ? t(a.backupName) : '', '', '') : '',
+    row(a.itProvider ? 'Website host or developer, IT provider' : t('Website host or developer'), '', '', ''),
   ])}
   <h3>Money, insurance and legal</h3>
   ${table(['Contact','Name','24/7 phone','Account / policy no.'], [
@@ -527,7 +554,7 @@ onboard(a, pol){
       : `Invite them to ${t(esc(a.pm))}.`,
     `Give ${a.crmRaw==='spreadsheet' ? 'access to ' + donors : donors + ' access'} at the lowest level their role needs${a.volunteers ? ' ' + t('(view-only for volunteers)') : ''}.`,
     'Add them to shared accounts only if their role needs it, and list which ones under Access given.',
-    'If you issue them an organization device, record it in the Asset Inventory.',
+    a.devices ? 'If you issue them an organization device, record it in the Asset Inventory.' : '',
     'Give them the policies and collect their signed Policy Acknowledgment Form.',
     'Give onboarding security training (see the Security Awareness and Training Policy): how to spot phishing and gift-card or payment scams, and how to report a problem to the incident lead.',
     a.byod ? t('If they use a personal device: confirm screen lock and automatic updates are on.') : '',
@@ -551,10 +578,13 @@ offboard(a, pol){
     'Change the password on every shared account they could use, and move any MFA codes off their phone.',
     'Remove them from website, social media and online banking admin roles, group chats and email lists.',
     'Remove their access to backups. If they owned the backups, hand ownership to someone else first.',
+    a.server ? t('Remove their access to the office server or storage device.') : '',
     a.byod ? t('Person leaving: confirm you removed organization accounts and files from your personal devices.') : '',
     'Confirm they kept no donor lists, exports or copies of confidential information.',
-    'Collect keys, equipment and paper records, using the Asset Inventory to check which devices were assigned to them. Change any door or storage codes they knew.',
-    'Update the Asset Inventory: mark returned devices and remove them as an admin on any system.',
+    a.devices ? 'Collect keys, equipment and paper records, using the Asset Inventory to check which devices were assigned to them. Change any door or storage codes they knew.'
+      : t('Collect keys and paper records. Change any door or storage codes they knew.'),
+    a.devices ? 'Update the Asset Inventory: mark returned devices and remove them as an admin on any system.'
+      : t('Update the Asset Inventory: remove them as an admin on any system.'),
   ];
   return '<div class="onepage">' + head(a, pol, 'Offboarding Checklist') + `
   <p class="note">${PASSWORD_NOTE}</p>
@@ -584,7 +614,7 @@ ack(a, pol){
     <li>I understand the policies may change, and I may be asked to read and sign again.</li>
   </ol>
   <h3>Signer</h3>
-  <div class="sig two"><div>Full name (print)</div><div>Role (for example: staff, ${a.volunteers ? t('volunteer') + ', ' : ''}board member, intern, contractor or vendor)</div><div>Signature</div><div>Date</div></div>
+  <div class="sig two"><div>Full name (print)</div><div>Role (for example: ${a.staff ? 'staff, ' : ''}${a.volunteers ? t('volunteer') + ', ' : ''}board member, intern, contractor or vendor)</div><div>Signature</div><div>Date</div></div>
   <h3>For the organization</h3>
   <div class="sig two"><div>Received by (print name)</div><div>Title</div><div>Signature</div><div>Date received</div></div>
   <ul>
@@ -603,22 +633,23 @@ inventory(a, pol){
   return `<div class="onepage inventory"><h2>Asset Inventory</h2>
   ${chips(pol)}
   <p>Organization: <b>${t(a.org)}</b></p>
-  <p>This inventory lists every account, service and device the organization uses, so you know what to protect, what to back up and what to remove when someone leaves. Review it every six months and whenever something is added, replaced or retired.</p>
+  <p>This inventory lists every ${a.devices ? 'account, service and device' : t('account and service')} the organization uses, so you know what to protect, what to back up and what to remove when someone leaves. Review it every six months and whenever something is added, replaced or retired.</p>
   <p class="note">Never write passwords on this form. They belong in the password manager.</p>
   <h3>Accounts and services</h3>
   ${cardTable('fill inv accounts', ['Service', "What it's used for", 'Holds confidential data?', 'Admin(s)', 'MFA on?', 'Backed up?', 'Vendor agreement?'], [
     account(t(email), 'Email, files and calendars'),
     account(t(donors), 'Donor records and giving history'),
     a.pm==='none' ? null : account(t(esc(a.pm)), t('Storing organization passwords')),
-    a.backup ? account(t('Backup service'), t('Backup copies of email and files')) : null,
+    a.backup ? account(t(a.backupName || 'Backup service'), t('Backup copies of email and files')) : null,
+    a.server ? account(t('Office server or storage device'), t('Shared files kept on site')) : null,
     account('Online banking', 'Organization bank accounts'),
     account('Website and hosting', 'Organization website'),
     account('Social media accounts', 'Public communication'),
     ...blank(4, 7),
   ].filter(Boolean))}
-  <h3>Devices</h3>
+  ${a.devices ? `<h3>Devices</h3>
   ${cardTable('fill inv devices', ['Device (type and label, such as &quot;Front desk laptop&quot;)', 'Assigned to', 'Encrypted?', 'Updates on?', 'Firewall on?', 'Date issued', 'Date returned or disposed'], blank(6, 7))}
-  <h3>Review log</h3>
+  ` : ''}<h3>Review log</h3>
   <p>Inventory owner: ${t(a.contact)}<br>Next review due: ${line(14)} (review every six months)</p>
   ${cardTable('fill inv invlog', ['Date reviewed', 'Reviewed by (print name)', 'Initials', 'Changes made'], blank(4, 4))}</div>`;
 }
@@ -642,6 +673,10 @@ function syncOther(){ // show each "Other" text box only when its dropdown says 
   $('crmOther').hidden = $('crm').value !== 'other';
   $('pmOther').hidden = $('pm').value !== 'other';
   $('paperClientsRow').hidden = !$('clients').checked; // follows its parent checkbox
+  $('backupNameRow').hidden = !$('backup').checked;
+  const noDevices = !$('devices').checked; // then everyone must be on personal devices
+  if(noDevices) $('byod').checked = true;
+  $('byod').disabled = noDevices;
 }
 function render(){
   syncOther();

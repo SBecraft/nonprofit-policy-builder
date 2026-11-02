@@ -30,7 +30,7 @@ A nonprofit answers a short questionnaire about its organization, the systems it
 | **Policy Acknowledgment Form** | A one-page form where each person initials the policies they received and signs |
 | **Asset Inventory** | A one-page landscape form listing every account, service and device, reviewed every six months |
 
-**Tailoring.** Answers change the policy text itself, not just names. Personal devices add rules for using them, an office with Wi-Fi adds router and guest network rules, shared logins add shared-account rules, high turnover means same-day access removal, cyber insurance means calling the insurer first, and so on. A "Highlight tailored text" switch marks every sentence that changed because of an answer.
+**Tailoring.** Answers change the policy text itself, not just names. Groups with no paid staff get wording that fits a volunteer-run team, groups with no organization-owned devices lose the device rules and Devices table, personal devices add rules for using them, an office with Wi-Fi adds router and guest network rules, an office server or storage device adds rules for protecting it and backing it up off-site, shared logins add shared-account rules, high turnover means same-day access removal, cyber insurance means calling the insurer first, and so on. A "Highlight tailored text" switch marks every sentence that changed because of an answer.
 
 **Getting the policies out:**
 - Copy one document, or any combination, into Word or Google Docs with headings and tables intact.
