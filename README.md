@@ -125,6 +125,7 @@ app/                  Everything the live site needs. Deploy this folder only.
   frameworks.js       CIS and NIST version names, shared by both pages
   how.html            Help page: framework mappings, privacy, printing and security
   _headers            Netlify security headers (keep this exact name)
+assets/               Screenshots of the app
 documents/            Project plan and other project notes (not needed to run the app)
 README.md             This file
 SECURITY.md           How to report a security problem
