@@ -153,6 +153,25 @@ table.roles th:nth-child(1){width:34%}
 table.trainlog th:nth-child(1){width:14%}
 table.trainlog th:nth-child(3){width:14%}
 table.trainlog th:nth-child(4){width:32%}
+/* Asset Inventory: seven write-in columns, so headings stay in normal case to fit */
+table.inv th{text-transform:none;letter-spacing:0;padding-inline:6px}
+table.inv td{padding-inline:6px}
+table.accounts,table.devices{min-width:42rem}
+table.accounts th:nth-child(1){width:20%}
+table.accounts th:nth-child(2){width:18%}
+table.accounts th:nth-child(3){width:13%}
+table.accounts th:nth-child(4){width:15%}
+table.accounts th:nth-child(5){width:9%}
+table.accounts th:nth-child(6){width:11%}
+table.devices th:nth-child(1){width:26%}
+table.devices th:nth-child(2){width:15%}
+table.devices th:nth-child(3){width:11%}
+table.devices th:nth-child(4){width:10%}
+table.devices th:nth-child(5){width:10%}
+table.devices th:nth-child(6){width:12%}
+table.invlog th:nth-child(1){width:15%}
+table.invlog th:nth-child(2){width:25%}
+table.invlog th:nth-child(3){width:10%}
 .sig.two{grid-template-columns:1fr 1fr}
 @media screen and (max-width:600px){
   table.cards{display:block;min-width:0}
@@ -219,6 +238,14 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
   article.paper .onepage .sig.two{gap:24px 16px;margin-top:24px}
   article.paper .onepage hr.approval-rule{margin:8px 0 0}
   article.paper .onepage .approval{line-height:1.4;margin:3px 0;padding:0 10px}
+  /* Asset Inventory prints landscape, on its own page. Other documents stay portrait.
+     The named page already starts a new sheet, so the separator before it would leave a blank one. */
+  @page inventory{size:landscape;margin:0.3in 0.4in}
+  article.paper .inventory{page:inventory}
+  article.paper hr.split:has(+ .inventory){display:none}
+  article.paper .onepage.inventory table{min-width:0}
+  article.paper .onepage.inventory p{margin:2px 0}
+  article.paper .onepage.inventory .note{margin:3px 0;padding-block:1px}
 }
 </style>
 </head>
@@ -229,7 +256,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
     <div>
       <div class="eyebrow">GRC starter kit · small nonprofits</div>
       <h1>Nonprofit Policy Builder</h1>
-      <p class="lede">Answer a few questions about how your organization works. Six plain-English policies, an Incident Contact List, onboarding and offboarding checklists and a Policy Acknowledgment Form update as you go. Built for any small nonprofit, including teams that run on volunteers, shared logins and frequent turnover.</p>
+      <p class="lede">Answer a few questions about how your organization works. Six plain-English policies, an Incident Contact List, onboarding and offboarding checklists, a Policy Acknowledgment Form and an Asset Inventory update as you go. Built for any small nonprofit, including teams that run on volunteers, shared logins and frequent turnover.</p>
       <p class="disclaimer"><strong>Not legal advice.</strong> These are starting templates for discussion. Have your board approve them, and ask a lawyer to check your state's breach notification rules.</p>
       <details class="start">
         <summary>Before you start: a 2-minute read</summary>
@@ -285,7 +312,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
         <h2>How to use this page</h2>
         <ol>
           <li><strong>Delete the sample answers</strong> and type in your own.</li>
-          <li><strong>Fill this out once, down to the last question.</strong> All ten documents fill in for you as you type.</li>
+          <li><strong>Fill this out once, down to the last question.</strong> All eleven documents fill in for you as you type.</li>
           <li><strong>Print or copy.</strong> Use "Print" or "Copy" for the document on screen, or "More" for some or all of them.</li>
           <li><strong>Fill in any blanks.</strong> Some details aren't asked for here, so add them after you copy the documents into your own files.</li>
         </ol>

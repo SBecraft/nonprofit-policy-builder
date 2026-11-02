@@ -17,6 +17,7 @@ const POLICIES = [
   {id:'onboard', name:'Onboarding Checklist', sheet:true, maps:['CIS 5 · Accounts','CIS 6 · Access','NIST PR.AA']}, // a form, not a policy
   {id:'offboard', name:'Offboarding Checklist', sheet:true, maps:['CIS 5 · Accounts','CIS 6 · Access','NIST PR.AA']}, // a form, not a policy
   {id:'ack', name:'Policy Acknowledgment Form', tab:'Policy Acknowledgment', sheet:true, maps:['CIS 14 · Awareness','NIST GV.PO','NIST PR.AT']}, // a form, not a policy
+  {id:'inventory', name:'Asset Inventory', sheet:true, maps:['CIS 1 · Enterprise Assets','CIS 2 · Software','CIS 15 · Service Providers','NIST ID.AM']}, // a form, not a policy; prints landscape
 ];
 let current = 'aup';
 
@@ -109,7 +110,8 @@ aup(a, pol){
     <ul>
       <li>${t('Default passwords on the Wi-Fi router, printers and other office equipment are changed.')}</li>
       <li>${t('Office Wi-Fi uses WPA2 or WPA3 with a strong password, and visitors and clients use a separate guest network.')}</li>
-    </ul>` : ''}`;
+    </ul>` : ''}
+    <p>Each organization device, who it is assigned to, and whether it meets these rules are recorded in the Asset Inventory.</p>`;
   const personal = a.byod ? `
     <h3>6. Using your own phone or computer</h3>
     <p>${t(`${a.volunteers ? 'Staff, board members and volunteers' : 'Staff and board members'} may use personal devices for ${a.org} work`)} if they follow section 5 and these rules:</p>
@@ -149,7 +151,7 @@ aup(a, pol){
   <h3>8. Privacy</h3>
   <p>Organization accounts and devices belong to ${a.org}. They may be reviewed when needed to protect the organization or respond to an incident.</p>
   <h3>9. When you leave</h3>
-  <p>Return any organization equipment. Your access will be removed ${offboardWindow(a)}. See the Offboarding Checklist for the full list of steps.</p>
+  <p>Return any organization equipment assigned to you in the Asset Inventory. Your access will be removed ${offboardWindow(a)}. See the Offboarding Checklist for the full list of steps.</p>
   ${acknowledgment(10)}
   ${approval()}`;
 },
@@ -167,7 +169,8 @@ pw(a, pol){
       <li>MFA codes go to an organization phone number or email, never ${a.volunteers ? "a volunteer's" : 'a'} personal number.</li>
       <li>${t('The password is changed whenever someone with access leaves.')}</li>
       <li>The owner reviews who has access every three months.</li>
-    </ul>` : `
+    </ul>
+    <p>${t('Each shared account and its owner are listed in the Asset Inventory.')}</p>` : `
     <h3>5. Shared accounts</h3>
     <p>${t('Shared logins are not allowed.')} Every person gets their own account so we can see who did what and remove access cleanly.</p>`;
   return head(a,pol,'Password and Multi-Factor Authentication Policy') + `
@@ -190,10 +193,11 @@ pw(a, pol){
     <li>Website administration and hosting</li>
     <li>Social media and cloud storage</li>
   </ul>
+  <p>MFA status for every account is recorded in the Asset Inventory.</p>
   <p>Use an authenticator app or a security key. Text message codes are allowed only when nothing else is offered.</p>
   ${sharedText}
   <h3>6. Administrator access</h3>
-  <p>No more than two or three people hold administrator rights to email, the donor database or the website. Administrators use a separate admin account for admin work.</p>
+  <p>No more than two or three people hold administrator rights to email, the donor database or the website. Administrators use a separate admin account for admin work. Administrators for each system are listed in the Asset Inventory.</p>
   <h3>7. Giving and removing access</h3>
   <p>${a.contact} approves every new account and every request for more access. New people get access only after they sign the Policy Acknowledgment Form, using the Onboarding Checklist.</p>
   <p>When anyone leaves, ${t(a.contact)} removes their access ${offboardWindow(a)}, using the Offboarding Checklist.</p>
@@ -243,6 +247,7 @@ data(a, pol){
     ['Grant and financial records', `The Finance folder in ${fileStore} and online banking`, 'The executive director, treasurer and bookkeeper'],
     ['Board records', `The Board folder in ${fileStore}, not personal email`, 'Board members and the executive director'],
   ].filter(Boolean))}
+  <p>Every system that holds confidential information is listed in the Asset Inventory.</p>
   <p>Folder names and roles are suggestions. Use the names and roles your organization already has, as long as access to each folder is limited to the people listed.</p>
   ${a.crmRaw==='spreadsheet' ? `<p class="note"><b>Risk noted:</b> ${t('Donor records are kept in spreadsheets.')} Limit access to named people and never email copies. Moving to a donor database is recommended.</p>` : ''}
   <h3>5. Who has access</h3>
@@ -264,7 +269,7 @@ data(a, pol){
     <li>${t(a.org)} does not sell, rent or trade donor lists or any personal information.</li>
     ${c ? `<li>${t("Client information is shared outside the organization only with the client's consent, or when the law requires it.")}</li>
     <li>${t('Funders receive client information as totals or with names removed, unless the grant agreement requires more and the client has agreed.')}</li>` : ''}
-    <li>Vendors that receive personal information (donor database, mail houses, event platforms, payroll services) must have a written agreement that covers how they protect it.</li>
+    <li>Vendors that receive personal information (donor database, mail houses, event platforms, payroll services) must have a written agreement that covers how they protect it. Vendors with written agreements are marked in the Asset Inventory.</li>
     <li>Files sent outside the organization are shared through a protected link, never as an email attachment.</li>
     <li>Never paste confidential information into AI chatbots or other tools the organization hasn't approved.</li>
     <li>Requests from police, lawyers or government agencies go to ${t(midSentence(a.owner))} before anything is shared.</li>
@@ -282,7 +287,7 @@ data(a, pol){
   <p>Check these periods with your accountant or legal counsel, because requirements vary by state and grant.</p>
   <ul>
     <li>Paper records are cross-cut shredded.</li>
-    <li>Computers and phones are wiped before reuse, donation or disposal.</li>
+    <li>Computers and phones are wiped before reuse, donation or disposal. Record the date each device is wiped and disposed of in the Asset Inventory.</li>
   </ul>
   <h3>10. Reporting a problem</h3>
   <p>Report lost, stolen or misdirected information of any kind to ${t(midSentence(a.contact))} within one hour, following the Incident Response Plan. This includes ${a.paper ? t('a lost paper intake form') + ', ' : ''}a file sent to the wrong person, or a device that held confidential information.</p>
@@ -313,6 +318,7 @@ backup(a, pol){
     <li>The website, if ${a.org} manages it rather than a host or developer</li>
     ${a.pm==='none' ? '' : `<li>${t(`${esc(a.pm)}: a second administrator has emergency access, so the vault isn't lost if one person leaves.`)}</li>`}
   </ul>
+  <p>The Asset Inventory shows which systems are backed up. Check it at each restore test so nothing is missed.</p>
   ${a.paper ? `<p>${t('Paper client records are not covered by these backups. Scan any that would be hard to replace into the Clients folder.')}</p>` : ''}
   <h3>3. The 3-2-1 rule</h3>
   <p>Keep at least three copies of important information, on two different kinds of storage, with one copy kept offline or in a separate account. Ransomware that reaches everyday accounts cannot reach that copy.</p>
@@ -358,7 +364,7 @@ ir(a, pol){
     <li>If money was sent, call the bank's fraud line (on the Incident Contact List) immediately. Fast calls give the best chance of recovering funds.</li>
   </ul>
   <h3>Step 3 · Assess</h3>
-  <p>The incident lead works out what systems and information were involved, including whether ${t(a.crmRaw==='spreadsheet' ? 'donor spreadsheets' : a.crm)} or donor personal information was exposed.</p>
+  <p>The incident lead works out what systems and information were involved, including whether ${t(a.crmRaw==='spreadsheet' ? 'donor spreadsheets' : a.crm)} or donor personal information was exposed. Use the Asset Inventory to identify which accounts, devices and data were affected.</p>
   <h3>Step 4 · Notify</h3>
   <ol>
     ${a.insurance ? `<li>${t('Cyber insurance carrier first, before hiring outside help. Most policies require early notice and approved vendors.')}</li>` : ''}
@@ -521,6 +527,7 @@ onboard(a, pol){
       : `Invite them to ${t(esc(a.pm))}.`,
     `Give ${a.crmRaw==='spreadsheet' ? 'access to ' + donors : donors + ' access'} at the lowest level their role needs${a.volunteers ? ' ' + t('(view-only for volunteers)') : ''}.`,
     'Add them to shared accounts only if their role needs it, and list which ones under Access given.',
+    'If you issue them an organization device, record it in the Asset Inventory.',
     'Give them the policies and collect their signed Policy Acknowledgment Form.',
     'Give onboarding security training (see the Security Awareness and Training Policy): how to spot phishing and gift-card or payment scams, and how to report a problem to the incident lead.',
     a.byod ? t('If they use a personal device: confirm screen lock and automatic updates are on.') : '',
@@ -546,7 +553,8 @@ offboard(a, pol){
     'Remove their access to backups. If they owned the backups, hand ownership to someone else first.',
     a.byod ? t('Person leaving: confirm you removed organization accounts and files from your personal devices.') : '',
     'Confirm they kept no donor lists, exports or copies of confidential information.',
-    'Collect keys, equipment and paper records. Change any door or storage codes they knew.',
+    'Collect keys, equipment and paper records, using the Asset Inventory to check which devices were assigned to them. Change any door or storage codes they knew.',
+    'Update the Asset Inventory: mark returned devices and remove them as an admin on any system.',
   ];
   return '<div class="onepage">' + head(a, pol, 'Offboarding Checklist') + `
   <p class="note">${PASSWORD_NOTE}</p>
@@ -584,6 +592,35 @@ ack(a, pol){
     <li>Ask everyone to sign again when a policy listed above changes, or at least once a year.</li>
     <li>A signed copy is evidence for auditors, funders and insurers that people were told the rules.</li>
   </ul></div>`;
+},
+
+inventory(a, pol){
+  const store = {m365:'SharePoint', google:'Google Drive'}[a.platform] || 'a shared folder with restricted access';
+  const email = a.platform==='other' ? 'Organization email' : a.platformName;
+  const donors = a.crmRaw==='spreadsheet' ? `Donor spreadsheets in ${store}` : a.crm;
+  const account = (service, use) => [service, use, '', '', '', '', ''];
+  const blank = (rows, cols) => Array(rows).fill(Array(cols).fill(''));
+  return `<div class="onepage inventory"><h2>Asset Inventory</h2>
+  ${chips(pol)}
+  <p>Organization: <b>${t(a.org)}</b></p>
+  <p>This inventory lists every account, service and device the organization uses, so you know what to protect, what to back up and what to remove when someone leaves. Review it every six months and whenever something is added, replaced or retired.</p>
+  <p class="note">Never write passwords on this form. They belong in the password manager.</p>
+  <h3>Accounts and services</h3>
+  ${cardTable('fill inv accounts', ['Service', "What it's used for", 'Holds confidential data?', 'Admin(s)', 'MFA on?', 'Backed up?', 'Vendor agreement?'], [
+    account(t(email), 'Email, files and calendars'),
+    account(t(donors), 'Donor records and giving history'),
+    a.pm==='none' ? null : account(t(esc(a.pm)), t('Storing organization passwords')),
+    a.backup ? account(t('Backup service'), t('Backup copies of email and files')) : null,
+    account('Online banking', 'Organization bank accounts'),
+    account('Website and hosting', 'Organization website'),
+    account('Social media accounts', 'Public communication'),
+    ...blank(4, 7),
+  ].filter(Boolean))}
+  <h3>Devices</h3>
+  ${cardTable('fill inv devices', ['Device (type and label, such as &quot;Front desk laptop&quot;)', 'Assigned to', 'Encrypted?', 'Updates on?', 'Firewall on?', 'Date issued', 'Date returned or disposed'], blank(6, 7))}
+  <h3>Review log</h3>
+  <p>Inventory owner: ${t(a.contact)}<br>Next review due: ${line(14)} (review every six months)</p>
+  ${cardTable('fill inv invlog', ['Date reviewed', 'Reviewed by (print name)', 'Initials', 'Changes made'], blank(4, 4))}</div>`;
 }
 };
 
@@ -674,6 +711,14 @@ const PASTE_STYLES = [
   ['table.steps th:first-child', 'width:7%'],
   ['table.steps th:last-child', 'width:26%'],
   ['table.steps td', 'height:24pt'],
+  ['table.accounts th:nth-child(1)', 'width:20%'],
+  ['table.accounts th:nth-child(2)', 'width:18%'],
+  ['table.accounts th:nth-child(3)', 'width:13%'],
+  ['table.accounts th:nth-child(4)', 'width:15%'],
+  ['table.devices th:nth-child(1)', 'width:26%'],
+  ['table.invlog th:nth-child(1)', 'width:15%'],
+  ['table.invlog th:nth-child(2)', 'width:25%'],
+  ['table.invlog th:nth-child(3)', 'width:10%'],
   ['table.log', 'table-layout:fixed'],
   ['table.log th,table.log td', 'border:none;border-bottom:1px solid #cccccc;background:none;text-transform:none;font-size:10pt;height:16pt'],
   ['.approval', 'border-left:3px solid #bbbbbb;padding:2pt 8pt;margin:8pt 0;line-height:2;font-size:9pt'], // larger sizes wrap in Word
@@ -756,7 +801,7 @@ function printDocs(list){
 }
 $('print').addEventListener('click', () => printDocs([POLICIES.find(p=>p.id===current)]));
 
-// "More" menu (print or copy several): pick any of the ten to print or copy together
+// "More" menu (print or copy several): pick any of the eleven to print or copy together
 $('picks').innerHTML = POLICIES.map(p =>
   `<label class="tg"><input type="checkbox" value="${p.id}" checked><span>${p.name}</span></label>`).join('');
 const picked = () => POLICIES.filter(p => $('picks').querySelector(`input[value="${p.id}"]`).checked);
