@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>Nonprofit Policy Builder</title>
+<style>
+/* Layout: questionnaire rail on the left, a single "paper" policy sheet on the right; stacks on phones. */
+:root{
+  --bg:#e9eeec; --panel:#f6f8f7; --paper:#ffffff; --ink:#1b2726; --muted:#596a67;
+  --line:#cfd8d5; --accent:#1d6b58; --accent-ink:#ffffff; --mark:#fbeaa6; --warn:#9a5b10;
+  --f-display:"Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --f-body:Charter, "Bitstream Charter", Cambria, Georgia, "Times New Roman", serif;
+  --f-mono:ui-monospace, "Cascadia Mono", Consolas, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#101615; --panel:#161e1d; --paper:#1b2423; --ink:#e2eae8; --muted:#94a6a2;
+  --line:#2c3b39; --accent:#5ec2a5; --accent-ink:#0d1a17; --mark:rgba(245,205,80,.24); --warn:#e3a95a; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#101615; --panel:#161e1d; --paper:#1b2423; --ink:#e2eae8; --muted:#94a6a2;
+  --line:#2c3b39; --accent:#5ec2a5; --accent-ink:#0d1a17; --mark:rgba(245,205,80,.24); --warn:#e3a95a; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:20px;padding-block:28px 48px}
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px;margin-bottom:24px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,4vw,40px);line-height:1.05;margin:4px 0 6px;text-wrap:balance}
+.lede{color:var(--muted);max-width:60ch;margin:0}
+.disclaimer{max-width:60ch;margin:12px 0 0;font-size:14px;border-left:3px solid var(--warn);padding:4px 12px}
+.disclaimer strong{color:var(--warn)}
+/* "Before you start" panel */
+details.start{width:fit-content;max-width:75ch;margin-top:12px;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+details.start[open]{width:auto}
+details.start summary{padding:10px 14px;cursor:pointer;font-family:var(--f-display);font-weight:600;font-size:15px;color:var(--accent)}
+details.start summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.start-body{padding:0 16px 14px;font-size:15px}
+.start-body h2{font-family:var(--f-display);font-size:16px;margin:14px 0 4px}
+.start-body h3{font-family:var(--f-display);font-size:14px;font-weight:600;margin:4px 0}
+.start-body ul{padding-left:1.2em;margin:4px 0}
+.start-body li{margin:3px 0}
+.start-body p{margin:6px 0}
+.start-body p.start-help{font-size:18px;margin-top:14px}
+.gather{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:4px 24px}
+.hint{color:var(--muted);font-size:13px}
+a{color:var(--accent)}
+.grid{display:grid;grid-template-columns:minmax(0,21rem) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+
+/* questionnaire */
+form.q{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:18px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);max-height:calc(100vh - 24px);overflow-y:auto;scroll-padding-bottom:56px}
+.btn.more{position:fixed;transform:translateX(-50%);z-index:5;height:34px;padding:0 14px;white-space:nowrap;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.25);visibility:hidden}
+.btn.more.show{visibility:visible}
+@media (max-width:860px){form.q{position:static;max-height:none;overflow-y:visible}}
+.howto{border-left:3px solid var(--accent);padding:2px 0 2px 12px;margin-bottom:18px;font-size:14px}
+.howto h2{font-family:var(--f-display);font-size:15px;color:var(--accent);margin:0 0 6px}
+.howto ol{margin:0;padding-left:1.2em}
+.howto li{margin:4px 0}
+.howto p{margin:8px 0 0}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+legend{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:0;margin-bottom:8px}
+label.f{display:flex;flex-direction:column;gap:4px;font-family:var(--f-display);font-size:14px;font-weight:500}
+input[type=text],input[type=tel],input[type=email],input[type=date],select{font:inherit;font-family:var(--f-body);font-size:15px;font-weight:400;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:7px 9px;width:100%}
+input:focus-visible,select:focus-visible,button:focus-visible,article.paper:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+label.tg{display:flex;gap:10px;align-items:flex-start;font-family:var(--f-display);font-size:14px;font-weight:500;cursor:pointer}
+label.tg input{margin-top:3px;accent-color:var(--accent);width:16px;height:16px;flex:none}
+label.tg small{display:block;font-family:var(--f-body);font-weight:400;color:var(--muted);font-size:13px}
+
+/* document area */
+.doc-area{min-width:0;display:flex;flex-direction:column}
+.toolbar{background:var(--panel);border:1px solid var(--line);border-bottom:0;border-radius:4px 4px 0 0}
+.tabs{display:flex;flex-direction:column;padding:8px 8px 4px;border-bottom:1px solid var(--line)}
+.tabgroup{display:flex;flex-direction:column;gap:2px;min-width:0}
+.tabgroup+.tabgroup{border-top:1px solid var(--line);margin:4px -8px 0;padding:6px 8px 0}
+.tabgroup-label{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-inline:7px}
+.tabgroup-tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
+.tabgroup-tabs.more{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 40px),transparent)}
+.tab{flex:none;font-family:var(--f-display);font-weight:500;font-size:14px;white-space:nowrap;border:0;border-bottom:2px solid transparent;background:none;color:var(--ink);padding:6px 4px;cursor:pointer}
+.tab:hover{color:var(--accent);border-bottom-color:var(--line)}
+.tab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+.tab:focus-visible{outline-offset:-2px}
+.toolrow{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;padding:8px 12px}
+.toolleft{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;min-width:0}
+.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{font-family:var(--f-display);font-weight:500;font-size:14px;border:1px solid var(--accent);background:transparent;color:var(--accent);padding:7px 12px;border-radius:6px;cursor:pointer}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn:hover:not(:disabled),.btn:active:not(:disabled),.btn:focus-visible,details.multi[open] summary.btn{background:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover:not(:disabled){filter:brightness(1.12)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+/* "More" menu: print or copy several (native <details>, so it opens without script) */
+details.multi{position:relative}
+details.multi summary{list-style:none}
+details.multi summary::-webkit-details-marker{display:none}
+details.multi summary::after{content:" \25BE"}
+details.multi summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.menu{position:absolute;right:0;top:calc(100% + 6px);z-index:10;width:17rem;max-width:calc(100vw - 32px);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:12px;box-shadow:0 12px 30px -12px rgba(0,0,0,.35)}
+.menu-head{display:flex;justify-content:space-between;gap:8px;font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.picks{display:flex;flex-direction:column;gap:8px}
+.menu-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.link{font:inherit;text-transform:none;letter-spacing:0;background:none;border:0;padding:0;color:var(--accent);cursor:pointer;text-decoration:underline}
+.hl{position:relative;font-family:var(--f-display);font-weight:500;font-size:14px;color:var(--accent);display:flex;gap:8px;align-items:center;cursor:pointer}
+.hl input{position:absolute;left:0;width:36px;height:20px;margin:0;opacity:0;cursor:pointer}
+.track{position:relative;flex:none;width:36px;height:20px;border-radius:999px;background:var(--muted)}
+.track::after{content:"";position:absolute;left:2px;top:2px;width:16px;height:16px;border-radius:50%;background:var(--paper)}
+.hl input:checked+.track{background:var(--accent)}
+.hl input:checked+.track::after{transform:translateX(16px)}
+.hl input:focus-visible+.track{outline:2px solid var(--accent);outline-offset:2px}
+.status{font-family:var(--f-mono);font-size:12px;color:var(--accent);min-height:1em}
+
+article.paper{background:var(--paper);border:1px solid var(--line);border-radius:0 0 4px 4px;padding:clamp(20px,4vw,48px);box-shadow:0 1px 0 var(--line),0 12px 30px -18px rgba(0,0,0,.25)}
+article.paper h2{font-family:var(--f-display);font-weight:700;font-size:26px;line-height:1.15;margin:0 0 4px;text-wrap:balance}
+.docmeta{display:grid;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));gap:4px 18px;font-family:var(--f-mono);font-size:12px;color:var(--muted);border-block:1px solid var(--line);padding-block:10px;margin:14px 0 20px}
+.docmeta b{display:block;font-weight:500;color:var(--ink);font-size:13px}
+.maps{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{font-family:var(--f-mono);font-size:11px;border:1px solid var(--line);border-radius:4px;padding:2px 6px;color:var(--muted)}
+.maplink{font-family:var(--f-display);font-size:13px;align-self:center;white-space:nowrap}
+article.paper h3{font-family:var(--f-display);font-weight:500;font-size:17px;margin:22px 0 6px}
+article.paper p,article.paper li{max-width:68ch}
+article.paper ul,article.paper ol{padding-left:1.25em;margin:6px 0}
+article.paper li{margin:3px 0}
+article.paper hr.split{border:0;border-top:1px solid var(--line);margin:40px 0}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;font-size:14px;width:100%;min-width:30rem}
+th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line);padding:6px 8px}
+/* write-in tables: fixed layout so empty columns still get room */
+table.log{table-layout:fixed}
+table.log th,table.log td{border:0;border-bottom:1px solid var(--line);background:none;text-transform:none;letter-spacing:0}
+table.log th{font-family:var(--f-display);font-size:14px;color:var(--ink)}
+table.log td{height:2.2em}
+table.log th:nth-child(1){width:18%}
+table.log th:nth-child(2){width:32%}
+table.log th:nth-child(3){width:12%}
+table.fill{table-layout:fixed}
+table.fill th:first-child{width:30%}
+table.fill td{height:2.4em;overflow-wrap:anywhere}
+/* Onboarding and Offboarding tables: visible lines to write on; stacked cards on narrow screens */
+table.cards{table-layout:fixed}
+table.cards th,table.cards td{border:1px solid var(--line)}
+table.steps th:first-child{width:2.6rem}
+table.steps th:last-child{width:28%}
+table.steps td{height:3em}
+table.ack th:nth-child(1){width:46%}
+table.levels th:nth-child(1){width:16%}
+table.levels th:nth-child(3){width:22%}
+table.places th:nth-child(1){width:24%}
+table.places th:nth-child(2){width:42%}
+table.retain th:nth-child(1){width:38%}
+table.schedule th:nth-child(2){width:50%}
+table.topics th:nth-child(1){width:24%}
+table.topics th:nth-child(2){width:60%}
+table.roles th:nth-child(1){width:34%}
+table.trainlog th:nth-child(1){width:14%}
+table.trainlog th:nth-child(3){width:14%}
+table.trainlog th:nth-child(4){width:32%}
+.sig.two{grid-template-columns:1fr 1fr}
+@media screen and (max-width:600px){
+  table.cards{display:block;min-width:0}
+  table.cards thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  table.cards tbody,table.cards tr,table.cards td{display:block}
+  table.cards tr{border:1px solid var(--line);border-radius:6px;padding:6px 10px;margin-bottom:10px}
+  table.cards td{border:0;height:auto;min-height:1.6em;padding:4px 0}
+  table.cards td::before{content:attr(data-label);display:block;font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+}
+th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.sig{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:44px 16px;margin-top:48px;break-inside:avoid}
+article.paper hr.approval-rule{border:0;border-top:1px solid var(--line);margin:36px calc(-1 * clamp(20px,4vw,48px)) 0}
+article.paper p.approval{max-width:none;border-left:3px solid var(--line);padding:2px 12px;margin:10px 0;line-height:2.2;overflow-wrap:anywhere;break-inside:avoid}
+p.approval span{white-space:nowrap}
+.sig div{border-top:1px solid var(--ink);padding-top:4px;font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.note{border-left:3px solid var(--warn);padding:6px 12px;color:var(--ink);background:transparent;font-size:15px}
+.note b{color:var(--warn)}
+mark.t{background:transparent;color:inherit}
+.show-tailored mark.t{background:var(--mark);border-radius:2px;padding:0 2px}
+/* footer: full page width under a thin border; text lines up with the page content */
+footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+.foot-inner{max-width:1200px;margin:0 auto;padding-inline:20px;padding-block:18px calc(24px + env(safe-area-inset-bottom, 0px));display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.foot-inner p{margin:0;max-width:90ch}
+.foot-links{font-family:var(--f-display);font-size:14px}
+.foot-links a{white-space:nowrap}
+.foot-legal{font-family:var(--f-mono);font-size:11px;letter-spacing:.04em}
+@media (prefers-reduced-motion:no-preference){.tab,.btn{transition:background .15s,color .15s}.track,.track::after{transition:background .15s,transform .15s}}
+
+/* print: only the current document, always in the light palette.
+   :root:not([data-print]) matches the dark-mode selectors' specificity and comes later, so it wins. */
+@media print{
+  :root:not([data-print]){
+    --bg:#ffffff; --panel:#ffffff; --paper:#ffffff; --ink:#000000; --muted:#444444;
+    --line:#bbbbbb; --accent:#1d6b58; --mark:transparent; --warn:#9a5b10; color-scheme:light }
+  header.top,form.q,.toolbar,.status,footer.foot,.maplink{display:none}
+  .wrap{padding:0;max-width:none}
+  .grid{display:block}
+  article.paper{border:0;box-shadow:none;padding:0}
+  .show-tailored mark.t{padding:0}
+  table{min-width:0}
+  tr{break-inside:avoid}
+  article.paper h3{break-after:avoid}
+  article.paper hr.split{break-before:page;border:0;margin:0}
+  article.paper hr.approval-rule{margin-inline:0}
+  @page{margin:0.4in}
+  /* Incident Contact List and Incident Response Plan must each fit one page */
+  article.paper .onepage{font-size:12px;line-height:1.35}
+  article.paper .onepage h2{font-size:20px}
+  article.paper .onepage h3{font-size:14px;margin:6px 0 2px}
+  article.paper .onepage .docmeta{margin:6px 0 8px;padding-block:5px;font-size:10px}
+  article.paper .onepage .docmeta b{font-size:11px}
+  article.paper .onepage th{font-size:9px}
+  article.paper .onepage .note{font-size:12px;margin:6px 0;padding:3px 10px}
+  article.paper .onepage p{margin:4px 0;max-width:none}
+  article.paper .onepage li{margin:1px 0;max-width:none}
+  article.paper .onepage ul,article.paper .onepage ol{margin:3px 0}
+  article.paper .onepage table{font-size:11px}
+  article.paper .onepage th,article.paper .onepage td{padding:2px 6px}
+  article.paper .onepage table.fill td{height:1.8em}
+  article.paper .onepage table.log th{font-size:11px}
+  article.paper .onepage table.log td{height:1.6em}
+  article.paper .onepage .sig{gap:30px 16px;margin-top:30px}
+  article.paper .onepage .sig div{font-size:10px}
+  article.paper .onepage .sig.two{gap:24px 16px;margin-top:24px}
+  article.paper .onepage hr.approval-rule{margin:8px 0 0}
+  article.paper .onepage .approval{line-height:1.4;margin:3px 0;padding:0 10px}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow">GRC starter kit · small nonprofits</div>
+      <h1>Nonprofit Policy Builder</h1>
+      <p class="lede">Answer a few questions about how your organization works. Six plain-English policies, an Incident Contact List, onboarding and offboarding checklists and a Policy Acknowledgment Form update as you go. Built for any small nonprofit, including teams that run on volunteers, shared logins and frequent turnover.</p>
+      <p class="disclaimer"><strong>Not legal advice.</strong> These are starting templates for discussion. Have your board approve them, and ask a lawyer to check your state's breach notification rules.</p>
+      <details class="start">
+        <summary>Before you start: a 2-minute read</summary>
+        <div class="start-body">
+          <h2>Free, private, nothing to install</h2>
+          <ul>
+            <li><strong>No sign-up, download or login.</strong> It's free for nonprofits to use.</li>
+            <li><strong>Nothing you type is sent anywhere.</strong> There's no server, no accounts and no tracking. The app makes no network calls and loads nothing from other sites.</li>
+          </ul>
+          <h2>Your answers are not saved</h2>
+          <p>Everything you type stays in this browser tab only. <strong>Closing or refreshing the tab erases it.</strong> Plan to finish in one sitting, or copy or print what you have before you stop.</p>
+          <ul>
+            <li><strong>Pin this tab</strong> so it's harder to close by accident: right-click the tab and choose "Pin".</li>
+            <li>If you try to close or refresh the page after typing, your browser will ask you to confirm first.</li>
+            <li><strong>Printing opens in a separate tab.</strong> Print from there, then close that tab. Your answers will still be here.</li>
+          </ul>
+          <h2>Gather this first</h2>
+          <div class="gather">
+            <div>
+              <h3>For the questions</h3>
+              <ul>
+                <li>Organization name</li>
+                <li>Policy owner's name and title</li>
+                <li>Security contact's name, phone and email</li>
+                <li>Email platform, donor database and password manager</li>
+                <li>Yes/no: volunteers, personal devices, shared logins, high turnover, online donations, card payments, cyber insurance, backup service, office Wi-Fi, client records, paper client records</li>
+              </ul>
+            </div>
+            <div>
+              <h3>For the Incident Contact List</h3>
+              <ul>
+                <li>Executive director, board chair and communications contact, with office and after-hours phones</li>
+                <li>Bank fraud line and the last 4 digits of the account</li>
+                <li>Cyber insurer's claims line and policy number</li>
+                <li>IT provider or web host, and legal counsel</li>
+                <li>Local FBI field office, police non-emergency line and state attorney general's office</li>
+                <li>Where printed copies will be kept</li>
+              </ul>
+              <p class="hint">You can also write these on the printed sheet by hand.</p>
+            </div>
+          </div>
+          <h2>Based on recognized security standards</h2>
+          <p>Each document is linked to the parts of two trusted frameworks that it supports: the CIS Controls from the Center for Internet Security (Implementation Group 1, the starter set for small organizations) and the <span data-fw="csf"></span> from the U.S. National Institute of Standards and Technology (NIST). That helps show a board, funder or insurer that your policies follow recognized guidance. Using them does not make you certified or compliant, because a policy only says what you plan to do. What counts is following it day to day. You may also have to meet other rules, such as state privacy laws or grant requirements.</p>
+          <p class="start-help"><a href="how.html" target="_blank" rel="noopener">How this app works: frameworks, privacy and security</a> (opens in a new tab)</p>
+        </div>
+      </details>
+    </div>
+  </header>
+
+  <div class="grid">
+    <form class="q" id="q" autocomplete="off">
+      <div class="howto">
+        <h2>How to use this page</h2>
+        <ol>
+          <li><strong>Type over the sample answers</strong> with your own.</li>
+          <li><strong>Fill this out once, down to the last question.</strong> All ten documents fill in for you as you type.</li>
+          <li><strong>Print or copy.</strong> Use "Print" or "Copy" for the document on screen, or "More" for some or all of them.</li>
+          <li><strong>Fill in any blanks.</strong> Some details aren't asked for here, so add them after you copy the documents into your own files.</li>
+        </ol>
+        <p class="hint">You can't edit documents on this page. To make changes, copy and paste them into Word or Google Docs, or print to PDF and use a PDF editor.</p>
+      </div>
+      <fieldset>
+        <legend>Your organization</legend>
+        <label class="f">Organization name<input type="text" id="org" value="Riverbend Community Pantry (example)"></label>
+        <label class="f">Policy owner (name, title)<input type="text" id="owner" value="Maria Chen, Executive Director"></label>
+        <label class="f">Security contact (who handles IT issues)<input type="text" id="contact" value="Dana Ortiz, Operations Manager"></label>
+        <label class="f">Contact phone<input type="tel" id="contactPhone" value="(555) 010-0142"></label>
+        <label class="f">Contact email<input type="email" id="contactEmail" value="ops@riverbend.example"></label>
+        <label class="f">Effective date<input type="date" id="date"></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Systems you use</legend>
+        <label class="f">Email and documents
+          <select id="platform">
+            <option value="m365">Microsoft 365</option>
+            <option value="google">Google Workspace</option>
+            <option value="other">Free or mixed email accounts</option>
+            <option value="custom">Other (type it in)</option>
+          </select>
+        </label>
+        <input type="text" id="platformOther" aria-label="Name of your email and documents platform" placeholder="Name of your email platform" hidden>
+        <label class="f">Where donor records live
+          <select id="crm">
+            <option>Bloomerang</option>
+            <option>DonorPerfect</option>
+            <option>Little Green Light</option>
+            <option>Salesforce Nonprofit</option>
+            <option value="spreadsheet">Spreadsheets</option>
+            <option value="other">Other (type it in)</option>
+          </select>
+        </label>
+        <input type="text" id="crmOther" aria-label="Name of your donor database" placeholder="Name of your donor database" hidden>
+        <label class="f">Password manager
+          <select id="pm">
+            <option>Bitwarden</option>
+            <option>1Password</option>
+            <option>Keeper</option>
+            <option value="none">None yet</option>
+            <option value="other">Other (type it in)</option>
+          </select>
+        </label>
+        <input type="text" id="pmOther" aria-label="Name of your password manager" placeholder="Name of your password manager" hidden>
+      </fieldset>
+
+      <fieldset>
+        <legend>How you work</legend>
+        <label class="tg"><input type="checkbox" id="volunteers" checked><span>We use volunteers<small>Regular, short-term or event volunteers. Board members are always covered.</small></span></label>
+        <label class="tg"><input type="checkbox" id="byod" checked><span>Volunteers or staff use personal devices<small>Phones or laptops they own, used for work email or files.</small></span></label>
+        <label class="tg"><input type="checkbox" id="shared" checked><span>Some logins are shared<small>For example, one social media or event account used by several people.</small></span></label>
+        <label class="tg"><input type="checkbox" id="turnover" checked><span>High turnover<small>Volunteers or staff join and leave every few months.</small></span></label>
+        <label class="tg"><input type="checkbox" id="online" checked><span>We take donations online<small>Through a giving page run by a payment processor or donor database.</small></span></label>
+        <label class="tg"><input type="checkbox" id="cards"><span>Staff take card details by phone or in person</span></label>
+        <label class="tg"><input type="checkbox" id="insurance" checked><span>We have cyber insurance</span></label>
+        <label class="tg"><input type="checkbox" id="backup"><span>We use a separate backup service<small>A service that copies email and files to a separate account every day.</small></span></label>
+        <label class="tg"><input type="checkbox" id="office" checked><span>We have an office or site with Wi-Fi<small>Adds rules for the router, printers and guest Wi-Fi.</small></span></label>
+        <label class="tg"><input type="checkbox" id="clients" checked><span>We keep records about people we serve<small>Such as client intake forms, household details or case notes.</small></span></label>
+        <label class="tg" id="paperClientsRow"><input type="checkbox" id="paperClients" checked><span>We keep paper client records<small>Paper intake forms or files.</small></span></label>
+      </fieldset>
+      <button class="btn primary more" type="button" id="moreQ" tabindex="-1">More questions below ▾</button>
+    </form>
+
+    <section class="doc-area" aria-label="Generated policies">
+      <div class="toolbar">
+        <div class="tabs" role="tablist" id="tabs" aria-label="Documents"></div>
+        <div class="toolrow">
+          <div class="toolleft">
+            <label class="hl"><input type="checkbox" id="showT" role="switch" checked><span class="track" aria-hidden="true"></span>Highlight tailored text</label>
+            <div class="status" id="status" aria-live="polite"></div>
+          </div>
+          <div class="actions">
+            <button class="btn primary" type="button" id="print" aria-label="Print this document">Print</button>
+            <button class="btn" type="button" id="copyOne" aria-label="Copy this document">Copy</button>
+            <details class="multi" id="multi">
+              <summary class="btn" aria-label="More: print or copy several documents">More</summary>
+              <div class="menu">
+                <div class="menu-head">Print or copy several… <span><button class="link" type="button" id="pickAll">All</button> · <button class="link" type="button" id="pickNone">None</button></span></div>
+                <div class="picks" id="picks"></div>
+                <div class="menu-actions">
+                  <button class="btn" type="button" id="copySel">Copy selected</button>
+                  <button class="btn primary" type="button" id="printSel">Print selected</button>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+      <article class="paper show-tailored" id="paper" role="tabpanel" tabindex="0"></article>
+      <div id="hidden-all" hidden style="position:absolute;left:-10000px;top:0;width:40rem" aria-hidden="true"></div>
+    </section>
+  </div>
+</div>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <p><strong>Privacy:</strong> Your answers stay in your browser. This page loads no outside fonts, trackers or scripts and sends nothing anywhere. Closing the tab erases your answers.</p>
+    <p>Version 1.0.0 · Template wording last reviewed October 2026<br>Mapped to <span data-fw="cis"></span> (Implementation Group 1) and the <span data-fw="nist"></span></p>
+    <p class="foot-links"><a href="how.html" target="_blank" rel="noopener">How this app works</a> · <a href="how.html#source" target="_blank" rel="noopener">Source code</a> · <a href="how.html#latest" target="_blank" rel="noopener">Latest version</a> · <a href="how.html#report" target="_blank" rel="noopener">Report a security problem</a></p>
+    <p class="foot-legal">© 2026 Nonprofit Policy Builder · Free for nonprofits to use · Not legal advice</p>
+  </div>
+</footer>
+
+<script src="frameworks.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

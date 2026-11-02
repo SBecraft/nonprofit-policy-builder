@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How the Nonprofit Policy Builder Works</title>
+<style>
+/* Same palette and fonts as index.html. Keep the two in step when colors change. */
+:root{
+  --bg:#e9eeec; --panel:#f6f8f7; --paper:#ffffff; --ink:#1b2726; --muted:#596a67;
+  --line:#cfd8d5; --accent:#1d6b58; --warn:#9a5b10;
+  --f-display:"Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --f-body:Charter, "Bitstream Charter", Cambria, Georgia, "Times New Roman", serif;
+  --f-mono:ui-monospace, "Cascadia Mono", Consolas, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#101615; --panel:#161e1d; --paper:#1b2423; --ink:#e2eae8; --muted:#94a6a2;
+  --line:#2c3b39; --accent:#5ec2a5; --warn:#e3a95a; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#101615; --panel:#161e1d; --paper:#1b2423; --ink:#e2eae8; --muted:#94a6a2;
+  --line:#2c3b39; --accent:#5ec2a5; --warn:#e3a95a; color-scheme:dark }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6}
+.wrap{max-width:52rem;margin:0 auto;padding-inline:20px;padding-block:28px 56px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,4vw,36px);line-height:1.1;margin:4px 0 8px}
+.lede{color:var(--muted);margin:0 0 8px}
+.back{font-family:var(--f-display);font-size:14px}
+nav.toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0 6px;font-family:var(--f-display);font-size:14px}
+section{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:clamp(18px,4vw,32px);margin-top:18px}
+h2{font-family:var(--f-display);font-size:22px;margin:0 0 8px}
+h3{font-family:var(--f-display);font-size:16px;font-weight:600;margin:18px 0 4px}
+p,li{max-width:70ch}
+ul,ol{padding-left:1.25em}
+li{margin:4px 0}
+a{color:var(--accent)}
+code{font-family:var(--f-mono);font-size:.88em;white-space:nowrap}
+/* A footer link lands on one of these headers: room below lets it reach the top of the window, and the bar shows which one */
+#links h3{scroll-margin-top:12px}
+#links h3:target{color:var(--accent);border-left:3px solid var(--accent);padding-left:8px}
+.wrap:has(#links h3:target){padding-bottom:100vh}
+code.url{display:block;white-space:normal;overflow-wrap:anywhere;user-select:all;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:6px 8px;margin:6px 0}
+.note{border-left:3px solid var(--warn);padding:4px 12px;margin:12px 0}
+.note b{color:var(--warn)}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:32rem;font-size:14px;margin:8px 0}
+th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line);padding:6px 8px}
+th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Nonprofit Policy Builder · Help</div>
+  <h1>How this app works</h1>
+  <p class="lede">What the framework labels mean, what happens to your answers, and how the app is protected.</p>
+  <p class="back">If you opened this from the policy builder, close this tab to get back to your answers. <a href="index.html">Go to the policy builder</a></p>
+
+  <nav class="toc" aria-label="On this page">
+    <a href="#frameworks">Framework mappings</a>
+    <a href="#privacy">Your answers and privacy</a>
+    <a href="#printing">Printing and copying</a>
+    <a href="#security">Security</a>
+    <a href="#links">Source code, updates and reporting</a>
+  </nav>
+
+  <section id="frameworks">
+    <h2>Framework mappings</h2>
+    <p>Each policy is labelled with the security frameworks it supports. This lets your board, a funder, an insurer or an auditor see that the policies follow recognized standards, not just someone's opinion.</p>
+
+    <h3><span data-fw="cis"></span>, Implementation Group 1</h3>
+    <p>The CIS Controls, from the Center for Internet Security, are 18 groups of practical security steps, listed in priority order. <strong>Implementation Group 1 (IG1)</strong> is the starting set, the "essential cyber hygiene" meant for small organizations with limited IT help. A label like <code>CIS 5 · Accounts</code> means the policy supports CIS Control 5.</p>
+
+    <h3>The <span data-fw="nist"></span></h3>
+    <p>The NIST Cybersecurity Framework, from the U.S. National Institute of Standards and Technology, sorts security work into six functions: <strong>Govern, Identify, Protect, Detect, Respond and Recover</strong>. A label like <code>NIST PR.AA</code> means the Protect function, Identity Management, Authentication and Access Control category.</p>
+
+    <h3>Which policy maps to what</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Document</th><th>CIS Controls</th><th>NIST CSF</th></tr></thead>
+      <tbody>
+        <tr><td>Acceptable Use</td><td>3 Data Protection · 4 Secure Configuration · 7 Continuous Vulnerability Management · 10 Malware Defenses · 14 Security Awareness and Skills Training</td><td>GV.PO Policy · PR.AT Awareness and Training · PR.PS Platform Security</td></tr>
+        <tr><td>Passwords &amp; MFA</td><td>5 Account Management · 6 Access Control Management</td><td>PR.AA Identity Management, Authentication and Access Control</td></tr>
+        <tr><td>Data Protection</td><td>3 Data Protection · 15 Service Provider Management</td><td>PR.DS Data Security · ID.AM Asset Management</td></tr>
+        <tr><td>Backup &amp; Recovery</td><td>11 Data Recovery</td><td>PR.DS Data Security · RC.RP Incident Recovery Plan Execution</td></tr>
+        <tr><td>Incident Response Plan</td><td>17 Incident Response Management</td><td>RS Respond · RC Recover</td></tr>
+        <tr><td>Incident Contact List</td><td>17 Incident Response Management (contact information for reporting incidents)</td><td>RS.CO Incident Response Reporting and Communication</td></tr>
+        <tr><td>Onboarding</td><td>5 Account Management · 6 Access Control Management</td><td>PR.AA Identity Management, Authentication and Access Control</td></tr>
+        <tr><td>Offboarding</td><td>5 Account Management · 6 Access Control Management</td><td>PR.AA Identity Management, Authentication and Access Control</td></tr>
+        <tr><td>Policy Acknowledgment Form</td><td>14 Security Awareness and Skills Training</td><td>GV.PO Policy · PR.AT Awareness and Training</td></tr>
+        <tr><td>Security Awareness and Training</td><td>14 Security Awareness and Skills Training</td><td>PR.AT Awareness and Training · GV.RR Roles, Responsibilities, and Authorities</td></tr>
+      </tbody>
+    </table></div>
+    <h3 id="labels">What each label means</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Label</th><th>Name</th><th>In plain English</th></tr></thead>
+      <tbody>
+        <tr><td><code>CIS 3</code></td><td>Data Protection</td><td>Know what sensitive information you hold, limit who can see it, encrypt it and delete it safely.</td></tr>
+        <tr><td><code>CIS 4</code></td><td>Secure Configuration</td><td>Set up devices, accounts and Wi-Fi safely, and change risky default settings.</td></tr>
+        <tr><td><code>CIS 5</code></td><td>Account Management</td><td>Keep track of who has an account, and use strong, unique passwords.</td></tr>
+        <tr><td><code>CIS 6</code></td><td>Access Control Management</td><td>Give people only the access they need, use MFA, and remove access when they leave.</td></tr>
+        <tr><td><code>CIS 7</code></td><td>Continuous Vulnerability Management</td><td>Keep systems and apps updated so known weak spots get fixed.</td></tr>
+        <tr><td><code>CIS 10</code></td><td>Malware Defenses</td><td>Keep protection against viruses and other harmful software turned on.</td></tr>
+        <tr><td><code>CIS 11</code></td><td>Data Recovery</td><td>Keep backups, and check that you can restore from them.</td></tr>
+        <tr><td><code>CIS 14</code></td><td>Security Awareness and Skills Training</td><td>Teach people to spot scams and handle information safely.</td></tr>
+        <tr><td><code>CIS 15</code></td><td>Service Provider Management</td><td>Know which outside companies hold your data, and agree on how they protect it.</td></tr>
+        <tr><td><code>CIS 17</code></td><td>Incident Response Management</td><td>Know who does what when something goes wrong, and how to report it.</td></tr>
+        <tr><td><code>NIST GV.PO</code></td><td>Policy</td><td>Write down your security rules, share them and keep them current.</td></tr>
+        <tr><td><code>NIST GV.RR</code></td><td>Roles, Responsibilities, and Authorities</td><td>Make sure everyone knows who is responsible for what.</td></tr>
+        <tr><td><code>NIST ID.AM</code></td><td>Asset Management</td><td>Know what information, devices and services you have.</td></tr>
+        <tr><td><code>NIST PR.AA</code></td><td>Identity Management, Authentication and Access Control</td><td>Make sure only the right people can log in and reach what they need.</td></tr>
+        <tr><td><code>NIST PR.AT</code></td><td>Awareness and Training</td><td>Make sure people know the rules and how to stay safe.</td></tr>
+        <tr><td><code>NIST PR.DS</code></td><td>Data Security</td><td>Keep information private, accurate and available.</td></tr>
+        <tr><td><code>NIST PR.PS</code></td><td>Platform Security</td><td>Keep devices and software set up safely and up to date.</td></tr>
+        <tr><td><code>NIST RS</code></td><td>Respond</td><td>Act quickly when a security problem is found.</td></tr>
+        <tr><td><code>NIST RS.CO</code></td><td>Incident Response Reporting and Communication</td><td>Tell the right people during an incident.</td></tr>
+        <tr><td><code>NIST RC</code></td><td>Recover</td><td>Get back to normal after an incident.</td></tr>
+        <tr><td><code>NIST RC.RP</code></td><td>Incident Recovery Plan Execution</td><td>Follow your plan to restore systems and information.</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note"><b>Alignment, not certification.</b> The labels show which parts of each framework a policy supports. Using these policies does not make an organization "compliant" or "certified". Following them in practice is what reduces risk. The wording and mappings are reviewed once a year.</p>
+  </section>
+
+  <section id="privacy">
+    <h2>Your answers and privacy</h2>
+    <h3>Nothing is saved</h3>
+    <ul>
+      <li>Your answers exist only in the open browser tab while you use it.</li>
+      <li>The app does not use cookies, local storage or any other browser storage.</li>
+      <li><strong>Closing the tab, refreshing it or leaving the page erases your answers.</strong> If you try to close or refresh after typing, your browser will ask you to confirm.</li>
+      <li>To keep your work, copy the documents into Word or Google Docs, or print them, before you close the tab.</li>
+    </ul>
+    <p>Tip: pin the tab (right-click the tab and choose "Pin") so it's harder to close by accident.</p>
+
+    <h3>Nothing is sent anywhere</h3>
+    <ul>
+      <li>The app has no server, no database, no accounts and no logins.</li>
+      <li>It makes no network calls, and nothing you type ever leaves your computer.</li>
+      <li>It loads no outside fonts, analytics, trackers or ads.</li>
+      <li>The site's security settings block outgoing connections and form submissions, so even a later change to the code could not quietly send your answers anywhere.</li>
+    </ul>
+    <p>Like every website, the host that delivers the page sees your IP address. It never sees anything you type.</p>
+
+    <h3>Check it yourself</h3>
+    <ol>
+      <li>Open your browser's developer tools (F12, or right-click and choose "Inspect").</li>
+      <li>Go to the <strong>Network</strong> tab, then fill in the questionnaire. No new requests appear.</li>
+      <li>Go to the <strong>Application</strong> tab (or <strong>Storage</strong> in Firefox). The site has no cookies and nothing in local or session storage.</li>
+    </ol>
+  </section>
+
+  <section id="printing">
+    <h2>Printing and copying</h2>
+    <ul>
+      <li><strong>Print</strong> opens the document you're viewing in a separate tab and starts printing there. Close that tab when you're done; your answers stay in the original tab. If your browser blocks new tabs, it prints from the same tab instead.</li>
+      <li><strong>More</strong> lets you print or copy any combination of the ten documents. Each printed document starts on a new page.</li>
+      <li><strong>Copying</strong> keeps headings, tables and other formatting when you paste into Word or Google Docs.</li>
+      <li>To save a PDF, choose "Save as PDF" in the print dialog.</li>
+      <li>The Incident Response Plan and the Incident Contact List each fit on one printed page.</li>
+    </ul>
+    <p class="note"><b>The Incident Contact List is confidential.</b> It may hold personal phone numbers and insurance details. Give it only to people who need it during an incident, and keep a printed copy somewhere easy to reach in case email or files are locked.</p>
+  </section>
+
+  <section id="security">
+    <h2>Security</h2>
+    <p>The app is a security tool, so it is built to follow the practices it recommends.</p>
+    <h3>Protections built in</h3>
+    <ul>
+      <li><strong>Typed text can't run as code.</strong> Everything you type is displayed as plain text, so a malicious entry can't turn into a script (cross-site scripting).</li>
+      <li><strong>Strict security policy.</strong> The site only runs its own script files. Scripts injected into the page are refused, outgoing connections are blocked, and forms can't be submitted anywhere.</li>
+      <li><strong>Can't be hidden inside another website.</strong> The app refuses to load inside another site's frame, which blocks "clickjacking" tricks.</li>
+      <li><strong>No third-party code.</strong> No outside scripts, fonts or libraries, so there is nothing outside the site that could be tampered with to change the app.</li>
+      <li><strong>Encrypted connection.</strong> The live site is served only over HTTPS.</li>
+    </ul>
+    <h3>Testing</h3>
+    <p>Before launch, the app is tested with:</p>
+    <ul>
+      <li>security header and HTTPS scans</li>
+      <li>automated vulnerability scanning</li>
+      <li>a source code review</li>
+      <li>manual attempts to inject scripts into every text field</li>
+    </ul>
+    <p>Testing status: planned. Results will be summarized here once testing is complete.</p>
+    <p class="note"><b>Using a downloaded copy?</b> If you open the app from your own computer instead of the website, the site's security settings don't apply, because they are sent by the web host. The app still makes no network calls and saves nothing.</p>
+  </section>
+
+  <!-- TODO: replace each [GITHUB REPO URL] once the repository exists. Keep these as plain text, never links: the app does not link out to other sites. -->
+  <section id="links">
+    <h2>Source code, updates and reporting</h2>
+    <p>This app has no links to other websites. To visit one of the pages below, copy its address and paste it into your browser. Nothing you typed in the app goes with it.</p>
+
+    <h3 id="source">Source code</h3>
+    <p>All of the app's code is public, so anyone can check how it works.</p>
+    <code class="url">[GITHUB REPO URL]</code>
+
+    <h3 id="latest">Latest version</h3>
+    <p>Compare the newest release with the version number in the app's footer. This matters most if you use a downloaded copy, because it does not update itself.</p>
+    <code class="url">[GITHUB REPO URL]/releases</code>
+
+    <h3 id="download">Download the app</h3>
+    <p>The README file on the repository's main page has the download and the steps for running your own copy.</p>
+    <code class="url">[GITHUB REPO URL]</code>
+
+    <h3 id="report">Report a security problem</h3>
+    <p>This page explains how to report a problem privately. Please don't post details anywhere public.</p>
+    <code class="url">[GITHUB REPO URL]/blob/main/SECURITY.md</code>
+  </section>
+
+</div>
+<script src="frameworks.js"></script>
+</body>
+</html>

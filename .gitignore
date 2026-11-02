@@ -1,0 +1,13 @@
+# Private project notes: stay on this computer, never uploaded
+documents/
+HANDOFF.md
+CLAUDE.md
+
+# Claude Code local settings
+.claude/
+
+# Office lock files and system files
+~$*
+Thumbs.db
+Desktop.ini
+.DS_Store
