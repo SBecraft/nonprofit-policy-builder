@@ -347,7 +347,7 @@ ir(a, pol){
   <p>${t(a.contact)} · ${t(a.contactInfo)}<br>Backup: ${t(a.owner)}</p>
   <p>Full contact details${a.insurance ? t(', including the cyber insurance carrier,') : ''} are on the Incident Contact List, kept by ${a.contact} and verified every three months. Printed copies are kept at ${BLANK}.</p>
   <h3>What to report</h3>
-  <p>Clicking a suspicious link or entering a password on an unfamiliar page, a lost or stolen device, ransom messages or locked files, unexpected account changes or MFA prompts, donor data sent to the wrong person, website changes nobody made, or any request to change payment or bank details.</p>
+  <p>Clicking a suspicious link or entering a password on an unfamiliar page, a lost or stolen device, ransom messages or locked files, unexpected account changes or MFA prompts, confidential information sent to the wrong person, website changes nobody made, or any request to change payment or bank details.</p>
   <h3>Step 1 · Report within one hour</h3>
   <p>Call or message the incident lead. Write down what happened and when. ${a.turnover && a.volunteers ? t('Volunteers report to their coordinator or straight to the incident lead.') : ''}</p>
   <h3>Step 2 · Contain</h3>
