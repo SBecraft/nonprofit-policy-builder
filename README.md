@@ -130,6 +130,7 @@ app/                  Everything the live site needs. Deploy this folder only.
   _headers            Netlify security headers (keep this exact name)
 assets/               Screenshots of the app
 documents/            Project plan and other project notes (not needed to run the app)
+LICENSE               Who may use the software and how
 README.md             This file
 SECURITY.md           How to report a security problem
 CLAUDE.md             Standing rules for Claude Code when working on this project
@@ -153,6 +154,6 @@ AI output was treated as a draft. The developer decided the app's purpose, scope
 
 ## License
 
-[LICENSE: to be decided. See the note in HANDOFF.md. Until a license is added, all rights are reserved by default.]
+This software is covered by the [Nonprofit Policy Builder License](LICENSE). Individuals and nonprofit organizations may use it free of charge for internal organizational purposes, and may use, copy and distribute the documents it generates without attribution. All other rights are reserved.
 
-© 2026 Nonprofit Policy Builder · Free for nonprofits to use · Not legal advice
+Nonprofit Policy Builder © 2026 SBecraft · Free for nonprofits to use · Not legal advice

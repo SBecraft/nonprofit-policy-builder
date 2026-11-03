@@ -201,7 +201,8 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
 .foot-inner p{margin:0;max-width:90ch}
 .foot-links{font-family:var(--f-display);font-size:14px}
 .foot-links a{white-space:nowrap}
-.foot-legal{font-family:var(--f-mono);font-size:11px;letter-spacing:.04em}
+.foot-inner p.foot-legal{max-width:none}
+.foot-legal span{white-space:nowrap}
 @media (prefers-reduced-motion:no-preference){.tab,.btn{transition:background .15s,color .15s}.track,.track::after{transition:background .15s,transform .15s}}
 
 /* print: only the current document, always in the light palette.
@@ -427,7 +428,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
     <p><strong>Privacy:</strong> Your answers stay in your browser. This page loads no outside fonts, trackers or scripts and sends nothing anywhere. Closing the tab erases your answers.</p>
     <p>Version 1.0.0 · Template wording last reviewed October 2026<br>Mapped to <span data-fw="cis"></span> (Implementation Group 1) and the <span data-fw="nist"></span></p>
     <p class="foot-links"><a href="how.html" target="_blank" rel="noopener">How this app works</a> · <a href="how.html#source" target="_blank" rel="noopener">Source code</a> · <a href="how.html#latest" target="_blank" rel="noopener">Latest version</a> · <a href="how.html#report" target="_blank" rel="noopener">Report a security problem</a></p>
-    <p class="foot-legal">© 2026 Nonprofit Policy Builder · Free for nonprofits to use · Not legal advice</p>
+    <p class="foot-legal">Nonprofit Policy Builder © 2026 SBecraft · Free for nonprofits to use · <span>Not legal advice</span></p>
   </div>
 </footer>
 
