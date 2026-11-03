@@ -156,6 +156,10 @@ AI output was treated as a draft. The developer decided the app's purpose, scope
 
 ## License
 
-This software is covered by the [Nonprofit Policy Builder License](LICENSE). See also [NOTICE](NOTICE) and [COPYRIGHT](COPYRIGHT). Individuals and nonprofit organizations may use it free of charge for internal organizational purposes, and may use, copy and distribute the documents it generates without attribution. All other rights are reserved.
+**Proprietary Software - All Rights Reserved**
+
+This software is made available for free use by nonprofit organizations for internal purposes. Modification, creation of derivative works, redistribution, rebranding, incorporation into other products, and commercial use are prohibited without prior written permission from SBecraft.
+
+The full terms, including what you may do with the documents the app generates, are in the [Nonprofit Policy Builder License](LICENSE). See also [NOTICE](NOTICE) and [COPYRIGHT](COPYRIGHT).
 
 Nonprofit Policy Builder © 2026 SBecraft · Free for nonprofits to use · Not legal advice
