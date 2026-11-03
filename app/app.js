@@ -6,18 +6,19 @@ const today = new Date();
 const pad = n => String(n).padStart(2,'0');
 $('date').value = `${today.getFullYear()}-${pad(today.getMonth()+1)}-${pad(today.getDate())}`; // local date, not UTC
 
+// Forms are in the order an organization uses them: set-up forms, then joining to leaving
 const POLICIES = [
   {id:'aup', name:'Acceptable Use', maps:['CIS 3 · Data Protection','CIS 4 · Secure Configuration','CIS 7 · Vulnerability Management','CIS 10 · Malware','CIS 14 · Awareness','NIST GV.PO','NIST PR.AT','NIST PR.PS']},
+  {id:'train', name:'Security Awareness and Training', tab:'Security Awareness', maps:['CIS 14 · Awareness','NIST PR.AT','NIST GV.RR']},
   {id:'pw',  name:'Passwords & MFA', maps:['CIS 5 · Accounts','CIS 6 · Access','NIST PR.AA']},
   {id:'data',name:'Data Protection', maps:['CIS 3 · Data Protection','CIS 15 · Service Providers','NIST PR.DS','NIST ID.AM']},
   {id:'backup', name:'Backup & Recovery', maps:['CIS 11 · Data Recovery','NIST PR.DS','NIST RC.RP']},
   {id:'ir',  name:'Incident Response', maps:['CIS 17 · Incident Response','NIST RS','NIST RC']},
-  {id:'train', name:'Security Awareness and Training', tab:'Security Awareness', maps:['CIS 14 · Awareness','NIST PR.AT','NIST GV.RR']},
+  {id:'inventory', name:'Asset Inventory', sheet:true, maps:['CIS 1 · Enterprise Assets','CIS 2 · Software','CIS 15 · Service Providers','NIST ID.AM']}, // a form, not a policy; prints landscape
   {id:'contacts', name:'Incident Contact List', sheet:true, maps:['CIS 17 · Incident Response','NIST RS.CO']}, // not a policy: no head(), checked every 3 months
   {id:'onboard', name:'Onboarding Checklist', sheet:true, maps:['CIS 5 · Accounts','CIS 6 · Access','NIST PR.AA']}, // a form, not a policy
-  {id:'offboard', name:'Offboarding Checklist', sheet:true, maps:['CIS 5 · Accounts','CIS 6 · Access','NIST PR.AA']}, // a form, not a policy
   {id:'ack', name:'Policy Acknowledgment Form', tab:'Policy Acknowledgment', sheet:true, maps:['CIS 14 · Awareness','NIST GV.PO','NIST PR.AT']}, // a form, not a policy
-  {id:'inventory', name:'Asset Inventory', sheet:true, maps:['CIS 1 · Enterprise Assets','CIS 2 · Software','CIS 15 · Service Providers','NIST ID.AM']}, // a form, not a policy; prints landscape
+  {id:'offboard', name:'Offboarding Checklist', sheet:true, maps:['CIS 5 · Accounts','CIS 6 · Access','NIST PR.AA']}, // a form, not a policy
 ];
 let current = 'aup';
 
