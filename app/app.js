@@ -1,3 +1,8 @@
+/*
+ * Nonprofit Policy Builder
+ * Copyright © 2026 SBecraft
+ * All Rights Reserved
+ */
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const t = s => `<mark class="t">${s}</mark>`; // tailored passage (s may contain escaped html)

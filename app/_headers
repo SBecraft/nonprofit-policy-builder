@@ -1,3 +1,6 @@
+# Nonprofit Policy Builder
+# Copyright © 2026 SBecraft
+# All Rights Reserved
 /*
   Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'
   X-Frame-Options: DENY

@@ -1,3 +1,8 @@
+/*
+ * Nonprofit Policy Builder
+ * Copyright © 2026 SBecraft
+ * All Rights Reserved
+ */
 // Framework versions: change them only here (see "When a framework version changes" in CLAUDE.md).
 // Loaded by index.html and how.html. Any element with data-fw="cis", "nist" or "csf" shows the version name.
 const NIST_CSF = 'Cybersecurity Framework 2.0';
