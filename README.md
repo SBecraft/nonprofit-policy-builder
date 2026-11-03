@@ -14,7 +14,7 @@ Security policy templates online are usually written for corporations, with an I
 
 ## What it does
 
-A nonprofit answers a short questionnaire about its organization, the systems it uses and how it works. Six policies, an Incident Contact List, onboarding and offboarding checklists, a Policy Acknowledgment Form and an Asset Inventory update instantly as answers change:
+A nonprofit answers a short questionnaire about its organization, the systems it uses and how it works. Six policies, an Incident Contact List, onboarding and offboarding checklists, a Policy Acknowledgment Form, an Asset Inventory and a Framework Summary update instantly as answers change:
 
 | Document | What it covers |
 |---|---|
@@ -29,6 +29,7 @@ A nonprofit answers a short questionnaire about its organization, the systems it
 | **Offboarding** | A one-page checklist for removing access when someone leaves |
 | **Policy Acknowledgment Form** | A one-page form where each person initials the policies they received and signs |
 | **Asset Inventory** | A one-page landscape form listing every account, service and device, reviewed every six months |
+| **Framework Summary** | A one-page list of each document's CIS and NIST labels with a plain-English key, for board packets and records |
 
 **Tailoring.** Answers change the policy text itself, not just names. Groups with no paid staff get wording that fits a volunteer-run team, groups with no organization-owned devices lose the device rules and Devices table, personal devices add rules for using them, an office with Wi-Fi adds router and guest network rules, an office server or storage device adds rules for protecting it and backing it up off-site, shared logins add shared-account rules, high turnover means same-day access removal, cyber insurance means calling the insurer first, and so on. A "Highlight tailored text" switch marks every sentence that changed because of an answer.
 

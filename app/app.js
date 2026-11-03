@@ -16,9 +16,36 @@ const POLICIES = [
   {id:'ir',  name:'Incident Response', maps:['CIS 17 · Incident Response','NIST RS','NIST RC']},
   {id:'inventory', name:'Asset Inventory', sheet:true, maps:['CIS 1 · Enterprise Assets','CIS 2 · Software','CIS 15 · Service Providers','NIST ID.AM']}, // a form, not a policy; prints landscape
   {id:'contacts', name:'Incident Contact List', sheet:true, maps:['CIS 17 · Incident Response','NIST RS.CO']}, // not a policy: no head(), checked every 3 months
-  {id:'onboard', name:'Onboarding Checklist', sheet:true, maps:['CIS 5 · Accounts','CIS 6 · Access','NIST PR.AA']}, // a form, not a policy
+  {id:'onboard', name:'Onboarding Checklist', tab:'Onboarding', sheet:true, maps:['CIS 5 · Accounts','CIS 6 · Access','NIST PR.AA']}, // a form, not a policy
   {id:'ack', name:'Policy Acknowledgment Form', tab:'Policy Acknowledgment', sheet:true, maps:['CIS 14 · Awareness','NIST GV.PO','NIST PR.AT']}, // a form, not a policy
-  {id:'offboard', name:'Offboarding Checklist', sheet:true, maps:['CIS 5 · Accounts','CIS 6 · Access','NIST PR.AA']}, // a form, not a policy
+  {id:'offboard', name:'Offboarding Checklist', tab:'Offboarding', sheet:true, maps:['CIS 5 · Accounts','CIS 6 · Access','NIST PR.AA']}, // a form, not a policy
+  {id:'summary', name:'Framework Summary', sheet:true, maps:[]}, // lists the other documents' labels, so it has none of its own
+];
+// Plain-English key for the Framework Summary. It repeats the "What each label means" table in how.html, so change both together.
+const LABEL_KEY = [
+  ['CIS 1', 'Inventory and Control of Enterprise Assets', 'Keep a list of your devices, so you know what you need to protect.'],
+  ['CIS 2', 'Inventory and Control of Software Assets', 'Keep a list of the software and online services you use.'],
+  ['CIS 3', 'Data Protection', 'Know what sensitive information you hold, limit who can see it, encrypt it and delete it safely.'],
+  ['CIS 4', 'Secure Configuration', 'Set up devices, accounts and Wi-Fi safely, and change risky default settings.'],
+  ['CIS 5', 'Account Management', 'Keep track of who has an account, and use strong, unique passwords.'],
+  ['CIS 6', 'Access Control Management', 'Give people only the access they need, use MFA, and remove access when they leave.'],
+  ['CIS 7', 'Continuous Vulnerability Management', 'Keep systems and apps updated so known weak spots get fixed.'],
+  ['CIS 10', 'Malware Defenses', 'Keep protection against viruses and other harmful software turned on.'],
+  ['CIS 11', 'Data Recovery', 'Keep backups, and check that you can restore from them.'],
+  ['CIS 14', 'Security Awareness and Skills Training', 'Teach people to spot scams and handle information safely.'],
+  ['CIS 15', 'Service Provider Management', 'Know which outside companies hold your data, and agree on how they protect it.'],
+  ['CIS 17', 'Incident Response Management', 'Know who does what when something goes wrong, and how to report it.'],
+  ['NIST GV.PO', 'Policy', 'Write down your security rules, share them and keep them current.'],
+  ['NIST GV.RR', 'Roles, Responsibilities, and Authorities', 'Make sure everyone knows who is responsible for what.'],
+  ['NIST ID.AM', 'Asset Management', 'Know what information, devices and services you have.'],
+  ['NIST PR.AA', 'Identity Management, Authentication and Access Control', 'Make sure only the right people can log in and reach what they need.'],
+  ['NIST PR.AT', 'Awareness and Training', 'Make sure people know the rules and how to stay safe.'],
+  ['NIST PR.DS', 'Data Security', 'Keep information private, accurate and available.'],
+  ['NIST PR.PS', 'Platform Security', 'Keep devices and software set up safely and up to date.'],
+  ['NIST RS', 'Respond', 'Act quickly when a security problem is found.'],
+  ['NIST RS.CO', 'Incident Response Reporting and Communication', 'Tell the right people during an incident.'],
+  ['NIST RC', 'Recover', 'Get back to normal after an incident.'],
+  ['NIST RC.RP', 'Incident Recovery Plan Execution', 'Follow your plan to restore systems and information.'],
 ];
 let current = 'aup';
 
@@ -653,6 +680,19 @@ inventory(a, pol){
   ` : ''}<h3>Review log</h3>
   <p>Inventory owner: ${t(a.contact)}<br>Next review due: ${line(14)} (review every six months)</p>
   ${cardTable('fill inv invlog', ['Date reviewed', 'Reviewed by (print name)', 'Initials', 'Changes made'], blank(4, 4))}</div>`;
+},
+
+summary(a, pol){
+  const docs = POLICIES.filter(p => p.maps.length);
+  const labels = (p, fw) => p.maps.filter(m => m.startsWith(fw)).map(m => m.slice(fw.length + 1).replace(' · ', ' ')).join(', ');
+  return `<div class="onepage"><h2>Framework Summary</h2>
+  <p>Organization: <b>${t(a.org)}</b> &nbsp;&nbsp; Date: <b>${a.date}</b></p>
+  <p>This summary shows which parts of two recognized security frameworks each document supports: the ${FRAMEWORKS.cis} (Implementation Group 1, the starter set for small organizations) and the ${FRAMEWORKS.nist}.</p>
+  <p class="note"><b>Alignment, not certification.</b> The labels show which parts of each framework a document supports. Using these documents does not make an organization "compliant" or "certified". Following them in practice is what reduces risk.</p>
+  <h3>Documents and their labels</h3>
+  ${cardTable('fwmap', ['Document', 'CIS Controls', 'NIST CSF'], docs.map(p => [p.name, labels(p, 'CIS'), labels(p, 'NIST')]))}
+  <h3>What each label means</h3>
+  ${cardTable('fwkey', ['Label', 'Name', 'In plain English'], LABEL_KEY.filter(([l]) => docs.some(p => p.maps.some(m => m === l || m.startsWith(l + ' ·')))))}</div>`;
 }
 };
 
@@ -755,6 +795,10 @@ const PASTE_STYLES = [
   ['table.invlog th:nth-child(1)', 'width:15%'],
   ['table.invlog th:nth-child(2)', 'width:25%'],
   ['table.invlog th:nth-child(3)', 'width:10%'],
+  ['table.fwmap th:nth-child(1)', 'width:26%'],
+  ['table.fwmap th:nth-child(2)', 'width:46%'],
+  ['table.fwkey th:nth-child(1)', 'width:13%'],
+  ['table.fwkey th:nth-child(2)', 'width:35%'],
   ['table.log', 'table-layout:fixed'],
   ['table.log th,table.log td', 'border:none;border-bottom:1px solid #cccccc;background:none;text-transform:none;font-size:10pt;height:16pt'],
   ['.approval', 'border-left:3px solid #bbbbbb;padding:2pt 8pt;margin:8pt 0;line-height:2;font-size:9pt'], // larger sizes wrap in Word
@@ -837,7 +881,7 @@ function printDocs(list){
 }
 $('print').addEventListener('click', () => printDocs([POLICIES.find(p=>p.id===current)]));
 
-// "More" menu (print or copy several): pick any of the eleven to print or copy together
+// "More" menu (print or copy several): pick any of the twelve to print or copy together
 $('picks').innerHTML = POLICIES.map(p =>
   `<label class="tg"><input type="checkbox" value="${p.id}" checked><span>${p.name}</span></label>`).join('');
 const picked = () => POLICIES.filter(p => $('picks').querySelector(`input[value="${p.id}"]`).checked);

@@ -46,6 +46,20 @@ code.url{display:block;white-space:normal;overflow-wrap:anywhere;user-select:all
 table{border-collapse:collapse;width:100%;min-width:32rem;font-size:14px;margin:8px 0}
 th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line);padding:6px 8px}
 th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+/* print: dark text on white in every theme, without the page navigation.
+   :root:not([data-print]) matches the dark-mode selectors' specificity and comes later, so it wins. */
+@media print{
+  :root:not([data-print]){
+    --bg:#ffffff; --panel:#ffffff; --paper:#ffffff; --ink:#000000; --muted:#444444;
+    --line:#bbbbbb; --accent:#1d6b58; --warn:#9a5b10; color-scheme:light }
+  nav.toc,.back{display:none}
+  .wrap{padding:0;max-width:none}
+  section{border:0;padding:0}
+  table{min-width:0}
+  tr,.note{break-inside:avoid}
+  h2,h3{break-after:avoid}
+  @page{margin:0.5in}
+}
 </style>
 </head>
 <body>
@@ -66,6 +80,7 @@ th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:
   <section id="frameworks">
     <h2>Framework mappings</h2>
     <p>Each policy is labelled with the security frameworks it supports. This lets your board, a funder, an insurer or an auditor see that the policies follow recognized standards, not just someone's opinion.</p>
+    <p>To give these mappings to your board or keep them with your records, use the <strong>Framework Summary</strong> tab in the policy builder. It prints on one page with your organization's name, and you can add it to the policies with <strong>More</strong>.</p>
 
     <h3><span data-fw="cis"></span>, Implementation Group 1</h3>
     <p>The CIS Controls, from the Center for Internet Security, are 18 groups of practical security steps, listed in priority order. <strong>Implementation Group 1 (IG1)</strong> is the starting set, the "essential cyber hygiene" meant for small organizations with limited IT help. A label like <code>CIS 5 · Accounts</code> means the policy supports CIS Control 5.</p>
@@ -154,10 +169,10 @@ th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:
     <h2>Printing and copying</h2>
     <ul>
       <li><strong>Print</strong> opens the document you're viewing in a separate tab and starts printing there. Close that tab when you're done; your answers stay in the original tab. If your browser blocks new tabs, it prints from the same tab instead.</li>
-      <li><strong>More</strong> lets you print or copy any combination of the eleven documents. Each printed document starts on a new page.</li>
+      <li><strong>More</strong> lets you print or copy any combination of the twelve documents. Each printed document starts on a new page.</li>
       <li><strong>Copying</strong> keeps headings, tables and other formatting when you paste into Word or Google Docs.</li>
       <li>To save a PDF, choose "Save as PDF" in the print dialog.</li>
-      <li>The Incident Response Plan and the Incident Contact List each fit on one printed page.</li>
+      <li>The Incident Response Plan and each form fit on one printed page. The Asset Inventory prints in landscape.</li>
     </ul>
     <p class="note"><b>The Incident Contact List is confidential.</b> It may hold personal phone numbers and insurance details. Give it only to people who need it during an incident, and keep a printed copy somewhere easy to reach in case email or files are locked.</p>
   </section>
