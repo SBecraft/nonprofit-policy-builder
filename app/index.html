@@ -70,7 +70,7 @@ input[type=text],input[type=tel],input[type=email],input[type=date],select{font:
 input:focus-visible,select:focus-visible,button:focus-visible,article.paper:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 label.tg{display:flex;gap:10px;align-items:flex-start;font-family:var(--f-display);font-size:14px;font-weight:500;cursor:pointer}
 label.tg input{margin-top:3px;accent-color:var(--accent);width:16px;height:16px;flex:none}
-label.tg small{display:block;font-family:var(--f-body);font-weight:400;color:var(--muted);font-size:13px}
+label.tg small,label.f small{display:block;font-family:var(--f-body);font-weight:400;color:var(--muted);font-size:13px}
 
 /* document area */
 .doc-area{min-width:0;display:flex;flex-direction:column}
@@ -111,7 +111,7 @@ details.multi summary:focus-visible{outline:2px solid var(--accent);outline-offs
 .hl input:checked+.track{background:var(--accent)}
 .hl input:checked+.track::after{transform:translateX(16px)}
 .hl input:focus-visible+.track{outline:2px solid var(--accent);outline-offset:2px}
-.status{font-family:var(--f-mono);font-size:12px;color:var(--accent);min-height:1em}
+.status{font-family:var(--f-mono);font-size:12px;color:var(--accent);text-align:right;max-width:22rem} /* sits just left of Print */
 
 article.paper{background:var(--paper);border:1px solid var(--line);border-radius:0 0 4px 4px;padding:clamp(20px,4vw,48px);box-shadow:0 1px 0 var(--line),0 12px 30px -18px rgba(0,0,0,.25)}
 article.paper h2{font-family:var(--f-display);font-weight:700;font-size:26px;line-height:1.15;margin:0 0 4px;text-wrap:balance}
@@ -161,7 +161,7 @@ table.trainlog th:nth-child(4){width:32%}
 /* Asset Inventory: seven write-in columns, so headings stay in normal case to fit */
 table.inv th{text-transform:none;letter-spacing:0;padding-inline:6px}
 table.inv td{padding-inline:6px}
-table.accounts,table.devices{min-width:42rem}
+table.accounts,table.devices,table.shared{min-width:42rem}
 table.accounts th:nth-child(1){width:20%}
 table.accounts th:nth-child(2){width:18%}
 table.accounts th:nth-child(3){width:13%}
@@ -174,6 +174,13 @@ table.devices th:nth-child(3){width:11%}
 table.devices th:nth-child(4){width:10%}
 table.devices th:nth-child(5){width:10%}
 table.devices th:nth-child(6){width:12%}
+/* with the "Organization or personal?" column (personal devices allowed), columns 3 to 6 shift: that column 13%, then 10% each; the two dates share the rest */
+table.devices.owned th:nth-child(3){width:13%}
+table.devices.owned th:nth-child(4),table.devices.owned th:nth-child(5),table.devices.owned th:nth-child(6){width:10%}
+table.shared th:nth-child(1){width:34%}
+table.shared th:nth-child(2){width:18%}
+table.shared th:nth-child(3){width:24%}
+table.shared th:nth-child(4){width:10%}
 table.invlog th:nth-child(1){width:15%}
 table.invlog th:nth-child(2){width:25%}
 table.invlog th:nth-child(3){width:10%}
@@ -290,9 +297,10 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
               <ul>
                 <li>Organization name</li>
                 <li>Policy owner's name and title</li>
-                <li>Security contact's name, phone and email</li>
-                <li>Backup incident lead's name and title</li>
-                <li>Where printed copies will be kept</li>
+                <li>Primary IT contact's name, phone and email</li>
+                <li>Alternate incident contact's name, title, phone and email</li>
+                <li>Board chair's name</li>
+                <li>Where printed emergency copies will be kept</li>
                 <li>Email platform, donor database, password manager and backup service</li>
                 <li>Yes/no: paid staff, volunteers, organization devices, personal devices, shared logins, high turnover, online donations, card payments, outside tech support, cyber insurance, backup service, office server or storage device, office Wi-Fi, client records, paper client records</li>
               </ul>
@@ -325,20 +333,23 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
           <li><strong>Delete the sample answers</strong> and type in your own.</li>
           <li><strong>Fill this out once, down to the last question.</strong> All twelve documents fill in for you as you type. Every question is optional, so skip any you can't answer and fill in the blank later.</li>
           <li><strong>Print or copy.</strong> Use "Print" or "Copy" for the document on screen, or "More" for some or all of them.</li>
-          <li><strong>Fill in any blanks.</strong> Some details aren't asked for here, so add them after you copy the documents into your own files.</li>
+          <li><strong>Fill in any blanks.</strong> Some details aren't asked for here, so add them after you copy the documents into your own files. Add table rows there too if you need more.</li>
         </ol>
         <p class="hint">You can't edit documents on this page. To make changes, copy and paste them into Word or Google Docs, or print to PDF and use a PDF editor.</p>
       </div>
       <fieldset>
         <legend>Your organization</legend>
         <label class="f">Organization name<input type="text" id="org" value="Riverbend Community Pantry (example)"></label>
-        <label class="f">Policy owner (name, title)<input type="text" id="owner" value="Maria Chen, Executive Director"></label>
-        <label class="f">Security contact (who handles IT issues)<input type="text" id="contact" value="Dana Ortiz, Operations Manager"></label>
-        <label class="f">Contact phone<input type="tel" id="contactPhone" value="(555) 010-0142"></label>
-        <label class="f">Contact email<input type="email" id="contactEmail" value="ops@riverbend.example"></label>
-        <label class="f">Backup incident lead (name, title)<input type="text" id="backupLead" value="Sam Rivera, Board Treasurer"></label>
-        <label class="f">Where printed copies are kept<input type="text" id="printPlace" value="the front office"></label>
-        <label class="f">Effective date<input type="date" id="date"></label>
+        <label class="f">Policy owner (name, title)<small>The person who approves and updates these policies, often the executive director or board chair.</small><input type="text" id="owner" value="Maria Chen, Executive Director"></label>
+        <label class="f">Primary IT contact (who handles IT issues)<input type="text" id="contact" value="Dana Ortiz, Operations Manager"></label>
+        <label class="f">Primary IT contact phone<input type="tel" id="contactPhone" value="(555) 010-0142"></label>
+        <label class="f">Primary IT contact email<input type="email" id="contactEmail" value="ops@riverbend.example"></label>
+        <label class="f">Alternate incident contact (name, title)<input type="text" id="backupLead" value="Sam Rivera, Board Treasurer"></label>
+        <label class="f">Alternate incident contact phone<input type="tel" id="backupPhone" value="(555) 010-0187"></label>
+        <label class="f">Alternate incident contact email<input type="email" id="backupEmail" value="sam.rivera@riverbend.example"></label>
+        <label class="f">Board chair (name)<input type="text" id="boardChair" value="Grace Kim"></label>
+        <label class="f">Where printed emergency copies are kept<small>For the Incident Response Plan and Incident Contact List, in case computers are locked.</small><input type="text" id="printPlace" value="the front office"></label>
+        <label class="f">Policy effective date<input type="date" id="date"></label>
       </fieldset>
 
       <fieldset>
@@ -403,9 +414,9 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
         <div class="toolrow">
           <div class="toolleft">
             <label class="hl"><input type="checkbox" id="showT" role="switch" checked><span class="track" aria-hidden="true"></span>Highlight tailored text</label>
-            <div class="status" id="status" aria-live="polite"></div>
           </div>
           <div class="actions">
+            <div class="status" id="status" aria-live="polite"></div>
             <button class="btn primary" type="button" id="print" aria-label="Print this document">Print</button>
             <button class="btn" type="button" id="copyOne" aria-label="Copy this document">Copy</button>
             <details class="multi" id="multi">
@@ -431,7 +442,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
 <footer class="foot">
   <div class="foot-inner">
     <p><strong>Privacy:</strong> Your answers stay in your browser. This page loads no outside fonts, trackers or scripts and sends nothing anywhere. Closing the tab erases your answers.</p>
-    <p>Version 1.0.0 · Template wording last reviewed October 2026<br>Mapped to <span data-fw="cis"></span> (Implementation Group 1) and the <span data-fw="nist"></span></p>
+    <p>Version 1.0.0 · Template wording last reviewed November 2026<br>Mapped to <span data-fw="cis"></span> (Implementation Group 1) and the <span data-fw="nist"></span></p>
     <p class="foot-links"><a href="how.html" target="_blank" rel="noopener">How this app works</a> · <a href="how.html#source" target="_blank" rel="noopener">Source code</a> · <a href="how.html#latest" target="_blank" rel="noopener">Latest version</a> · <a href="how.html#license" target="_blank" rel="noopener">License</a> · <a href="how.html#report" target="_blank" rel="noopener">Report a security problem</a></p>
     <p class="foot-legal">Nonprofit Policy Builder © 2026 SBecraft · Free for nonprofits to use · <span>Not legal advice</span></p>
   </div>

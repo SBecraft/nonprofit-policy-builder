@@ -66,7 +66,9 @@ function read(){
     org:v('org'), owner:v('owner'), contact:v('contact'),
     backupLead:esc($('backupLead').value.trim()) || v('owner'), // the policy owner stands in if left blank
     printPlace:esc($('printPlace').value.trim()), backupName:esc($('backupName').value.trim()),
+    boardChair:esc($('boardChair').value.trim()), // Incident Contact List only; blank leaves a write-in space
     contactPhone:esc($('contactPhone').value.trim()), contactEmail:esc($('contactEmail').value.trim()),
+    backupPhone:esc($('backupPhone').value.trim()), backupEmail:esc($('backupEmail').value.trim()), // Incident Contact List only
     // phone and email together, for sentences; either one alone if the other is blank
     contactInfo:[$('contactPhone').value.trim(), $('contactEmail').value.trim()].filter(Boolean).map(esc).join(' · ') || '—',
     date:fmt(d), review:fmt(review), check:fmt(check),
@@ -409,7 +411,7 @@ ir(a, pol){
   return '<div class="onepage">' + head(a,pol,'Incident Response Plan') + `
   <p>Keep this page where everyone can find it, including a printed copy. If something seems wrong, report it. Reporting early is never a mistake.</p>
   <h3>Incident lead</h3>
-  <p>${t(a.contact)} · ${t(a.contactInfo)}<br>Backup: ${t(a.backupLead)}</p>
+  <p>${t(a.contact)} · ${t(a.contactInfo)}<br>Alternate incident contact: ${t(a.backupLead)}</p>
   <p>Full contact details${a.insurance ? t(', including the cyber insurance carrier,') : ''} are on the Incident Contact List, kept by ${a.contact} and verified every three months. Printed copies are kept at ${printedAt(a)}.</p>
   <h3>What to report</h3>
   <p>Clicking a suspicious link or entering a password on an unfamiliar page, a lost or stolen device, ransom messages or locked files, unexpected account changes or MFA prompts, confidential information sent to the wrong person, website changes nobody made, or any request to change payment or bank details.</p>
@@ -449,7 +451,7 @@ train(a, pol){
   const covered = scope(a, 'volunteers, including short-term and event volunteers who use organization accounts');
   const roles = [
     [`${owner} (policy owner)`, 'Approves the training plan and any practice phishing emails, makes time for training, and leads the yearly tabletop exercise'],
-    [`${contact} (security contact)`, 'Runs or arranges training, sends quarterly reminders, coaches anyone who clicks a practice phishing email, and keeps the training log'],
+    [`${contact} (primary IT contact)`, 'Runs or arranges training, sends quarterly reminders, coaches anyone who clicks a practice phishing email, and keeps the training log'],
     a.volunteers ? [t('Volunteer coordinators'), t('Make sure volunteers who use organization accounts are trained before they get access')] : null,
     ['Everyone', 'Completes training on time, follows what they learned and reports problems'],
   ].filter(Boolean);
@@ -502,7 +504,7 @@ train(a, pol){
   <p><b>If you use practice phishing emails</b></p>
   <ul>
     <li>Send them quarterly, or monthly if resources allow, and only with the policy owner's approval.</li>
-    <li>Anyone who clicks gets short, private coaching from the security contact on what to look for next time.</li>
+    <li>Anyone who clicks gets short, private coaching from the primary IT contact on what to look for next time.</li>
     <li>Results are used to teach, never to punish or embarrass anyone.</li>
   </ul>
   <p><b>Incident response tabletop exercise</b></p>
@@ -512,7 +514,7 @@ train(a, pol){
   <h3>7. Reporting mistakes without blame</h3>
   <p>Anyone can click a bad link or send a file to the wrong person. Report it right away to ${t(midSentence(a.contact))} at ${t(a.contactPhone || a.contactInfo)}. Fast reporting limits the damage, and nobody is punished for an honest mistake they report. Hiding a mistake, or repeatedly ignoring the policies, is handled under the Acceptable Use Policy.</p>
   <h3>8. Training records</h3>
-  <p>The security contact keeps a training log and records every session in it. Use a simple tool you already have, such as ${t(logTool)}, a shared document or a printed sheet. Model your log on the example below, but keep it separate from this policy. Store a digital log in ${t(logHome)}, not a personal account. The log shows funders, auditors and insurers that training actually happens.</p>
+  <p>The primary IT contact keeps a training log and records every session in it. Use a simple tool you already have, such as ${t(logTool)}, a shared document or a printed sheet. Model your log on the example below, but keep it separate from this policy. Store a digital log in ${t(logHome)}, not a personal account. The log shows funders, auditors and insurers that training actually happens.</p>
   ${cardTable('fill trainlog', ['Date', 'Name', 'Role', 'Activity (onboarding, yearly, quarterly, phishing test, tabletop, policy update, incident)', 'Given by'], Array(2).fill(['', '', '', '', '']))}
   ${acknowledgment(9)}
   ${approval()}`;
@@ -543,9 +545,9 @@ contacts(a, pol){
   <h3>People</h3>
   ${table(['Role','Name','Office phone','After hours','Email'], [
     row('Incident lead', t(a.contact), a.contactPhone ? t(a.contactPhone) : '', '', a.contactEmail ? t(a.contactEmail) : ''),
-    row('Backup lead (if the lead is unreachable or compromised)', t(a.backupLead), '', '', ''),
+    row('Alternate incident contact (if the lead is unreachable or compromised)', t(a.backupLead), a.backupPhone ? t(a.backupPhone) : '', '', a.backupEmail ? t(a.backupEmail) : ''),
     a.staff ? row('Executive director', '', '', '', '') : '',
-    row('Board chair', '', '', '', ''),
+    row('Board chair', a.boardChair ? t(a.boardChair) : '', '', '', ''),
     row('Communications contact (donors and media)', '', '', '', ''),
   ])}
   <h3>Systems and providers</h3>
@@ -568,7 +570,7 @@ contacts(a, pol){
     row('State attorney general', '', 'Some data breaches must be reported here. Legal counsel confirms.'),
     row('CISA', 'cisa.gov/report', 'Ransomware and other cyber incidents (optional).'),
   ], ['30%','20%','50%'])}
-  <p><b>Keep it current:</b> Check every entry every three months, and whenever someone on this sheet leaves or a provider changes. If the incident lead or backup changes, update the Incident Response Plan too.</p>
+  <p><b>Keep it current:</b> Check every entry every three months, and whenever someone on this sheet leaves or a provider changes. If the incident lead or alternate incident contact changes, update the Incident Response Plan too.</p>
   <h3>Verification log</h3>
   <p class="loghead">List owner: ${line(34)} Next check due: ${line(14)}</p>
   <div class="tablewrap"><table class="log">
@@ -661,30 +663,34 @@ inventory(a, pol){
   const store = {m365:'SharePoint', google:'Google Drive'}[a.platform] || 'a shared folder with restricted access';
   const email = a.platform==='other' ? 'Organization email' : a.platformName;
   const donors = a.crmRaw==='spreadsheet' ? `Donor spreadsheets in ${store}` : a.crm;
-  const account = (service, use) => [service, use, '', '', '', '', ''];
+  const account = (service, use, backedUp = '') => [service, use, '', '', '', backedUp, ''];
   const blank = (rows, cols) => Array(rows).fill(Array(cols).fill(''));
   return `<div class="onepage inventory"><h2>Asset Inventory</h2>
   ${chips(pol)}
   <p>Organization: <b>${t(a.org)}</b></p>
-  <p>This inventory lists every ${a.devices ? 'account, service and device' : t('account and service')} the organization uses, so you know what to protect, what to back up and what to remove when someone leaves. Review it every six months and whenever something is added, replaced or retired.</p>
+  <p>This inventory lists every ${a.devices ? 'account, service and device' : t('account and service')} the organization uses, so you know what to protect, what to back up and what to remove when someone leaves. Review it every six months. Add new apps, cloud or AI services, ${a.devices ? 'bank or social media accounts, or devices' : t('or bank or social media accounts')} as soon as you start using them, and update it when anything is replaced or retired.</p>
   <p class="note">Never write passwords on this form. They belong in the password manager.</p>
   <h3>Accounts and services</h3>
-  ${cardTable('fill inv accounts', ['Service', "What it's used for", 'Holds confidential data?', 'Admin(s)', 'MFA on?', 'Backed up?', 'Vendor agreement?'], [
+  ${cardTable('fill inv accounts', ['Service', "What it's used for", 'Holds confidential data?', 'Admin(s)', 'MFA on?', 'Backed up?', 'Vendor agreement on file?'], [
     account(t(email), 'Email, files and calendars'),
     account(t(donors), 'Donor records and giving history'),
     a.pm==='none' ? null : account(t(esc(a.pm)), t('Storing organization passwords')),
-    a.backup ? account(t(a.backupName || 'Backup service'), t('Backup copies of email and files')) : null,
+    a.backup ? account(t(a.backupName || 'Backup service'), t('Backup copies of email and files'), t('N/A')) : null,
     a.server ? account(t('Office server or storage device'), t('Shared files kept on site')) : null,
     account('Online banking', 'Organization bank accounts'),
     account('Website and hosting', 'Organization website'),
     account('Social media accounts', 'Public communication'),
-    ...blank(4, 7),
+    ...blank(a.shared ? 1 : 4, 7), // the Shared accounts table takes the room of three blank rows
   ].filter(Boolean))}
-  ${a.devices ? `<h3>Devices</h3>
-  ${cardTable('fill inv devices', ['Device (type and label, such as &quot;Front desk laptop&quot;)', 'Assigned to', 'Encrypted?', 'Updates on?', 'Firewall on?', 'Date issued', 'Date returned or disposed'], blank(6, 7))}
+  ${a.shared ? `<h3>Shared accounts</h3>
+  ${cardTable('fill inv shared', ['Shared account (such as info@ or a social media login)', 'Owner', 'Who uses it', 'MFA on?', 'Password last changed'], blank(3, 5))}
+  ` : ''}${a.devices ? `<h3>Devices</h3>
+  ${a.byod // personal devices allowed too: say who uses each one and who owns it, with dates that suit both kinds (headers stay plain text: they are copied into data-label)
+    ? cardTable('fill inv devices owned', ['Device (type and label, such as &quot;Front desk laptop&quot;)', 'Used by', 'Organization or personal?', 'Encrypted?', 'Updates on?', 'Firewall on?', 'Date added', 'Date removed'], blank(a.shared ? 5 : 6, 8)) // one row fewer while Shared accounts shows, to stay on one page
+    : cardTable('fill inv devices', ['Device (type and label, such as &quot;Front desk laptop&quot;)', 'Assigned to', 'Encrypted?', 'Updates on?', 'Firewall on?', 'Date issued', 'Date returned or disposed'], blank(a.shared ? 5 : 6, 7))}
   ` : ''}<h3>Review log</h3>
   <p>Inventory owner: ${t(a.contact)}<br>Next review due: ${line(14)} (review every six months)</p>
-  ${cardTable('fill inv invlog', ['Date reviewed', 'Reviewed by (print name)', 'Initials', 'Changes made'], blank(4, 4))}</div>`;
+  ${cardTable('fill inv invlog', ['Date reviewed', 'Reviewed by (print name)', 'Initials', 'Changes made'], blank(a.shared ? 3 : 4, 4))}</div>`; // three rows while Shared accounts shows, to stay on one page
 },
 
 summary(a, pol){
@@ -797,6 +803,7 @@ const PASTE_STYLES = [
   ['table.accounts th:nth-child(3)', 'width:13%'],
   ['table.accounts th:nth-child(4)', 'width:15%'],
   ['table.devices th:nth-child(1)', 'width:26%'],
+  ['table.shared th:nth-child(1)', 'width:34%'],
   ['table.invlog th:nth-child(1)', 'width:15%'],
   ['table.invlog th:nth-child(2)', 'width:25%'],
   ['table.invlog th:nth-child(3)', 'width:10%'],
