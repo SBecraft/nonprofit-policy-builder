@@ -956,6 +956,13 @@ window.addEventListener('resize', updateMore);
 window.addEventListener('resize', updateTabFade);
 $('tabs').addEventListener('scroll', updateTabFade, true);
 document.querySelector('details.start').addEventListener('toggle', updateMore);
+// "Close this section" at the bottom of "Before you start": closes the panel and brings its heading back into view
+$('startClose').addEventListener('click', () => {
+  const start = document.querySelector('details.start'), summary = start.querySelector('summary');
+  start.open = false;
+  summary.scrollIntoView({ block: 'nearest' });
+  summary.focus({ preventScroll: true });
+});
 
 render();
 updateMore();
