@@ -129,6 +129,7 @@ app/                  Everything the live site needs. Deploy this folder only.
   how.html            Help page: framework mappings, privacy, printing and security
   _headers            Netlify security headers (keep this exact name)
   robots.txt          Lets search engines list the site; asks AI training crawlers to stay out
+  sitemap.xml         Lists the site's two pages for search engines (linked in the footer)
 assets/               Screenshots of the app
 documents/            Project plan and other project notes (not needed to run the app)
 COPYRIGHT             Who owns the software

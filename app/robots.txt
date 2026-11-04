@@ -22,3 +22,6 @@ Disallow: /
 # may visit, so people can find the site.
 User-agent: *
 Allow: /
+
+# TODO: once the site is live, remove the # below and put in its full address.
+# Sitemap: [LIVE SITE URL]/sitemap.xml
