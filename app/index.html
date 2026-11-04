@@ -31,6 +31,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:1
 .wrap{max-width:1200px;margin:0 auto;padding-inline:20px;padding-block:28px 48px}
 header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px;margin-bottom:24px}
 .eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.pagetwo{margin-top:28px;padding-top:14px;border-top:1px dashed var(--line)} /* Incident Contact List page 2; a new page in print */
 h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,4vw,40px);line-height:1.05;margin:4px 0 6px;text-wrap:balance}
 .lede{color:var(--muted);max-width:60ch;margin:0}
 .disclaimer{max-width:64ch;margin:12px 0 0;font-size:14px;border-left:3px solid var(--warn);padding:4px 12px}
@@ -232,9 +233,10 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
   tr{break-inside:avoid}
   article.paper h3{break-after:avoid}
   article.paper hr.split{break-before:page;border:0;margin:0}
+  article.paper .pagetwo{break-before:page;border:0;margin-top:0;padding-top:0}
   article.paper hr.approval-rule{margin-inline:0}
   @page{margin:0.4in}
-  /* Incident Contact List and Incident Response Plan must each fit one page */
+  /* Incident Response Plan and the forms must each fit one page; the Incident Contact List takes exactly two */
   article.paper .onepage{font-size:12px;line-height:1.35}
   article.paper .onepage h2{font-size:20px}
   article.paper .onepage h3{font-size:14px;margin:6px 0 2px}
@@ -311,7 +313,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
                 <li>Executive director, board chair and communications contact, with office and after-hours phones</li>
                 <li>Bank fraud line and the last 4 digits of the account</li>
                 <li>Cyber insurer's claims line and policy number</li>
-                <li>IT provider or web host, and legal counsel</li>
+                <li>IT support and managed support providers, domain registrar, website host and developer, cloud storage, and legal counsel</li>
                 <li>Local FBI field office, police non-emergency line and state attorney general's office</li>
               </ul>
               <p class="hint">You can also write these on the printed sheet by hand.</p>

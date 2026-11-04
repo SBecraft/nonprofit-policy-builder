@@ -534,7 +534,7 @@ contacts(a, pol){
   const donorRecords = a.crmRaw==='spreadsheet'
     ? `Spreadsheets in ${a.platform==='other' ? 'cloud storage' : a.platformName}` : a.crm;
   const processor = a.cards || a.online;
-  return `<div class="onepage"><div class="eyebrow">${a.org} · Confidential</div>
+  return `<div class="onepage"><div class="eyebrow">${a.org} · Confidential · Page 1 of 2</div>
   <h2>Incident Contact List</h2>
   ${chips(pol)}
   <div class="docmeta">
@@ -543,25 +543,33 @@ contacts(a, pol){
     <div>Last verified<b>${a.date}</b></div>
     <div>Next check<b>${a.check}</b></div>
   </div>
-  <p class="note"><b>Confidential:</b> Give this sheet only to people who may need it during an incident. Keep a printed copy at ${printedAt(a)}, in case email or files are locked. <b>Call, don't email:</b> if email may be compromised, the attacker may be reading it.</p>
+  <p class="note"><b>Confidential:</b> Give this sheet only to people who may need it during an incident. Keep a printed copy at ${printedAt(a)}, in case email or files are locked. Store at least one printed copy of this contact list somewhere other than the primary office if practical. Print it double-sided so both pages stay together. <b>Call, don't email:</b> if email may be compromised, the attacker may be reading it.</p>
   <h3>People</h3>
-  ${table(['Role','Name','Office phone','After hours','Email'], [
+  ${table(['Role','Name','Phone','After hours or other phone','Email'], [
     row('Incident lead', t(a.contact), a.contactPhone ? t(a.contactPhone) : '', '', a.contactEmail ? t(a.contactEmail) : ''),
     row('Alternate incident contact (if the lead is unreachable or compromised)', t(a.backupLead), a.backupPhone ? t(a.backupPhone) : '', '', a.backupEmail ? t(a.backupEmail) : ''),
     a.staff ? row('Executive director', '', '', '', '') : '',
     row('Board chair', a.boardChair ? t(a.boardChair) : '', '', '', ''),
     row('Communications contact (donors and media)', '', '', '', ''),
+    a.itProvider ? row('IT support provider', '', '', '', '') : '',
+    a.itProvider ? row('Managed support provider', '', '', '', '') : '',
   ])}
   <h3>Systems and providers</h3>
   ${table(['System','Provider','Support phone','Account / admin site'], [
-    row('Email and files', a.platform==='other' ? '' : t(a.platformName), '', adminSite ? t(adminSite) : ''),    row('Donor records', t(donorRecords), '', ''),
+    row('Email and files', a.platform==='other' ? '' : t(a.platformName), '', adminSite ? t(adminSite) : ''),
+    row('Cloud storage', '', '', ''),
+    row('Donor records', t(donorRecords), '', ''),
     processor ? row(t('Payment processor (report possible card data exposure right away)'), '', '', '') : '',
+    a.pm==='none' ? '' : row('Password manager', t(esc(a.pm)), '', ''), // where the admin passwords are during an incident
     a.backup ? row(t('Backup service'), a.backupName ? t(a.backupName) : '', '', '') : '',
-    row(a.itProvider ? 'Website host or developer, IT provider' : t('Website host or developer'), '', '', ''),
+    row('Domain registration (GoDaddy, Cloudflare, Squarespace, etc.)', '', '', ''),
+    row('Website hosting', '', '', ''),
+    row('Website developer', '', '', ''),
   ])}
+  <div class="eyebrow pagetwo">${a.org} · Confidential · Incident Contact List, page 2 of 2</div>
   <h3>Money, insurance and legal</h3>
   ${table(['Contact','Name','24/7 phone','Account / policy no.'], [
-    row('Bank fraud line', '', '', 'Account ending ____ (last 4 digits only)'),
+    row('Bank fraud line', '', '', 'Account ending ________ (last 4 digits only)'),
     a.insurance ? row(t('Cyber insurance carrier (call before hiring outside help)'), '', '', 'Policy no.') : '',
     row('Legal counsel', '', '', ''),
   ])}
@@ -577,7 +585,7 @@ contacts(a, pol){
   <p class="loghead">List owner: ${line(34)} Next check due: ${line(14)}</p>
   <div class="tablewrap"><table class="log">
     <thead><tr><th>Date verified</th><th>Verified by (print name)</th><th>Initials</th><th>Changes made</th></tr></thead>
-    <tbody>${'<tr><td></td><td></td><td></td><td></td></tr>'.repeat(3)}</tbody>
+    <tbody>${'<tr><td></td><td></td><td></td><td></td></tr>'.repeat(4)}</tbody>
   </table></div></div>`;
 },
 
@@ -774,6 +782,7 @@ function flash(msg){ $('status').textContent = msg; clearTimeout(flash.t); flash
 // Literal colors are needed here because CSS variables don't exist in the pasted document.
 const PASTE_STYLES = [
   ['.eyebrow', 'font-family:Consolas,monospace;font-size:8pt;letter-spacing:1px;text-transform:uppercase;color:#1d6b58;margin:0'],
+  ['.pagetwo', 'page-break-before:always'],
   ['h2', 'font-family:"Segoe UI",Arial,sans-serif;font-size:18pt;margin:4pt 0'],
   ['h3', 'font-family:"Segoe UI",Arial,sans-serif;font-size:13pt;margin:14pt 0 4pt'],
   ['.chip', 'font-family:Consolas,monospace;font-size:8pt;border:1px solid #bbbbbb;padding:1px 4px;margin-right:4px;color:#444444'],

@@ -24,7 +24,7 @@ A nonprofit answers a short questionnaire about its organization, the systems it
 | **Backup & Recovery** | What gets backed up, the 3-2-1 rule, protecting backups, testing restores and recovering after ransomware |
 | **Incident Response Plan** | A one-page plan for what to do when something goes wrong |
 | **Security Awareness and Training** | When people are trained, what training covers, who runs it and how it is recorded |
-| **Incident Contact List** | A confidential one-page list of who to call, kept separate from the plan and checked every three months. It fills in the primary IT contact, the alternate incident contact and the board chair from your answers |
+| **Incident Contact List** | A confidential two-page list of who to call (print it double-sided), kept separate from the plan and checked every three months. It fills in the primary IT contact, the alternate incident contact and the board chair from your answers |
 | **Onboarding** | A one-page checklist for giving access when someone joins, with a record of the access given |
 | **Offboarding** | A one-page checklist for removing access when someone leaves |
 | **Policy Acknowledgment Form** | A one-page form where each person initials the policies they received and signs |
@@ -35,7 +35,7 @@ A nonprofit answers a short questionnaire about its organization, the systems it
 
 **Getting the policies out:**
 - Copy one document, or any combination, into Word or Google Docs with headings and tables intact. Add table rows there if you need more.
-- Print them in a separate tab, so your answers aren't lost. The Incident Response Plan and Incident Contact List each fit on one page.
+- Print them in a separate tab, so your answers aren't lost. The Incident Response Plan fits on one page, and the Incident Contact List on two, so print it double-sided.
 - Save as PDF from the print dialog.
 
 **Nonprofit-specific content** that corporate templates usually miss: gift-card and bank-change scams that impersonate the executive director, the 501(c)(3) limit on political activity, view-only, time-limited volunteer access, board members kept in scope, calling the cyber insurer before outside help, and reporting to the FBI (ic3.gov) and CISA.
