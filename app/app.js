@@ -104,6 +104,8 @@ function head(a, pol, title){
 const BLANK = '____________________';
 // "Dana Ortiz, Operations Manager" needs a closing comma mid-sentence; a name alone does not
 const midSentence = s => s.includes(',') ? s + ',' : s;
+// Authenticator app to suggest, matched to the email platform
+const authApp = a => ({m365:'Microsoft Authenticator', google:'Google Authenticator'})[a.platform] || 'Microsoft Authenticator or Google Authenticator';
 const listOf = items => items.length > 1 ? `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}` : items[0];
 // Who a policy covers. vol is the volunteer wording, which differs by policy.
 const scope = (a, vol) => listOf([a.staff && 'staff', 'board members', 'interns', 'contractors', a.volunteers && t(vol)].filter(Boolean));
@@ -234,7 +236,7 @@ pw(a, pol){
   <h3>3. Password manager</h3>
   ${pmText}
   <h3>4. Multi-factor authentication (MFA)</h3>
-  <p>MFA is required on these accounts:</p>
+  <p>MFA means signing in with your password plus a second step, such as a code from an app on your phone. Then a stolen password alone can't open the account. MFA is required on these accounts:</p>
   <ul>
     <li>${a.platform==='other' ? 'Organization email' : t(a.platformName) + ' email'}</li>
     <li>${t(a.crmRaw==='spreadsheet' ? 'The cloud account that stores donor spreadsheets' : a.crm + ' donor database')}</li>
@@ -243,7 +245,7 @@ pw(a, pol){
     <li>Social media and cloud storage</li>
   </ul>
   <p>MFA status for every account is recorded in the Asset Inventory.</p>
-  <p>Use an authenticator app or a security key. Text message codes are allowed only when nothing else is offered.</p>
+  <p>Use an authenticator app (such as ${t(authApp(a))}) or a security key. Text message codes are allowed only when nothing else is offered.</p>
   ${sharedText}
   <h3>6. Administrator access</h3>
   <p>No more than two or three people hold administrator rights to email, the donor database or the website. Administrators use a separate admin account for admin work. Administrators for each system are listed in the Asset Inventory.</p>
@@ -586,7 +588,7 @@ onboard(a, pol){
     `Give onboarding security training (see the Security Awareness and Training Policy): how to spot phishing and gift-card or payment scams, and how to report a problem to ${t(a.contact)}.`,
     a.platform==='other' ? `Create ${t('their own organization email account')}. No shared logins for personal work.`
       : `Create their own ${t(a.platformName)} account. No shared logins for personal work.`,
-    'Turn on multi-factor authentication (MFA) with an authenticator app.',
+    `Turn on multi-factor authentication (MFA), a second sign-in step, with an authenticator app such as ${t(authApp(a))}.`,
     noPM ? t('Give them access to shared passwords only in person, never by email or text, until a password manager is chosen.')
       : `Invite them to ${t(esc(a.pm))}.`,
     `Give ${a.crmRaw==='spreadsheet' ? 'access to ' + donors : donors + ' access'} at the lowest level their role needs${a.volunteers ? ' ' + t('(view-only for volunteers)') : ''}.`,
