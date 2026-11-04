@@ -68,6 +68,24 @@ The mappings show alignment, not certification. The policy wording and mappings 
 
 Like every website, the host that delivers the page sees visitors' IP addresses. It never receives anything typed into the app.
 
+## Sharing, search engines and AI crawlers
+
+### Share previews (Open Graph)
+
+When someone shares the site's link on LinkedIn, Facebook, Microsoft Teams, Slack, Discord or a messaging app, that app builds a preview card from Open Graph tags in each page's `<head>`. Both pages (`index.html` and `how.html`) have their own title, description and picture tags, plus a plain `meta name="description"` for search results.
+
+![The preview card: Nonprofit Policy Builder, with "Private by design" and "Built on recognized standards" rows](app/og-image.png)
+
+- **The picture** (`app/og-image.png`, 1200 × 630) was made for this project in the app's own colors and fonts. Privacy leads: a "Private by design" row says no sign-up, download or login, no tracking, and nothing saved or sent. A lighter "Built on recognized standards" row says the documents are mapped to CIS Controls and NIST CSF ("mapped to", not certified).
+- **The title and description** repeat the privacy points, because some apps show a small picture or none.
+- **Privacy:** visitors' browsers ignore the tags. They load nothing and share nothing about the visitor. Only the app building the preview reads them, and it sees just the page with sample answers.
+- **Waiting on the live site:** `og:url` and `og:image` need full addresses, so they use the `[LIVE SITE URL]` placeholder until launch. Until then, a shared link shows no picture.
+
+### Search engines and AI crawlers
+
+- **`robots.txt`** lets search engines and AI search tools list the site, and asks AI training crawlers (such as GPTBot, ClaudeBot, Google-Extended and CCBot) not to copy it. It is a request, not a security control, and it lists no private paths, because the site has none. The crawlers that build share previews are allowed.
+- **`sitemap.xml`** lists the site's two pages for search engines and is linked from the footer. It also uses the `[LIVE SITE URL]` placeholder until launch.
+
 ## Security
 
 The app is a security tool, so it follows the practices it recommends:
@@ -118,6 +136,8 @@ The security headers in `app/_headers` are sent by Netlify, so they only apply o
 ## Deploying
 
 Upload the **whole `app` folder** to Netlify, either by drag-and-drop or with `netlify deploy --prod`. It contains only the files the site needs. Keep the `_headers` file name exactly as it is, with no file extension. After deploying, re-test the live site. Netlify's deploy history allows an instant rollback.
+
+**Before the first deploy,** replace `[LIVE SITE URL]` with the site's full address (starting with `https://`, no slash at the end) in `index.html` and `how.html` (the Open Graph tags), `sitemap.xml`, and the commented-out `Sitemap:` line in `robots.txt`, which you then switch on. After deploying, check the share preview with LinkedIn Post Inspector and Facebook's Sharing Debugger, which also refresh old previews.
 
 ## Project structure
 
