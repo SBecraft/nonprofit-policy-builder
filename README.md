@@ -128,6 +128,7 @@ app/                  Everything the live site needs. Deploy this folder only.
   frameworks.js       CIS and NIST version names, shared by both pages
   how.html            Help page: framework mappings, privacy, printing and security
   _headers            Netlify security headers (keep this exact name)
+  robots.txt          Lets search engines list the site; asks AI crawlers to stay out
 assets/               Screenshots of the app
 documents/            Project plan and other project notes (not needed to run the app)
 COPYRIGHT             Who owns the software
