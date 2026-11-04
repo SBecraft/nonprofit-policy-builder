@@ -636,7 +636,7 @@ ack(a, pol){
   return `<div class="onepage"><h2>Policy Acknowledgment Form</h2>
   ${chips(pol)}
   <p>Organization: <b>${t(a.org)}</b></p>
-  <p>Each person signs this form when they join and again whenever a policy listed below changes. Check off every policy they received, then keep the signed form in their file.</p>
+  <p>Each person signs this form when they join and again whenever a policy listed below changes. Make sure they initial every policy they received, then keep the signed form in their file.</p>
   <h3>Policies covered</h3>
   <p>The signer initials each policy they received and read. Leave rows blank for policies that don't apply to their role.</p>
   ${cardTable('fill ack', ['Policy', 'Version or effective date', "Signer's initials"], rows)}
@@ -645,7 +645,8 @@ ack(a, pol){
   <ol>
     <li>I received and read each policy I initialed above.</li>
     <li>I understand the policies, and I know who to ask if something is unclear.</li>
-    <li>I agree to follow them while I work or volunteer with the organization, and after I leave where they say so, such as keeping donor information confidential.</li>
+    <li>I agree to follow them while I work or volunteer with the organization, and after I leave where they say so, such as keeping confidential information private.</li>
+    ${a.byod ? `<li>${t('If I use my own phone or computer for organization work, I will follow the personal device rules in the Acceptable Use Policy and remove organization accounts and files from it when I leave.')}</li>` : ''}
     <li>I will report lost devices, suspicious messages and possible security problems right away, as the policies describe.</li>
     <li>I understand that not following these policies may lead to losing access to organization accounts, or ending my role with the organization.</li>
     <li>I understand the policies may change, and I may be asked to read and sign again.</li>
