@@ -692,7 +692,7 @@ summary(a, pol){
   const labels = (p, fw) => p.maps.filter(m => m.startsWith(fw)).map(m => m.slice(fw.length + 1).replace(' · ', ' ')).join(', ');
   return `<div class="onepage"><h2>Framework Summary</h2>
   <p>Organization: <b>${t(a.org)}</b> &nbsp;&nbsp; Date: <b>${a.date}</b></p>
-  <p>This summary shows which parts of two recognized security frameworks each document supports: the ${FRAMEWORKS.cis} (Implementation Group 1, the starter set for small organizations) and the ${FRAMEWORKS.nist}.</p>
+  <p>This summary shows which parts of two recognized security frameworks each document supports: the ${FRAMEWORKS.cis} (Implementation Group 1, the starter set for small organizations) and the ${FRAMEWORKS.nist}. To read them, type ${FRAMEWORKS.cisUrl} or ${FRAMEWORKS.nistUrl} into a web browser.</p>
   <p class="note"><b>Alignment, not certification.</b> The labels show which parts of each framework a document supports. Using these documents does not make an organization "compliant" or "certified". Following them in practice is what reduces risk.</p>
   <h3>Documents and their labels</h3>
   ${cardTable('fwmap', ['Document', 'CIS Controls', 'NIST CSF'], docs.map(p => [p.name, labels(p, 'CIS'), labels(p, 'NIST')]))}
