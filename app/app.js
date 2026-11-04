@@ -418,7 +418,7 @@ ir(a, pol){
   <h3>What to report</h3>
   <p>Clicking a suspicious link or entering a password on an unfamiliar page, a lost or stolen device, ransom messages or locked files, unexpected account changes or MFA prompts, confidential information sent to the wrong person, website changes nobody made, or any request to change payment or bank details.</p>
   <h3>Step 1 · Report within one hour</h3>
-  <p>Call or message the incident lead. Write down what happened and when. ${a.turnover && a.volunteers ? t('Volunteers report to their coordinator or straight to the incident lead.') : ''}</p>
+  <p>Call or message the incident lead. If they can't be reached, call the alternate incident contact. Write down what happened and when. ${a.turnover && a.volunteers ? t('Volunteers report to their coordinator or straight to the incident lead.') : ''}</p>
   <h3>Step 2 · Contain</h3>
   <ul>
     <li>Disconnect the affected device from Wi-Fi and the network. Do not turn it off or delete anything.</li>${a.server ? `
@@ -428,14 +428,15 @@ ir(a, pol){
     <li>If money was sent, call the bank's fraud line (on the Incident Contact List) immediately. Fast calls give the best chance of recovering funds.</li>
   </ul>
   <h3>Step 3 · Assess</h3>
-  <p>The incident lead works out what systems and information were involved, including whether ${t(a.crmRaw==='spreadsheet' ? 'donor spreadsheets' : a.crm)} or donor personal information was exposed. Use the Asset Inventory to identify which accounts, devices and data were affected.</p>
+  <p>The incident lead works out what systems and information were involved, including whether ${t(a.crmRaw==='spreadsheet' ? 'donor spreadsheets' : a.crm)} or ${a.clients ? t('other confidential information, such as donor or client records,') : 'donor personal information'} was exposed. Use the Asset Inventory to identify which accounts, devices and data were affected.</p>
   <h3>Step 4 · Notify</h3>
   <ol>
     ${a.insurance ? `<li>${t('Cyber insurance carrier first, before hiring outside help. Most policies require early notice and approved vendors.')}</li>` : ''}
-    <li>${a.owner} and the board chair.</li>
-    <li>${a.itProvider ? 'IT provider or website host' : t('Website host')}, if their systems are involved.</li>
+    <li>${a.owner} and the board chair${a.boardChair ? ', ' + t(a.boardChair) : ''}.</li>${a.cards || a.online ? `
+    <li>${t('Payment processor, right away, if card data may have been exposed.')}</li>` : ''}
+    <li>${a.itProvider ? 'IT support or managed support provider, website host or domain registrar' : t('Website host or domain registrar')}, if their systems are involved.</li>
     <li>Fraud or ransomware: FBI at ic3.gov. CISA accepts reports at cisa.gov/report.</li>
-    <li>If personal information was exposed, legal counsel decides on notices to donors and regulators under state breach notification law.</li>
+    <li>If personal information was exposed, legal counsel decides on notices to ${a.clients ? t('donors, clients') : 'donors'} and regulators under state breach notification law.</li>
   </ol>
   <h3>Step 5 · Recover</h3>
   <p>Confirm the problem is gone, restore from backups as set out in the Backup and Recovery Policy, and watch the affected accounts for two weeks. ${a.insurance ? '' : t('Without cyber insurance, decisions about outside help or ransom demands go to the board.')}</p>
