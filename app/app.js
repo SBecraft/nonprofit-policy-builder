@@ -160,7 +160,7 @@ aup(a, pol){
       <li>${t('Its updates are automatic, or are installed every month.')}</li>
       <li>${t('Its default passwords are changed, and only named people have admin access.')}</li>
     </ul>` : ''}${a.devices ? `
-    <p>Each organization device, who it is assigned to, and whether it meets these rules are recorded in the Asset Inventory.</p>` : ''}`;
+    <p>Each organization device, who uses it, and whether it meets these rules are recorded in the Asset Inventory.</p>` : ''}`;
   const personal = a.byod ? `
     <h3>6. Using your own phone or computer</h3>
     <p>${t(`${a.staff ? (a.volunteers ? 'Staff, board members and volunteers' : 'Staff and board members') : (a.volunteers ? 'Board members and volunteers' : 'Board members')} may use personal devices for ${a.org} work`)} if they follow section 5 and these rules:</p>
@@ -610,15 +610,17 @@ offboard(a, pol){
     'Move ownership of their files and shared folders to another person.',
     `Remove their access to ${donors}.`,
     noPM ? t('Note every shared password they knew; step 5 changes them.') : `Remove them from ${t(esc(a.pm))}.`,
-    'Change the password on every shared account they could use, and move any MFA codes off their phone.',
-    'Remove them from website, social media and online banking admin roles, group chats and email lists.',
+    a.shared ? 'Change the password on every shared account they could use (see &quot;Who uses it&quot; in the Asset Inventory), record the date under &quot;Password last changed&quot;, and move any MFA codes off their phone.'
+      : t('Change any passwords they knew, such as Wi-Fi or alarm codes.'), // stays step 5 either way: the no-password-manager line points to it
+    'Remove them from website, social media, online banking and AI tool admin roles, group chats and email lists.',
     'Remove their access to backups. If they owned the backups, hand ownership to someone else first.',
     a.server ? t('Remove their access to the office server or storage device.') : '',
     a.byod ? t('Person leaving: confirm you removed organization accounts and files from your personal devices.') : '',
     'Confirm they kept no donor lists, exports or copies of confidential information.',
-    a.devices ? 'Collect keys, equipment and paper records, using the Asset Inventory to check which devices were assigned to them. Change any door or storage codes they knew.'
+    a.devices ? 'Collect keys, equipment and paper records, using the Asset Inventory to check which devices they used. Change any door or storage codes they knew.'
       : t('Collect keys and paper records. Change any door or storage codes they knew.'),
-    a.devices ? 'Update the Asset Inventory: mark returned devices and remove them as an admin on any system.'
+    'If they were named in the policies or on the Incident Contact List (policy owner, primary IT contact, alternate incident contact or board chair), name a replacement and update those documents.',
+    a.devices ? `Update the Asset Inventory: mark returned devices${a.byod ? t(', enter the date removed for their personal devices,') : ''} and remove them as an admin on any system.`
       : t('Update the Asset Inventory: remove them as an admin on any system.'),
   ];
   return '<div class="onepage">' + head(a, pol, 'Offboarding Checklist') + `

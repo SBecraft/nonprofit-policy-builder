@@ -24,17 +24,17 @@ A nonprofit answers a short questionnaire about its organization, the systems it
 | **Backup & Recovery** | What gets backed up, the 3-2-1 rule, protecting backups, testing restores and recovering after ransomware |
 | **Incident Response Plan** | A one-page plan for what to do when something goes wrong |
 | **Security Awareness and Training** | When people are trained, what training covers, who runs it and how it is recorded |
-| **Incident Contact List** | A confidential one-page list of who to call, kept separate from the plan and checked every three months |
+| **Incident Contact List** | A confidential one-page list of who to call, kept separate from the plan and checked every three months. It fills in the primary IT contact, the alternate incident contact and the board chair from your answers |
 | **Onboarding** | A one-page checklist for giving access when someone joins, with a record of the access given |
 | **Offboarding** | A one-page checklist for removing access when someone leaves |
 | **Policy Acknowledgment Form** | A one-page form where each person initials the policies they received and signs |
-| **Asset Inventory** | A one-page landscape form listing every account, service and device, reviewed every six months |
-| **Framework Summary** | A one-page list of each document's CIS and NIST labels with a plain-English key, for board packets and records |
+| **Asset Inventory** | A one-page landscape form listing every account, service, shared account and device, including whether each device belongs to the organization or a person, reviewed every six months |
+| **Framework Summary** | A one-page list of each document's CIS and NIST labels with a plain-English key and where to read each framework, for board packets and records |
 
-**Tailoring.** Answers change the policy text itself, not just names. Groups with no paid staff get wording that fits a volunteer-run team, groups with no organization-owned devices lose the device rules and Devices table, personal devices add rules for using them, an office with Wi-Fi adds router and guest network rules, an office server or storage device adds rules for protecting it and backing it up off-site, shared logins add shared-account rules, high turnover means same-day access removal, cyber insurance means calling the insurer first, and so on. A "Highlight tailored text" switch marks every sentence that changed because of an answer.
+**Tailoring.** Answers change the policy text itself, not just names. Groups with no paid staff get wording that fits a volunteer-run team, groups with no organization-owned devices lose the device rules and Devices table, personal devices add rules for using them and an "Organization or personal?" column in the Asset Inventory, an office with Wi-Fi adds router and guest network rules, an office server or storage device adds rules for protecting it and backing it up off-site, shared logins add shared-account rules and a Shared accounts table in the Asset Inventory, high turnover means same-day access removal, cyber insurance means calling the insurer first, and so on. A "Highlight tailored text" switch marks every sentence that changed because of an answer.
 
 **Getting the policies out:**
-- Copy one document, or any combination, into Word or Google Docs with headings and tables intact.
+- Copy one document, or any combination, into Word or Google Docs with headings and tables intact. Add table rows there if you need more.
 - Print them in a separate tab, so your answers aren't lost. The Incident Response Plan and Incident Contact List each fit on one page.
 - Save as PDF from the print dialog.
 
@@ -85,7 +85,7 @@ The app is a security tool, so it follows the practices it recommends:
 
 1. Open the live site ([LIVE SITE URL]). No sign-up, download or login.
 2. Open **Before you start** to see what information to gather first.
-3. Replace the example organization's answers with your own. Pin the tab so it's harder to close by accident.
+3. Replace the example organization's answers with your own. Every question is optional; anything left blank shows as a dash or a line to fill in later. Pin the tab so it's harder to close by accident.
 4. Review each document, then copy or print them, and finish in one sitting.
 5. Edit the documents in Word or Google Docs, have your board approve them, and share them with your team. Keep the Incident Contact List confidential.
 
