@@ -581,18 +581,18 @@ contacts(a, pol){
 
 onboard(a, pol){
   const { donors, noPM, who, role, stepCols, steps } = checklistParts(a);
-  const list = [
+  const list = [ // policies and training come first: Passwords & MFA and the training policy require both before first access
+    'Give them the policies their role needs and collect their signed Policy Acknowledgment Form.',
+    `Give onboarding security training (see the Security Awareness and Training Policy): how to spot phishing and gift-card or payment scams, and how to report a problem to ${t(a.contact)}.`,
     a.platform==='other' ? `Create ${t('their own organization email account')}. No shared logins for personal work.`
       : `Create their own ${t(a.platformName)} account. No shared logins for personal work.`,
     'Turn on multi-factor authentication (MFA) with an authenticator app.',
     noPM ? t('Give them access to shared passwords only in person, never by email or text, until a password manager is chosen.')
       : `Invite them to ${t(esc(a.pm))}.`,
     `Give ${a.crmRaw==='spreadsheet' ? 'access to ' + donors : donors + ' access'} at the lowest level their role needs${a.volunteers ? ' ' + t('(view-only for volunteers)') : ''}.`,
-    'Add them to shared accounts only if their role needs it, and list which ones under Access given.',
+    a.shared ? 'Add them to shared accounts only if their role needs it, list which ones under Access given, and add their name under &quot;Who uses it&quot; in the Asset Inventory.' : '',
     a.devices ? 'If you issue them an organization device, record it in the Asset Inventory.' : '',
-    'Give them the policies and collect their signed Policy Acknowledgment Form.',
-    'Give onboarding security training (see the Security Awareness and Training Policy): how to spot phishing and gift-card or payment scams, and how to report a problem to the incident lead.',
-    a.byod ? t('If they use a personal device: confirm screen lock and automatic updates are on.') : '',
+    a.byod ? t(`If they use a personal device: confirm screen lock, automatic updates and encryption are on${a.devices ? ', and record it in the Asset Inventory as Personal' : ''}.`) : '',
   ];
   return '<div class="onepage">' + head(a, pol, 'Onboarding Checklist') + `
   <p class="note">${PASSWORD_NOTE}</p>
