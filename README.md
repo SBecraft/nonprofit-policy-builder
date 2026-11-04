@@ -130,6 +130,7 @@ app/                  Everything the live site needs. Deploy this folder only.
   _headers            Netlify security headers (keep this exact name)
   robots.txt          Lets search engines list the site; asks AI training crawlers to stay out
   sitemap.xml         Lists the site's two pages for search engines (linked in the footer)
+  og-image.png        Preview picture shown when the site is shared on LinkedIn, Teams, Slack and similar
 assets/               Screenshots of the app
 documents/            Project plan and other project notes (not needed to run the app)
 COPYRIGHT             Who owns the software
