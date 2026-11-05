@@ -142,14 +142,13 @@ const acknowledgment = n => `
 const build = {
 aup(a, pol){
   const setup = `
-    <h3>5. Setting up devices and Wi-Fi</h3>
+    <h3>5. Setting up devices${a.office ? t(' and Wi-Fi') : ''}</h3>
     <p>These rules apply to every phone and computer used for ${a.org} work${a.byod && a.devices ? t(', whether the organization owns it or you do') : ''}.</p>
     <ul>
       <li>Screens lock automatically after 15 minutes on computers and 2 minutes on phones, and unlock only with a PIN, password, fingerprint or face.</li>
       <li>Automatic updates are turned on for the operating system and apps.</li>
       <li>Device encryption is turned on. On computers, use BitLocker (Windows) or FileVault (Mac). Phones are encrypted once a passcode is set.</li>
       <li>On computers, the built-in firewall and malware protection stay on, such as Microsoft Defender on Windows.</li>
-      <li>A lost or stolen device is reported to ${midSentence(a.contact)} within 24 hours.</li>
     </ul>${a.office ? `
     <p>${t(`${midSentence(a.contact)} also makes sure that:`)}</p>
     <ul>
@@ -165,7 +164,7 @@ aup(a, pol){
     <p>Each organization device, who uses it, and whether it meets these rules are recorded in the Asset Inventory.</p>` : ''}`;
   const personal = a.byod ? `
     <h3>6. Using your own phone or computer</h3>
-    <p>${t(`${a.staff ? (a.volunteers ? 'Staff, board members and volunteers' : 'Staff and board members') : (a.volunteers ? 'Board members and volunteers' : 'Board members')} may use personal devices for ${a.org} work`)} if they follow section 5 and these rules:</p>
+    <p>Anyone covered by this policy may use a personal device for ${a.org} work if they follow section 5 and these rules:</p>
     <ul>
       <li>${a.platform==='other' ? 'Work email is opened in the official app or a web browser.' : t(`Work email and files are opened only in the official ${a.platformName} apps or a web browser.`)}</li>
       <li>Donor or client lists are never downloaded or saved to the device.</li>
@@ -186,6 +185,7 @@ aup(a, pol){
     <li>Keep organization files in ${a.platform==='m365' ? t('OneDrive or SharePoint') : a.platform==='google' ? t('Google Drive') : 'the approved shared storage'}, not in personal cloud accounts.</li>
     <li>Lock your screen when you step away.</li>
     <li>Avoid public Wi-Fi for donor records and online banking. Use your phone's hotspot when you can.</li>
+    <li>Don't leave paper records with ${a.clients ? t('client or ') : ''}donor information where others can see them. Lock them away when you're done.</li>
   </ul>
   <h3>4. Not allowed</h3>
   <ul>
@@ -193,17 +193,22 @@ aup(a, pol){
     <li>Forwarding donor, client or volunteer information to personal email.</li>
     ${a.devices ? `<li>Installing software on organization devices without approval from ${a.contact}.</li>` : ''}
     <li>Using organization accounts to support or oppose political candidates, which can put a 501(c)(3)'s tax-exempt status at risk.</li>
+    <li>Pasting ${['donor', a.clients && t('client'), a.staff && t('staff')].filter(Boolean).join(', ')} or other confidential information into AI chatbots or tools the organization hasn't approved.</li>
+    <li>Plugging in USB drives or other devices you find or that aren't from the organization.</li>
     <li>Harassment, illegal downloads, or anything that would embarrass ${a.org}.</li>
   </ul>
   ${setup}
   ${personal}
-  <h3>7. Suspicious emails and payment requests</h3>
-  <p>Report suspicious messages to ${midSentence(a.contact)} at ${t(a.contactInfo)}. Never buy gift cards, send money, or change bank details because of an email or text, even one that appears to come from leadership. Confirm by calling the person at a number you already have.</p>
+  <h3>7. Reporting problems and suspicious requests</h3>
+  <p>Report a lost or stolen device to ${midSentence(a.contact)} at ${t(a.contactInfo)} within 24 hours. Report suspicious messages to the same person right away. Never buy gift cards, send money, or change bank details because of an email or text, even one that appears to come from leadership. Confirm by calling the person at a number you already have.</p>
   <h3>8. Privacy</h3>
   <p>Organization accounts${a.devices ? ' and devices' : ''} belong to ${a.org}. They may be reviewed when needed to protect the organization or respond to an incident.</p>
   <h3>9. When you leave</h3>
   <p>${a.devices ? 'Return any organization equipment assigned to you in the Asset Inventory. ' : ''}Your access will be removed ${offboardWindow(a)}. See the Offboarding Checklist for the full list of steps.</p>
-  ${acknowledgment(10)}
+  <h3>10. If this policy isn't followed</h3>
+  <p>Report honest mistakes right away. Nobody is punished for a mistake they report. Ignoring this policy, or hiding a problem, may lead to losing access to organization accounts or ending your role with ${a.org}.</p>
+  <p>If you need an exception, such as software that isn't approved yet, ask ${a.contact}. Exceptions must be approved in writing.</p>
+  ${acknowledgment(11)}
   ${approval()}`;
 },
 
