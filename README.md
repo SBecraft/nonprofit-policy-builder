@@ -166,9 +166,13 @@ Only `app/` is deployed. Everything else stays in the repository.
 
 ## How it was built
 
-The Nonprofit Policy Builder was built as a GRC internship project with **Claude Code**, Anthropic's AI coding assistant. The AI helped generate the questionnaire, the policy templates and the tailoring logic, harden the app, and explain and review code. `CLAUDE.md` gives it standing rules, such as escaping all input, never adding inline scripts and never loading outside resources, so later changes can't quietly undo security decisions.
+The Nonprofit Policy Builder was conceived, designed, and developed by the creator as a GRC internship project to help small nonprofits build practical cybersecurity policies aligned with recognized security frameworks. The creator defined the application's purpose, scope, user experience, questionnaire flow, policy architecture, framework mappings, security requirements, and overall content strategy.
 
-AI output was treated as a draft. The developer decided the app's purpose, scope and security requirements, reviewed the policy content and framework mappings with a supervisor, and reviewed every change before deployment.
+**Claude Code**, Anthropic's AI coding assistant, was used as a development tool to help implement the application. It assisted with coding tasks, drafting policy language, generating policy templates, refining tailoring logic, reviewing code, and identifying potential issues.
+
+`CLAUDE.md` provides standing instructions for the AI assistant, including security requirements such as escaping all input, avoiding inline scripts, and never loading external resources. These guardrails help maintain the application's security design during future development.
+
+AI-generated code and content were treated as drafts. The creator reviewed, edited, tested, and approved all code, policy content, framework mappings, and security controls before deployment. Final decisions regarding application design, policy content, nonprofit use cases, framework alignment, and security requirements were made by the creator.
 
 ## Limitations
 
