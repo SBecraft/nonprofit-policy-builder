@@ -502,10 +502,11 @@ ir(a, pol){
   <h3>What to report</h3>
   <p>Clicking a suspicious link or entering a password on an unfamiliar page, a lost or stolen device, ransom messages or locked files, unexpected account changes or MFA prompts, confidential information sent to the wrong person, website changes nobody made, or any request to change payment or bank details.</p>
   <h3>Step 1 · Report within one hour</h3>
-  <p>Call or message the incident lead. If they can't be reached, call the alternate incident contact. Write down what happened and when. ${a.turnover && a.volunteers ? t('Volunteers report to their coordinator or straight to the incident lead.') : ''}</p>
+  <p>Call or message the incident lead. If they can't be reached, call the alternate incident contact. Write down what happened and when.${a.volunteers ? ' ' + t('Volunteers report to their coordinator or straight to the incident lead. Coordinators pass the report to the incident lead right away.') : ''}</p>
   <h3>Step 2 · Contain</h3>
   <ul>
-    <li>Disconnect the affected device from Wi-Fi and the network. Do not turn it off or delete anything.</li>${a.server ? `
+    <li>Disconnect the affected device from Wi-Fi and the network. Do not turn it off or delete anything.</li>
+    <li>Take a photo of any ransom message or strange screen. Don't delete suspicious emails or files. They're evidence.</li>${a.server ? `
     <li>${t('Do the same with the office server or storage device if it may be affected.')}</li>` : ''}
     <li>Reset the affected password from a different, safe device, and sign the account out of all sessions in ${t(a.platformName)}.</li>
     <li>For a lost or stolen device, sign it out of organization accounts and wipe it remotely if possible.</li>
@@ -513,22 +514,22 @@ ir(a, pol){
     <li>If money was sent, call the bank's fraud line (on the Incident Contact List) immediately. Fast calls give the best chance of recovering funds.</li>
   </ul>
   <h3>Step 3 · Assess</h3>
-  <p>The incident lead works out what systems and information were involved, including whether ${t(a.crmRaw==='spreadsheet' ? 'donor spreadsheets' : a.crm)} or ${a.clients ? t('other confidential information, such as donor or client records,') : 'donor personal information'} was exposed. Use the Asset Inventory to identify which accounts, devices and data were affected.</p>
+  <p>The incident lead works out what systems and information were involved, including whether ${t(a.crmRaw==='spreadsheet' ? 'donor spreadsheets' : a.crm)} or ${a.clients ? t('other confidential information, such as donor or client records,') : 'donor personal information'} was exposed. Use the Asset Inventory to identify which accounts, devices and data were affected. The incident lead keeps a written log of what happened and every action taken, with dates and times, and who was notified.</p>
   <h3>Step 4 · Notify</h3>
   <p>The incident lead notifies, in this order:</p>
   <ol>
-    ${a.insurance ? `<li>${t('Cyber insurance carrier first, before hiring outside help. Most policies require early notice and approved vendors.')}</li>` : ''}
-    <li>${midSentence(a.owner)} and the board chair${a.boardChair ? ', ' + a.boardChair : ''}.</li>${a.cards || a.online ? `
+    <li>${a.insurance ? `${midSentence(a.owner)} ${t('and the cyber insurance carrier, right away and before hiring outside help. Most policies require early notice and approved vendors.')}` : `${a.owner}, right away.`}</li>
+    <li>The board chair${a.boardChair ? ', ' + a.boardChair : ''}.</li>${a.cards || a.online ? `
     <li>${t('Payment processor, right away, if card data may have been exposed.')}</li>` : ''}
     <li>${a.itProvider ? 'IT support or managed support provider, website host or domain registrar' : t('Website host or domain registrar')}, if their systems are involved.</li>
     <li>Fraud or ransomware: FBI at ic3.gov. CISA accepts reports at cisa.gov/report.</li>
-    <li>If personal information was exposed, legal counsel (or the board, if there is none) decides quickly on notices to ${a.clients ? t('donors, clients') : 'donors'}, regulators and any funders whose grants require it. State deadlines can be as short as 30 days.</li>
+    <li>If personal information was exposed, legal counsel decides quickly on notices to ${a.clients ? t('donors, clients') : 'donors'}, regulators and any funders whose grants require it. ${a.insurance ? t("If you don't have a lawyer, ask the insurance carrier, which often provides one, or the board finds one right away.") : "If you don't have a lawyer, the board finds one right away."} State deadlines can be as short as 30 days.</li>
   </ol>
-  <p>Only ${midSentence(a.owner)} speaks to the media or the public about an incident.</p>
+  <p>Only ${midSentence(a.owner)} speaks to the media or the public about an incident. ${a.staff ? (a.volunteers ? 'Staff and volunteers' : t('Staff')) : a.volunteers ? t('Volunteers') : t('Board members')} send any questions from the media, donors or the public to ${a.owner}.</p>
   <h3>Step 5 · Recover</h3>
-  <p>Confirm the problem is gone, restore from backups as set out in the Backup and Recovery Policy, and watch the affected accounts for two weeks. Never pay a ransom or contact the attacker without the board's approval${a.insurance ? t(" and the insurance carrier's") : ''}.${a.insurance ? '' : ' ' + t('Without cyber insurance, decisions about outside help also go to the board.')}</p>
+  <p>Confirm the problem is gone, restore from backups as set out in the Backup and Recovery Policy, and watch the affected accounts for two weeks. Never pay a ransom or contact the attacker without approval from the board${a.insurance ? ', ' + t('the insurance carrier') : ''} and legal counsel. Some ransom payments are illegal.${a.insurance ? '' : ' ' + t('Without cyber insurance, decisions about outside help also go to the board.')}</p>
   <h3>Step 6 · Learn</h3>
-  <p>Within 30 days, hold a short review: what happened, what worked, what to change. Update these policies and the Incident Contact List if needed.</p>
+  <p>Within 30 days, hold a short review: what happened, what worked, what to change. Update these policies and the Incident Contact List if needed. This plan is practiced once a year in a tabletop exercise, as described in the Security Awareness and Training Policy. Share lessons from real incidents in the next quarterly security reminder.</p>
   ${acknowledgment()}
   ${approval()}</div>`;
 },
