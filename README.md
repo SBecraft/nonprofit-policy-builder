@@ -22,7 +22,7 @@ A nonprofit answers a short questionnaire about its organization, the systems it
 | **Passwords & MFA** | Passphrases, a password manager instead of the browser, MFA on key accounts, shared-account rules, two or three admins, giving and removing access, turning off unused accounts |
 | **Data Protection** | Classifying, storing, sharing and destroying information about donors, the people served, staff and volunteers, including card payments, consent for client photos and stories, and donor privacy requests |
 | **Backup & Recovery** | Who it covers, what gets backed up, the 3-2-1 rule, how backups run with or without a backup service, how long backups are kept, protecting backups, testing restores, who is responsible and step-by-step recovery after an incident |
-| **Incident Response Plan** | A one-page plan for what to do when something goes wrong |
+| **Incident Response Plan** | A short, step-by-step plan for what to do when something goes wrong |
 | **Security Awareness and Training** | When people are trained, what training covers, who runs it, training deadlines, third parties, how it is recorded and how long records are kept, and the yearly review and summary to the board |
 | **Incident Contact List** | A confidential two-page list of who to call (print it double-sided), kept separate from the plan and checked every three months. It fills in the primary IT contact, the alternate incident contact and the board chair from your answers |
 | **Onboarding** | A one-page checklist for giving access when someone joins, with a record of the access given |
@@ -35,7 +35,7 @@ A nonprofit answers a short questionnaire about its organization, the systems it
 
 **Getting the policies out:**
 - Copy one document, or any combination, into Word or Google Docs with headings and tables intact. Add table rows there if you need more.
-- Print them in a separate tab, so your answers aren't lost. The Incident Response Plan fits on one page, and the Incident Contact List on two, so print it double-sided.
+- Print them in a separate tab, so your answers aren't lost. The Incident Contact List takes two pages, so print it double-sided.
 - Save as PDF from the print dialog.
 
 **Nonprofit-specific content** that corporate templates usually miss: gift-card and bank-change scams that impersonate the executive director, the 501(c)(3) limit on political activity, view-only, time-limited volunteer access, board members kept in scope, calling the cyber insurer before outside help, and reporting to the FBI (ic3.gov) and CISA.
