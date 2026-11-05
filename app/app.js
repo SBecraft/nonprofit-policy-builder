@@ -193,7 +193,7 @@ aup(a, pol){
   <h3>4. Not allowed</h3>
   <ul>
     <li>Sharing your personal login with anyone${a.shared ? ' ' + t('(approved shared accounts follow the Passwords &amp; MFA policy)') : ''}.</li>
-    <li>Forwarding donor, client or volunteer information to personal email.</li>
+    <li>Forwarding ${['donor', a.clients && t('client'), a.volunteers && t('volunteer')].filter(Boolean).join(', ').replace(/, ([^,]*)$/, ' or $1')} information to personal email.</li>
     ${a.devices ? `<li>Installing software on organization devices without approval from ${a.contact}.</li>` : ''}
     <li>Using organization accounts to support or oppose political candidates, which can put a 501(c)(3)'s tax-exempt status at risk.</li>
     <li>Pasting ${['donor', a.clients && t('client'), a.staff && t('staff')].filter(Boolean).join(', ')} or other confidential information into AI chatbots or tools the organization hasn't approved.</li>
@@ -575,13 +575,13 @@ contacts(a, pol){
     row('Website hosting', '', '', ''),
     row('Website developer', '', '', ''),
   ])}
-  <div class="eyebrow pagetwo">${a.org} · Confidential · Incident Contact List, page 2 of 2</div>
   <h3>Money, insurance and legal</h3>
   ${table(['Contact','Name','24/7 phone','Account / policy no.'], [
     row('Bank fraud line', '', '', 'Account ending ________ (last 4 digits only)'),
     a.insurance ? row(t('Cyber insurance carrier (call before hiring outside help)'), '', '', 'Policy no.') : '',
     row('Legal counsel', '', '', ''),
   ])}
+  <div class="eyebrow pagetwo">${a.org} · Confidential · Incident Contact List, page 2 of 2</div>
   <h3>Outside agencies</h3>
   ${table(['Agency','Phone','When to contact'], [
     row('FBI field office', '', 'Urgent fraud, such as a wire transfer. Also report at ic3.gov.'),
@@ -971,6 +971,14 @@ $('startClose').addEventListener('click', () => {
   summary.scrollIntoView({ block: 'nearest' });
   summary.focus({ preventScroll: true });
 });
+
+// "Back to top" links (end of the questionnaire, above the footer): the panel scrolls on its own above 860 px, so reset both it and the page
+document.querySelectorAll('.totop a').forEach(link => link.addEventListener('click', e => {
+  e.preventDefault(); // keep "#top" out of the address bar
+  $('q').scrollTop = 0;
+  window.scrollTo(0, 0);
+  $('top').focus({ preventScroll: true });
+}));
 
 render();
 updateMore();

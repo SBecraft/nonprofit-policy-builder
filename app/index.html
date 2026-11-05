@@ -61,10 +61,14 @@ details.start summary:focus-visible{outline:2px solid var(--accent);outline-offs
 .start-body li{margin:3px 0}
 .start-body p{margin:6px 0}
 .start-body p.start-help{font-size:18px;margin-top:14px}
-.start-body p.start-close{margin-top:14px}
+.start-body p.start-close{margin-top:14px;text-align:center}
+#startClose{font-size:12px;padding:3px 8px;position:relative;left:-16px} /* true center looks right of center under the ragged text, so it sits 16px left */
 .gather{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:4px 24px}
 .hint{color:var(--muted);font-size:13px}
 a{color:var(--accent)}
+.totop{margin:0;font-size:13px;font-family:var(--f-display);text-align:center}
+.totop.page-end{padding:0 16px 14px} /* above the footer border */
+h1#top:focus{outline:none} /* focused by "Back to top" so keyboard users start there; it is not a control */
 .grid{display:grid;grid-template-columns:minmax(0,21rem) minmax(0,1fr);gap:24px;align-items:start}
 @media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
 
@@ -239,7 +243,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
   :root:not([data-print]){
     --bg:#ffffff; --panel:#ffffff; --paper:#ffffff; --ink:#000000; --muted:#444444;
     --line:#bbbbbb; --accent:#1d6b58; --mark:transparent; --warn:#9a5b10; color-scheme:light }
-  header.top,form.q,.toolbar,.status,footer.foot,.maplink{display:none}
+  header.top,form.q,.toolbar,.status,footer.foot,.maplink,.totop{display:none}
   .wrap{padding:0;max-width:none}
   .grid{display:block}
   article.paper{border:0;box-shadow:none;padding:0}
@@ -289,7 +293,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
   <header class="top">
     <div>
       <div class="eyebrow">GRC starter kit · small nonprofits</div>
-      <h1>Nonprofit Policy Builder</h1>
+      <h1 id="top" tabindex="-1">Nonprofit Policy Builder</h1>
       <p class="lede">Answer a few questions about how your organization works, and six plain-English security policies and six forms are tailored to match your answers. Change an answer and every document updates instantly. Built for small nonprofits, including organizations with volunteers, shared logins and frequent turnover. Your answers stay in your browser and are never saved or sent anywhere.</p>
       <p class="disclaimer"><strong>Not legal advice.</strong> These are starting templates. Adjust them to fit your organization, have your board approve them, and ask a lawyer to review them, especially your state’s breach notification and record retention rules.</p>
       <details class="start">
@@ -339,7 +343,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
           <h2>Based on recognized security standards</h2>
           <p>Each document is linked to the parts of two trusted frameworks that it supports: the CIS Controls from the Center for Internet Security (Implementation Group 1, the starter set for small organizations) and the <span data-fw="csf"></span> from the U.S. National Institute of Standards and Technology (NIST). That helps show a board, funder or insurer that your policies follow recognized guidance. Using them does not make you certified or compliant, because a policy only says what you plan to do. What counts is following it day to day. You may also have to meet other rules, such as state privacy laws or grant requirements.</p>
           <p class="start-help"><a href="how.html" target="_blank" rel="noopener">How this app works: frameworks, privacy and security</a> (opens in a new tab)</p>
-          <p class="start-close"><button type="button" class="btn" id="startClose">Close this section</button></p>
+          <p class="start-close"><button type="button" class="btn primary" id="startClose">Close this section</button></p>
         </div>
       </details>
     </div>
@@ -425,6 +429,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
         <label class="tg"><input type="checkbox" id="clients" checked><span>We keep records about people we serve<small>Such as client intake forms, household details or case notes.</small></span></label>
         <label class="tg" id="paperClientsRow"><input type="checkbox" id="paperClients" checked><span>We keep paper client records<small>Paper intake forms or files.</small></span></label>
       </fieldset>
+      <p class="totop"><a href="#top">Back to top ↑</a></p>
       <button class="btn primary more" type="button" id="moreQ" tabindex="-1">More questions below ▾</button>
     </form>
 
@@ -437,7 +442,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
           </div>
           <div class="actions">
             <div class="status" id="status" aria-live="polite"></div>
-            <button class="btn primary" type="button" id="print" aria-label="Print this document">Print</button>
+            <button class="btn" type="button" id="print" aria-label="Print this document">Print</button>
             <button class="btn" type="button" id="copyOne" aria-label="Copy this document">Copy</button>
             <details class="multi" id="multi">
               <summary class="btn" aria-label="More: print or copy several documents">More</summary>
@@ -459,6 +464,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
   </div>
 </div>
 
+<p class="totop page-end"><a href="#top">Back to top ↑</a></p>
 <footer class="foot">
   <div class="foot-inner">
     <p><strong>Privacy:</strong> Your answers stay in your browser. This page loads no outside fonts, trackers or scripts and sends nothing anywhere. Closing the tab erases your answers.</p>
