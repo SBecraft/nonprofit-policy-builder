@@ -19,7 +19,7 @@ A nonprofit answers a short questionnaire about its organization, the systems it
 | Document | What it covers |
 |---|---|
 | **Acceptable Use** | How people may use the organization's accounts, devices and information, including approved software and online services, device setup, office Wi-Fi, personal devices, AI tools, reporting problems and what happens if it isn't followed |
-| **Passwords & MFA** | Passphrases, a password manager, MFA on key accounts, shared-account rules, giving and removing access |
+| **Passwords & MFA** | Passphrases, a password manager instead of the browser, MFA on key accounts, shared-account rules, two or three admins, giving and removing access, turning off unused accounts |
 | **Data Protection** | Classifying, storing, sharing and destroying information about donors, the people served, staff and volunteers, including card payments, consent for client photos and stories, and donor privacy requests |
 | **Backup & Recovery** | What gets backed up, the 3-2-1 rule, protecting backups, testing restores and recovering after ransomware |
 | **Incident Response Plan** | A one-page plan for what to do when something goes wrong |

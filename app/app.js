@@ -108,7 +108,8 @@ const BLANK = '____________________';
 // "Dana Ortiz, Operations Manager" needs a closing comma mid-sentence; a name alone does not
 const midSentence = s => s.includes(',') ? s + ',' : s;
 // Authenticator app to suggest, matched to the email platform
-const authApp = a => ({m365:'Microsoft Authenticator', google:'Google Authenticator'})[a.platform] || 'Microsoft Authenticator or Google Authenticator';
+// Empty for free, mixed or typed-in email, so no brand is named
+const authApp = a => ({m365:'Microsoft Authenticator', google:'Google Authenticator'})[a.platform] || '';
 const listOf = items => items.length > 1 ? `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}` : items[0];
 // Who a policy covers. vol is the volunteer wording, which differs by policy.
 const scope = (a, vol) => listOf([a.staff && 'staff', 'board members', 'interns', 'contractors', a.volunteers && t(vol)].filter(Boolean));
@@ -228,50 +229,83 @@ pw(a, pol){
   const pmText = a.pm === 'none'
     ? `<p class="note"><b>Action needed:</b> ${t(`${a.org} does not yet use a password manager. ${a.contact} will choose one within 60 days.`)} Until then, never store passwords in spreadsheets, documents or email.</p>`
     : `<p>${t(`${a.org} provides ${esc(a.pm)}`)} for storing organization passwords. Use it for every organization account. Never keep passwords in spreadsheets, sticky notes, documents or email.</p>`;
+  const browserText = a.pm === 'none'
+    ? `<p>${t("Until a password manager is chosen, you may save organization passwords in your web browser's built-in password manager, but only on a device with a screen lock, and only if your browser account uses MFA.")} Never save them on a shared or public computer.</p>`
+    : `<p>Don't let your web browser save organization passwords. Use ${t(esc(a.pm))} instead.</p>`;
+  const backupCodes = a.pm === 'none'
+    ? `<li>${t('Save your MFA backup codes somewhere safe, such as printed and locked away, so you can still sign in if you get a new phone.')}</li>`
+    : `<li>Save your MFA backup codes in ${t(esc(a.pm))}, so you can still sign in if you get a new phone. Keep the backup code for ${t(esc(a.pm))} itself outside it, such as printed and locked away.</li>`;
+  const appExample = authApp(a);
   const sharedText = a.shared ? `
-    <h3>5. Shared accounts</h3>
+    <h3>6. Shared accounts</h3>
     <p>${t('Some accounts, such as social media or event platforms, are shared by several people.')} They must follow these rules:</p>
     <ul>
-      <li>${a.staff ? `Each shared account has a named owner who is a staff member${a.volunteers ? ', not a volunteer' : ''}` : t('Each shared account has a named owner who is a board member')}.</li>
+      <li>${a.staff ? `Each shared account has a named owner who is a staff member or board member${a.volunteers ? t(', not a short-term volunteer') : ''}` : t('Each shared account has a named owner who is a board member')}.</li>
       <li>The password is stored ${a.pm==='none' ? 'in the approved password manager once one is chosen' : t('in a shared ' + esc(a.pm) + ' vault')}. It is never sent by text or email.</li>
-      <li>${a.staff ? `MFA codes go to an organization phone number or email, never ${a.volunteers ? "a volunteer's" : 'a'} personal number.` : t("MFA codes go to an email address the organization controls, not one person's personal phone, so the account isn't lost if that person leaves.")}</li>
+      <li>${a.staff ? `MFA codes go to an organization email or phone, or to the account owner's own device${a.volunteers ? t(", never a short-term volunteer's personal number") : ''}.` : t("MFA codes go to an email address the organization controls, not one person's personal phone, so the account isn't lost if that person leaves.")}</li>
       <li>${t('The password is changed whenever someone with access leaves.')}</li>
       <li>The owner reviews who has access every three months.</li>
     </ul>
     <p>${t('Each shared account and its owner are listed in the Asset Inventory.')}</p>` : `
-    <h3>5. Shared accounts</h3>
+    <h3>6. Shared accounts</h3>
     <p>${t('Shared logins are not allowed.')} Every person gets their own account so we can see who did what and remove access cleanly.</p>`;
   return head(a,pol,'Password and Multi-Factor Authentication Policy') + `
   <h3>1. Purpose</h3>
-  <p>Stolen passwords are the most common way small organizations are breached. This policy sets simple rules that make stolen passwords much less useful.</p>
-  <h3>2. Passwords</h3>
+  <p>Stolen or guessed passwords are one of the most common ways small organizations are broken into. This policy sets simple rules that make them much less useful.</p>
+  <h3>2. Who it covers</h3>
+  <p>Everyone with an account on ${a.org} systems: ${scope(a, 'volunteers')}.</p>
+  <h3>3. Passwords</h3>
   <ul>
-    <li>Use a passphrase of at least 14 characters, such as four unrelated words.</li>
+    <li>Use a passphrase of at least 14 characters, such as four unrelated words${a.pm === 'none' ? '' : `, for passwords you have to remember. Let ${t(esc(a.pm))} create the rest`}.</li>
     <li>Use a different password for every account. Never reuse a personal password for work.</li>
     <li>Passwords don't need to be changed on a schedule. Change one right away if it may have been exposed.</li>
   </ul>
-  <h3>3. Password manager</h3>
+  <h3>4. Password manager</h3>
   ${pmText}
-  <h3>4. Multi-factor authentication (MFA)</h3>
+  ${browserText}
+  <h3>5. Multi-factor authentication (MFA)</h3>
   <p>MFA means signing in with your password plus a second step, such as a code from an app on your phone. Then a stolen password alone can't open the account. MFA is required on these accounts:</p>
   <ul>
     <li>${a.platform==='other' ? 'Organization email' : t(a.platformName) + ' email'}</li>
+    ${a.pm === 'none' ? '' : `<li>${t(esc(a.pm))} password manager</li>`}
     <li>${t(a.crmRaw==='spreadsheet' ? 'The cloud account that stores donor spreadsheets' : a.crm + ' donor database')}</li>
     <li>Online banking and payment platforms</li>
     <li>Website administration and hosting</li>
     <li>Social media and cloud storage</li>
+    ${a.staff ? `<li>${t('Payroll and HR services')}</li>` : ''}
+    <li>The account where your website address (domain) is registered</li>
   </ul>
   <p>MFA status for every account is recorded in the Asset Inventory.</p>
-  <p>Use an authenticator app (such as ${t(authApp(a))}) or a security key. Text message codes are allowed only when nothing else is offered.</p>
+  <p><b>Using MFA safely</b></p>
+  <ul>
+    <li>Use an authenticator app${appExample ? ` (such as ${t(appExample)})` : ''} or a security key. Text message codes are allowed only when nothing else is offered.</li>
+    <li>Never approve an MFA prompt or enter a code you didn't ask for. Deny it and report it right away.</li>
+    ${backupCodes}
+    <li>If you lose the phone with your authenticator app, tell ${midSentence(a.contact)} right away.</li>
+  </ul>
   ${sharedText}
-  <h3>6. Administrator access</h3>
-  <p>No more than two or three people hold administrator rights to email, the donor database or the website. Administrators use a separate admin account for admin work. Administrators for each system are listed in the Asset Inventory.</p>
-  <h3>7. Giving and removing access</h3>
-  <p>${a.contact} approves every new account and every request for more access. New people get access only after they sign the Policy Acknowledgment Form, using the Onboarding Checklist.</p>
-  <p>When anyone leaves, ${a.contact} removes their access ${offboardWindow(a)}, using the Offboarding Checklist.</p>
-  <h3>8. If a password is exposed</h3>
-  <p>Change it immediately and tell ${a.contact}. If you approved an MFA prompt you didn't start, report it right away. That means someone else has your password.</p>
-  ${acknowledgment(9)}
+  <h3>7. Administrator access</h3>
+  <ul>
+    <li>At least two, and no more than three, people hold administrator rights to email, ${a.crmRaw==='spreadsheet' ? t('the donor spreadsheets') : 'the donor database'} and the website, so the organization is never locked out if one person leaves.</li>
+    <li>Administrators use a separate admin account for admin work, where your plan allows it.</li>
+    <li>Administrator accounts must use an authenticator app or security key.</li>
+    <li>If a service offers only text message codes, ${midSentence(a.contact)} approves the exception in writing and notes it in the Asset Inventory.</li>
+    <li>Administrators for each system are listed in the Asset Inventory.</li>
+  </ul>
+  <h3>8. Giving and removing access</h3>
+  <ul>
+    <li>${midSentence(a.contact)} approves every new account and every request for more access.</li>
+    <li>New people get access only after they complete onboarding training and sign the Policy Acknowledgment Form, using the Onboarding Checklist.</li>
+    <li>When anyone leaves, ${midSentence(a.contact)} removes their access ${offboardWindow(a)}, using the Offboarding Checklist.</li>
+    <li>Accounts not used for 45 days are disabled.</li>
+    <li>${midSentence(a.contact)} checks for unused accounts every month.</li>
+    <li>Accounts that are needed only occasionally, such as a board member's, can stay active with the policy owner's approval.</li>
+    <li>Disabled accounts can be turned back on when needed.</li>
+    <li>Access is reviewed every six months, as described in the Data Protection Policy.</li>
+  </ul>
+  <h3>9. If a password is exposed</h3>
+  <p>Change it immediately, sign out of all sessions, and tell ${a.contact}. Report it even if you're not sure the password was used. If you approved an MFA prompt you didn't start, report it right away, because someone else has your password. Follow the Incident Response Plan.</p>
+  ${acknowledgment(10)}
   ${approval()}`;
 },
 
@@ -623,7 +657,7 @@ onboard(a, pol){
     `Give onboarding security training (see the Security Awareness and Training Policy): how to spot phishing and gift-card or payment scams, and how to report a problem to ${a.contact}.`,
     a.platform==='other' ? `Create ${t('their own organization email account')}. No shared logins for personal work.`
       : `Create their own ${t(a.platformName)} account. No shared logins for personal work.`,
-    `Turn on multi-factor authentication (MFA), a second sign-in step, with an authenticator app such as ${t(authApp(a))}.`,
+    `Turn on multi-factor authentication (MFA), a second sign-in step, with an authenticator app${authApp(a) ? ` such as ${t(authApp(a))}` : ''}.`,
     noPM ? t('Give them access to shared passwords only in person, never by email or text, until a password manager is chosen.')
       : `Invite them to ${t(esc(a.pm))}.`,
     `Give ${a.crmRaw==='spreadsheet' ? 'access to ' + donors : donors + ' access'} at the lowest level their role needs${a.volunteers ? ' ' + t('(view-only for volunteers)') : ''}.`,
