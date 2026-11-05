@@ -189,6 +189,7 @@ aup(a, pol){
     <li>Lock your screen when you step away.</li>
     <li>Avoid public Wi-Fi for donor records and online banking. Use your phone's hotspot when you can.</li>
     <li>Don't leave paper records with ${a.clients ? t('client or ') : ''}donor information where others can see them. Lock them away when you're done.</li>
+    <li>Have a person review AI-generated content before relying on it, sharing it outside the organization or using it to make decisions.</li>
   </ul>
   <h3>4. Not allowed</h3>
   <ul>
@@ -345,6 +346,7 @@ data(a, pol){
     a.staff ? ['Staff payroll and tax records', 'As long as tax and employment laws require'] : null,
     c ? [t('Client records'), t('Only as long as needed to provide services, or as long as a grant or law requires')] : null,
     v ? [t('Volunteer applications and background checks'), t('While the person is active, then for the period legal counsel recommends')] : null,
+    ['Training records', 'At least three years, or longer if a law, contract, grant or insurance policy requires it'],
     ['Exports and copies made for a task', 'Deleted when the task is done'],
   ].filter(Boolean))}
   <p>Check these periods with your accountant or legal counsel, because requirements vary by state and grant.</p>
@@ -457,22 +459,24 @@ ir(a, pol){
 train(a, pol){
   const org = a.org, owner = a.owner, contact = a.contact;
   const logTool = {m365:'an Excel spreadsheet', google:'a Google Sheets spreadsheet'}[a.platform] || 'an Excel or Google Sheets spreadsheet';
-  const logHome = {m365:'OneDrive or SharePoint', google:'Google Drive'}[a.platform] || 'the approved shared storage';
+  const logHome = {m365:'OneDrive or SharePoint', google:'Google Drive'}[a.platform] || 'a shared folder with restricted access';
   const everyone = scope(a, 'volunteers');
   const covered = scope(a, 'volunteers, including short-term and event volunteers who use organization accounts');
   const roles = [
     [`${owner} (policy owner)`, 'Approves the training plan and any practice phishing emails, makes time for training, and leads the yearly tabletop exercise'],
+    ['Board of directors', 'Receives the yearly training summary and supports the time and resources training needs'],
     [`${contact} (primary IT contact)`, 'Runs or arranges training, sends quarterly reminders, coaches anyone who clicks a practice phishing email, and keeps the training log'],
     a.volunteers ? [t('Volunteer coordinators'), t('Make sure volunteers who use organization accounts are trained before they get access')] : null,
     ['Everyone', 'Completes training on time, follows what they learned and reports problems'],
   ].filter(Boolean);
   return head(a, pol, 'Security Awareness and Training Policy') + `
-  <p>Everyone who uses our accounts or handles confidential information gets security training when they join, a full refresher every year and short reminders every quarter, because most breaches at small organizations start with a person being tricked.</p>
+  <p>Everyone who uses our accounts or handles confidential information gets security training when they join, a full refresher every year and short reminders every quarter, because many breaches at small organizations start with a person being tricked or making a simple mistake.</p>
   <h3>1. Purpose</h3>
   <p>This policy makes sure everyone knows how to spot scams, protect confidential information and report problems quickly. Training is short and practical, so it fits a small team${a.volunteers ? ' ' + t('that relies on volunteers') : ''}.</p>
   <p><b>Policy statement:</b> ${org} provides cybersecurity awareness training to all ${everyone} when they join and at least once a year after that. Short security reminders, exercises or refresher training happen throughout the year to reinforce safe habits and cover new threats.</p>
   <h3>2. Who it covers</h3>
   <p>Everyone with access to ${org} accounts, devices or confidential information: ${covered}.</p>
+  <p>Contractors and other third parties who are given access to organization systems or confidential information complete onboarding training, or confirm in writing that they receive equivalent training from their own employer.</p>
   <h3>3. When training happens</h3>
   ${cardTable('schedule', ['Activity', 'When', 'Time'], [
     ['Onboarding training', 'Before first access, as part of the Onboarding Checklist', 'About 15 minutes'],
@@ -483,17 +487,18 @@ train(a, pol){
     ['Policy update briefing', 'When a policy changes, followed by a new signature on the Policy Acknowledgment Form', '5 to 10 minutes'],
     ['Lessons-learned reminder', 'After an incident or near miss', '5 to 10 minutes'],
   ])}
-  <p>Short, frequent reminders work better than a single yearly session, so the quarterly micro-training is the core of this policy.</p>
+  <p>Quarterly reminders reinforce yearly training and keep people aware of current threats.</p>
+  <p>Onboarding training is completed before first access. Yearly and other assigned training is completed within 30 days, unless the policy owner approves an extension.</p>
   <p>People with extra access, such as admin rights, the donor database or online banking, also learn the rules for their role before they get that access.</p>
   <h3>4. What training covers</h3>
   <p>Each topic matches a ${FRAMEWORKS.cis} Implementation Group 1 safeguard.</p>
   ${cardTable('topics', ['Topic', 'What people learn', 'CIS safeguard'], [
-    ['Scams and phishing', 'Spotting fake emails, texts and calls, including gift-card requests and messages pretending to be leadership', '14.2'],
+    ['Scams and phishing', "Spotting phishing emails, fake text messages, suspicious phone calls, and people pretending to be someone they're not, such as leadership, a vendor or a bank", '14.2'],
     ['Passwords and MFA', "Using passphrases and the password manager, never reusing passwords, and never approving an MFA prompt they didn't start", '14.3'],
     ['Handling confidential information', 'Where confidential information may be kept, who can see it, and never sending it to personal email', '14.4'],
-    ['Safe use of AI tools', `Never pasting ${a.staff ? 'donor, client or staff' : t(a.volunteers ? 'donor, client or volunteer' : 'donor or client')} information into AI chatbots or tools the organization hasn't approved`, '14.4'],
+    ['Safe use of AI tools', "Never pasting confidential information into AI tools the organization hasn't approved, and having a person review AI-generated content before relying on it, sharing it outside the organization or using it to make decisions", '14.4'],
     ['Avoiding accidental exposure', 'Sending files to the wrong person, leaving screens unlocked, and saving donor lists on personal devices', '14.5'],
-    ['Reporting problems', 'What to report, who to call, and why to report right away', '14.6'],
+    ['Reporting problems', "What to report, who to contact, and why to report right away, even if you're not sure anything went wrong", '14.6'],
     ['Keeping devices updated', 'Turning on automatic updates and noticing when a device is out of date', '14.7'],
     ['Remote work and Wi-Fi', 'Securing home Wi-Fi, avoiding public Wi-Fi for donor records and banking, and keeping work private at home', '14.8'],
   ])}
@@ -525,9 +530,11 @@ train(a, pol){
   <h3>7. Reporting mistakes without blame</h3>
   <p>Anyone can click a bad link or send a file to the wrong person. Report it right away to ${midSentence(a.contact)} at ${a.contactPhone || a.contactInfo}. Fast reporting limits the damage, and nobody is punished for an honest mistake they report. Hiding a mistake, or repeatedly ignoring the policies, is handled under the Acceptable Use Policy.</p>
   <h3>8. Training records</h3>
-  <p>The primary IT contact keeps a training log and records every session in it. Use a simple tool you already have, such as ${t(logTool)}, a shared document or a printed sheet. Model your log on the example below, but keep it separate from this policy. Store a digital log in ${t(logHome)}, not a personal account. The log shows funders, auditors and insurers that training actually happens.</p>
+  <p>The primary IT contact keeps a training log and records every session in it. Use a simple tool you already have, such as ${t(logTool)}, a shared document or a printed sheet. Model your log on the example below, but keep it separate from this policy. Store a digital log in ${t(logHome)}, not a personal account. The log shows funders, auditors and insurers that training actually happens. Keep training records for at least three years, or longer if a law, contract, grant or insurance policy requires it.</p>
   ${cardTable('fill trainlog', ['Date', 'Name', 'Role', 'Activity (onboarding, yearly, quarterly, phishing test, tabletop, policy update, incident)', 'Given by'], Array(2).fill(['', '', '', '', '']))}
-  ${acknowledgment(9)}
+  <h3>9. Reviewing and reporting</h3>
+  <p>At least once a year, the primary IT contact reviews training participation and follows up on anyone who hasn't completed it. The policy owner then gives the board a short summary: how many people completed training, practice phishing results if used, any incidents or near misses, and what the tabletop exercise found.</p>
+  ${acknowledgment(10)}
   ${approval()}`;
 },
 

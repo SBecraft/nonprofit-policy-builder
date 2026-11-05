@@ -23,7 +23,7 @@ A nonprofit answers a short questionnaire about its organization, the systems it
 | **Data Protection** | Classifying, storing, sharing and destroying information about donors, the people served, staff and volunteers, including card payments |
 | **Backup & Recovery** | What gets backed up, the 3-2-1 rule, protecting backups, testing restores and recovering after ransomware |
 | **Incident Response Plan** | A one-page plan for what to do when something goes wrong |
-| **Security Awareness and Training** | When people are trained, what training covers, who runs it and how it is recorded |
+| **Security Awareness and Training** | When people are trained, what training covers, who runs it, training deadlines, third parties, how it is recorded and how long records are kept, and the yearly review and summary to the board |
 | **Incident Contact List** | A confidential two-page list of who to call (print it double-sided), kept separate from the plan and checked every three months. It fills in the primary IT contact, the alternate incident contact and the board chair from your answers |
 | **Onboarding** | A one-page checklist for giving access when someone joins, with a record of the access given |
 | **Offboarding** | A one-page checklist for removing access when someone leaves |
