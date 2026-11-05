@@ -68,6 +68,7 @@ function read(){
   return {
     org:v('org'), owner:v('owner'), contact:v('contact'),
     backupLead:typed('backupLead') || v('owner'), // the policy owner stands in if left blank
+    backupLeadGiven: $('backupLead').value.trim() !== '', // Backup and Recovery words it differently when blank
     printPlace:typed('printPlace'), backupName:typed('backupName'),
     boardChair:typed('boardChair'), // Incident Contact List only; blank leaves a write-in space
     contactPhone:typed('contactPhone'), contactEmail:typed('contactEmail'),
@@ -105,8 +106,6 @@ function head(a, pol, title){
   ${chips(pol)}${meta(a,pol)}`;
 }
 const BLANK = '____________________';
-// Text without highlight marks, for comparing two typed answers
-const plain = s => s.replace(/<[^>]+>/g, '');
 // "Dana Ortiz, Operations Manager" needs a closing comma mid-sentence; a name alone does not
 const midSentence = s => s.includes(',') ? s + ',' : s;
 // Authenticator app to suggest, matched to the email platform
@@ -409,62 +408,88 @@ data(a, pol){
 
 backup(a, pol){
   const storage = a.platform==='m365' ? t('OneDrive or SharePoint') : a.platform==='google' ? t('Google Drive') : 'the approved shared storage';
+  const sheet = a.crmRaw==='spreadsheet';
+  const noPM = a.pm==='none';
   const platformCopy = a.platform==='other'
-    ? `<p>Free email accounts have no organization-wide backup. Important files are kept in ${storage}${a.backup ? ', and that storage is backed up' : t(', so they can be backed up once a backup service is chosen')}.</p>`
+    ? `<p>${t('Free email accounts keep deleted items only for a limited time. They are not a full backup.')}</p>`
     : `<p>${t(`${a.platformName} keeps deleted items only for a limited time. It is not a full backup.`)}</p>`;
-  const service = a.backup
-    ? `<p>${t(`${a.org} uses ${a.backupName ? a.backupName + ', ' : ''}a separate backup service that copies email and files automatically every day.`)}</p>`
-    : `<p class="note"><b>Action needed:</b> ${t(`${a.org} does not yet have a separate backup. ${midSentence(a.contact)} will choose a backup service within 60 days.`)} Until then, ${midSentence(a.contact)} copies key files and donor records to an encrypted external drive every week, then unplugs it and stores it away from the office computers.</p>`;
-  const donors = a.crmRaw==='spreadsheet'
-    ? t('Donor spreadsheets are backed up with the other files, and a monthly copy is kept offline.')
-    : t(`${a.crm} backs up its own systems, but may not restore one organization's records on request. Every month, ${midSentence(a.contact)} exports the donor records and saves the export with the backups.`);
+  const vendorCheck = `<p>Online services back up their own systems, but they may not be able to restore your records if they're deleted or changed by mistake. Check what ${sheet ? storage : t(a.crm)} offers, and keep your own ${sheet ? t('copies') : 'exports'} either way.</p>`;
+  const interim = a.backup ? '' : `
+  <p><b>Until a backup service is chosen</b></p>
+  <ul>
+    <li><b>Action needed:</b> ${t(`${a.org} does not yet have a separate backup. ${midSentence(a.contact)} will choose a backup service within 60 days.`)}</li>
+    <li>${sheet ? t(`Every week, ${midSentence(a.contact)} copies key files, including the donor spreadsheets, to an encrypted external drive.`) : t(`Every week, ${midSentence(a.contact)} exports the donor records, then copies key files and the donor export to an encrypted external drive.`)} Set a weekly reminder.</li>
+    <li>After each copy, unplug the drive and store it somewhere else, such as a locked cabinet in another building or at a trusted person's home. ${noPM ? t("Never keep the drive's password with the drive.") : `Keep the drive's password in ${t(esc(a.pm))}.`}</li>
+  </ul>`;
+  // With a backup service, every rule sits under one label; without one, the shared rules get "Either way"
+  const runningItems = `
+    <li>Backups of email and files run automatically every day${a.backup && a.backupName ? `, using ${a.backupName}` : ''}.</li>
+    <li>${sheet ? t('Donor spreadsheets are backed up with the other files.') : t(`Every month, ${midSentence(a.contact)} exports the donor records and saves the export with the backups.`)}</li>`;
+  const commonItems = `
+    <li>Keep each copy in its own dated folder for at least 30 days, and one copy from each month for at least one year. Ransomware can go unnoticed for weeks, so older copies matter.</li>
+    <li>Work files are saved in ${storage}, not only on ${a.byod ? 'personal devices' : t('the device you use')}, so a lost device never loses work.</li>${a.server ? `
+    <li>${t('The office server or storage device is backed up every day, with one copy kept off-site or in the cloud. A copy kept next to it can be lost to the same fire, theft or ransomware.')}</li>` : ''}`;
+  const running = a.backup ? `
+  <p><b>How backups run</b></p>
+  <ul>${runningItems}${commonItems}
+  </ul>` : `
+  <p><b>${t('Once a backup service is in place')}</b></p>
+  <ul>${runningItems}
+  </ul>
+  <p><b>Either way</b></p>
+  <ul>${commonItems}
+  </ul>`;
   const records = [
     a.clients && t('Client'),
     a.staff && (a.clients ? 'staff' : 'Staff'),
     a.volunteers && t(a.clients || a.staff ? 'volunteer' : 'Volunteer'),
     a.clients || a.staff || a.volunteers ? 'grant' : 'Grant',
   ].filter(Boolean).join(', ');
+  const second = a.backupLeadGiven
+    ? `${a.backupLead}, the alternate incident contact, is the second person with access.`
+    : t('A second named person also has access.');
   return head(a,pol,'Backup and Recovery Policy') + `
   <h3>1. Purpose</h3>
   <p>Ransomware, a deleted folder or a lost laptop can wipe out years of records. This policy makes sure ${a.org} can get its information back quickly.</p>
-  <h3>2. What gets backed up</h3>
+  <h3>2. Who it covers</h3>
+  <p>Everyone who creates or saves organization information. Most backup tasks belong to ${a.contact}, but everyone must save work files in ${storage}, not only on their own device.</p>
+  <h3>3. What gets backed up</h3>
   <ul>
     <li>Email and files in ${a.platform==='other' ? 'organization accounts and shared storage' : t(a.platformName)}</li>${a.server ? `
     <li>${t('Files on the office server or storage device')}</li>` : ''}
-    <li>Donor records in ${t(a.crmRaw==='spreadsheet' ? 'spreadsheets' : a.crm)}</li>
+    <li>Donor records in ${t(sheet ? 'spreadsheets' : a.crm)}</li>
     <li>${records} and board records, in the places listed in the Data Protection Policy</li>
     <li>Financial and accounting records. If they are kept in online accounting software, ${midSentence(a.contact)} exports them every month and saves the export with the backups.</li>
     <li>The website. If a host or developer manages it, confirm that they keep backups, and ask for a copy of the site every year.</li>
-    ${a.pm==='none' ? '' : `<li>${t(`${esc(a.pm)}: a second administrator has emergency access, so the vault isn't lost if one person leaves.`)}</li>`}
   </ul>
   <p>The Asset Inventory shows which systems are backed up. Check it at each restore test so nothing is missed.</p>
   ${a.paper ? `<p>${t('Paper client records are not covered by these backups. Scan any that would be hard to replace into the Clients folder.')}</p>` : ''}
-  <h3>3. The 3-2-1 rule</h3>
+  <h3>4. The 3-2-1 rule</h3>
   <p>Keep at least three copies of important information, on two different kinds of storage, with one copy kept offline or in a separate account. Ransomware that reaches everyday accounts cannot reach that copy.</p>
-  <h3>4. How backups are made</h3>
+  <h3>5. How backups are made</h3>
   ${platformCopy}
-  ${service}
-  <ul>
-    <li>${donors}</li>
-    <li>${a.backup ? "Backups run automatically. Don't rely on someone remembering." : t('Until the backup service is chosen, set a weekly reminder for the copy to the external drive. Once it is chosen, backups run automatically.')}</li>
-    <li>${a.backup ? 'Daily backups are kept for at least 30 days, and monthly copies for at least one year.' : t('Keep each weekly copy in its own dated folder for at least 30 days, and one copy from each month for at least one year.')} Ransomware can go unnoticed for weeks, so older copies matter.</li>${a.server ? `
-    <li>${t('The office server or storage device is backed up every day, with one copy kept off-site or in the cloud. A copy kept next to it can be lost to the same fire, theft or ransomware.')}</li>` : ''}
-    ${a.byod ? `<li>${t(`Work files are saved in ${storage}, not only on personal devices, so a lost device never loses work.`)}</li>` : ''}
-  </ul>
-  <h3>5. Protecting the backups</h3>
+  ${vendorCheck}
+  ${interim}
+  ${running}
+  <h3>6. Protecting the backups</h3>
   <ul>
     <li>No more than two named people can reach the backups. Both use MFA.</li>
     <li>Backups are kept separate from everyday accounts, so one stolen password cannot delete them.</li>
     <li>Backups and donor exports are Confidential under the Data Protection Policy and are stored encrypted.</li>
   </ul>
-  <h3>6. Testing restores</h3>
-  <p>A backup that has never been restored may not work. Every three months, ${midSentence(a.contact)} restores a sample file and a sample of donor records, and records the date, what was restored and whether it worked in a backup test log kept with the backup records.${a.server ? ' ' + t('Each test includes a file from the office server or storage device.') : ''}</p>
-  <h3>7. Who is responsible</h3>
-  <p>${midSentence(a.contact)} owns the backups. ${plain(a.backupLead) === plain(a.contact) ? `The second person with access, someone other than the backup owner, is ${BLANK}.` : `${midSentence(a.backupLead)} is the second person with access.`}${a.turnover ? ' ' + t('Backup access is never held by only one person. When someone with access leaves, it moves to another person the same day.') : ''}</p>
-  <h3>8. Restoring after an incident</h3>
-  <p>Follow the Incident Response Plan. After ransomware, make sure the infection is gone before restoring, or the restored files can be locked again.${a.insurance ? ' ' + t('Tell the cyber insurance carrier before restoring, so evidence is preserved.') : ''}</p>
-  <p>Restore the most important systems first: email, donor records, financial records${a.clients ? t(', client records') : ''}, then shared files and the website. Aim to have email and donor records working again within two business days.</p>
-  ${acknowledgment(9)}
+  <h3>7. Testing restores</h3>
+  <p>A backup that has never been restored may not work. Every three months, ${midSentence(a.contact)} restores a sample file and a sample of donor records, and records the date, what was restored and whether it worked in a backup test log kept with the backup records.${a.server ? ' ' + t('Each test includes a file from the office server or storage device.') : ''} Once a year, restore a whole folder or mailbox to show a real recovery would work. This can be part of the yearly tabletop exercise in the Security Awareness and Training Policy.</p>
+  <h3>8. Who is responsible</h3>
+  <p>${midSentence(a.contact)} owns the backups. ${second} Backup access is never held by only one person. When someone with access leaves, it moves to another person the same day.${noPM ? '' : ` A second administrator also has emergency access to ${t(esc(a.pm))}, so the vault isn't lost if one person leaves.`}</p>
+  <h3>9. Restoring after an incident</h3>
+  <ol>
+    <li>Follow the Incident Response Plan and report the problem first.</li>${a.insurance ? `
+    <li>${t('If you have cyber insurance, contact the carrier before restoring, so evidence is preserved.')}</li>` : ''}
+    <li>Make sure the ransomware or other problem is gone, or restored files can be locked again.</li>
+    <li>Restore the most important systems first: email, donor records, financial records${a.clients ? t(', client records') : ''}, then shared files and the website.</li>
+  </ol>
+  <p>Aim to have email and donor records working again within two business days. ${a.backup ? t('With the backup service in place, no more than one day of changes could be lost.') : t('Until a backup service is in place, up to one week of changes could be lost.')}</p>
+  ${acknowledgment(10)}
   ${approval()}`;
 },
 
