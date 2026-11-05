@@ -145,11 +145,11 @@ const acknowledgment = n => `
 const build = {
 aup(a, pol){
   const setup = `
-    <h3>5. Setting up devices${a.office ? t(' and Wi-Fi') : ''}</h3>
+    <h3>6. Setting up devices${a.office ? t(' and Wi-Fi') : ''}</h3>
     <p>These rules apply to every phone and computer used for ${a.org} work${a.byod && a.devices ? t(', whether the organization owns it or you do') : ''}.</p>
     <ul>
       <li>Screens lock automatically after 15 minutes on computers and 2 minutes on phones, and unlock only with a PIN, password, fingerprint or face.</li>
-      <li>Automatic updates are turned on for the operating system and apps.</li>
+      <li>Automatic updates are turned on for the device, its web browsers and its apps.</li>
       <li>Device encryption is turned on. On computers, use BitLocker (Windows) or FileVault (Mac). Phones are encrypted once a passcode is set.</li>
       <li>On computers, the built-in firewall and malware protection stay on, such as Microsoft Defender on Windows.</li>
     </ul>${a.office ? `
@@ -166,53 +166,61 @@ aup(a, pol){
     </ul>` : ''}${a.devices ? `
     <p>Each organization device, who uses it, and whether it meets these rules are recorded in the Asset Inventory.</p>` : ''}`;
   const personal = a.byod ? `
-    <h3>6. Using your own phone or computer</h3>
-    <p>Anyone covered by this policy may use a personal device for ${a.org} work if they follow section 5 and these rules:</p>
+    <h3>7. Using your own phone or computer</h3>
+    <p>Anyone covered by this policy may use a personal device for ${a.org} work if they follow section 6 and these rules:</p>
     <ul>
-      <li>${a.platform==='other' ? 'Work email is opened in the official app or a web browser.' : t(`Work email and files are opened only in the official ${a.platformName} apps or a web browser.`)}</li>
+      <li>${a.platform==='other' ? 'Work email is opened in the approved app or a web browser.' : t(`Work email and files are opened only in the approved ${a.platformName} apps or a web browser.`)}</li>
       <li>Donor or client lists are never downloaded or saved to the device.</li>
-      ${a.platform==='m365' ? `<li>${t('You agree that ' + a.org + ' may remotely remove its email and files (not your personal data) from the device if the device is managed through Microsoft 365.')}</li>` : ''}
+      ${a.platform==='m365' ? `<li>${t('You agree that ' + a.org + ' may remotely remove organization accounts, email and files (not your personal data) from the device if the device is managed through Microsoft 365.')}</li>` : ''}
       ${a.platform==='google' ? `<li>${t('You agree that ' + a.org + ' may remotely sign your device out of its Google Workspace account.')}</li>` : ''}
       <li>When you leave, you remove ${a.org} accounts and files from the device.</li>
     </ul>` : `
-    <h3>6. Using your own phone or computer</h3>
+    <h3>7. Using your own phone or computer</h3>
     <p>${t(`Work for ${a.org} is done only on devices the organization provides.`)} Personal phones and computers may not be used to access organization email, files or donor records.</p>`;
   return head(a,pol,'Acceptable Use Policy') + `
   <h3>1. Purpose</h3>
   <p>This policy explains how people may use ${a.org}'s accounts, devices and information. It protects the people we serve, our donors and our reputation.</p>
+  <p>Confidential information means anything listed as Confidential in the Data Protection Policy. This includes ${['donor', a.clients && t('client'), a.staff && t('staff'), a.volunteers && t('volunteer')].filter(Boolean).join(', ').replace(/, ([^,]*)$/, ' and $1')} records, financial records, and passwords or other sign-in details.</p>
   <h3>2. Who it covers</h3>
   <p>Everyone with access to ${a.org} systems: ${scope(a, 'volunteers, including short-term and event volunteers')}.</p>
   <h3>3. Acceptable use</h3>
   <ul>
-    <li>Use ${a.org} accounts for organization work.${a.devices ? " Brief personal use of an organization device is fine if it doesn't interfere with work." : ''}</li>
+    <li>Use ${a.org} accounts for organization work.${a.devices ? " A little personal use of an organization device is fine if it doesn't get in the way of work, put information at risk or break this policy." : ''}</li>
     <li>Keep organization files in ${a.platform==='m365' ? t('OneDrive or SharePoint') : a.platform==='google' ? t('Google Drive') : 'the approved shared storage'}, not in personal cloud accounts.</li>
     <li>Lock your screen when you step away.</li>
     <li>Avoid public Wi-Fi for donor records and online banking. Use your phone's hotspot when you can.</li>
     <li>Don't leave paper records with ${a.clients ? t('client or ') : ''}donor information where others can see them. Lock them away when you're done.</li>
-    <li>Have a person review AI-generated content before relying on it, sharing it outside the organization or using it to make decisions.</li>
+    <li>If you use an AI tool, such as a chatbot, to help write or summarize something, check its work yourself before you rely on it, share it outside the organization or use it to make a decision. AI tools can be wrong.</li>
   </ul>
   <h3>4. Not allowed</h3>
   <ul>
-    <li>Sharing your personal login with anyone${a.shared ? ' ' + t('(approved shared accounts follow the Passwords &amp; MFA policy)') : ''}.</li>
+    <li>Sharing your password, the codes or "approve" prompts you use to sign in (called multi-factor authentication, or MFA), sign-in links, or any account given to you.${a.shared ? ' ' + t('Approved shared accounts follow the Passwords &amp; MFA policy.') : ''}</li>
     <li>Forwarding ${['donor', a.clients && t('client'), a.volunteers && t('volunteer')].filter(Boolean).join(', ').replace(/, ([^,]*)$/, ' or $1')} information to personal email.</li>
-    ${a.devices ? `<li>Installing software on organization devices without approval from ${a.contact}.</li>` : ''}
+    <li>Installing software, apps or browser add-ons (extra tools added to Chrome, Edge or other web browsers) on ${a.devices ? 'organization devices or accounts' : t('organization accounts')} without approval from ${a.contact}.</li>
     <li>Using organization accounts to support or oppose political candidates, which can put a 501(c)(3)'s tax-exempt status at risk.</li>
     <li>Pasting ${['donor', a.clients && t('client'), a.staff && t('staff')].filter(Boolean).join(', ')} or other confidential information into AI chatbots or tools the organization hasn't approved.</li>
-    <li>Plugging in USB drives or other devices you find or that aren't from the organization.</li>
-    <li>Harassment, illegal downloads, or anything that would embarrass ${a.org}.</li>
+    <li>Plugging in a USB drive you found, or a personal USB drive or other storage device the organization hasn't approved.</li>
+    <li>Harassment, anything illegal, or anything that could harm the organization, its reputation or the people it serves.</li>
   </ul>
+  <h3>5. Approved software and online services</h3>
+  <p>Before you start using a new app, website, online service or AI tool for organization work, ask ${midSentence(a.contact)} to approve it. Don't store or share confidential information in it until it's approved. Free tools are included. Approved services are listed in the Asset Inventory.</p>
   ${setup}
   ${personal}
-  <h3>7. Reporting problems and suspicious requests</h3>
-  <p>Report a lost or stolen device to ${midSentence(a.contact)} at ${a.contactInfo} within 24 hours. Report suspicious messages to the same person right away. Never buy gift cards, send money, or change bank details because of an email or text, even one that appears to come from leadership. Confirm by calling the person at a number you already have.</p>
-  <h3>8. Privacy</h3>
-  <p>Organization accounts${a.devices ? ' and devices' : ''} belong to ${a.org}. They may be reviewed when needed to protect the organization or respond to an incident.</p>
-  <h3>9. When you leave</h3>
+  <h3>8. Reporting problems and suspicious requests</h3>
+  <ul>
+    <li>If a device used for organization work is lost or stolen, report it to ${midSentence(a.contact)} at ${a.contactInfo} as soon as you notice, and no later than 24 hours.</li>
+    <li>Report suspicious emails, texts or calls to the same person right away.</li>
+    <li>Never buy gift cards, send money or change bank details because of an email, text or call, even one that seems to come from leadership. Check first by calling the person at a number you already have.</li>
+    <li>If you think you made a mistake, report it right away, even if you're not sure anything went wrong.</li>
+  </ul>
+  <h3>9. Privacy</h3>
+  <p>Organization accounts${a.devices ? ' and devices' : ''} belong to ${a.org}. They may be reviewed when needed to protect the organization or respond to an incident. Don't expect privacy when using ${a.devices ? 'organization accounts, email or devices' : t('organization accounts or email')}.${a.byod ? ' This does not apply to personal content on your own devices.' : ''}</p>
+  <h3>10. When you leave</h3>
   <p>${a.devices ? 'Return any organization equipment assigned to you in the Asset Inventory. ' : ''}Your access will be removed ${offboardWindow(a)}. See the Offboarding Checklist for the full list of steps.</p>
-  <h3>10. If this policy isn't followed</h3>
+  <h3>11. If this policy isn't followed</h3>
   <p>Report honest mistakes right away. Nobody is punished for a mistake they report. Ignoring this policy, or hiding a problem, may lead to losing access to organization accounts or ending your role with ${a.org}.</p>
   <p>If you need an exception, such as software that isn't approved yet, ask ${a.contact}. Exceptions must be approved in writing.</p>
-  ${acknowledgment(11)}
+  ${acknowledgment(12)}
   ${approval()}`;
 },
 
@@ -295,7 +303,7 @@ data(a, pol){
   <p>Everyone who can see or handle ${a.org} information, on paper or online: ${scope(a, 'volunteers, including short-term and event volunteers')}.</p>
   <h3>3. Types of information</h3>
   ${cardTable('levels', ['Level', 'Examples', 'Who can see it'], [
-    ['<b>Confidential</b>', `Donor giving history, home addresses, bank or card details; ${c ? t('client records such as household size, income, eligibility and case notes') + '; ' : ''}${personnel}organization bank account details; confidential board matters`, 'Only people whose role requires it'],
+    ['<b>Confidential</b>', `Donor giving history, home addresses, bank or card details; ${c ? t('client records such as household size, income, eligibility and case notes') + '; ' : ''}${personnel}organization bank account details; passwords and other sign-in details; confidential board matters`, 'Only people whose role requires it'],
     ['<b>Internal</b>', `${v ? t('Volunteer') : a.staff ? 'Staff' : t('Board')} schedules, internal meeting notes, draft budgets, grant applications and funder reports before they are published`, a.staff ? (v ? `Staff, board and ${t('active volunteers')}` : 'Staff and board members') : (v ? `Board and ${t('active volunteers')}` : 'Board members')],
     ['<b>Public</b>', 'Website content, annual report, published event details, published grant reports', 'Anyone'],
   ])}
