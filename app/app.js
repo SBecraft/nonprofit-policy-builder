@@ -172,7 +172,7 @@ aup(a, pol){
     <p>Anyone covered by this policy may use a personal device for ${a.org} work if they follow section 6 and these rules:</p>
     <ul>
       <li>${a.platform==='other' ? 'Work email is opened in the approved app or a web browser.' : t(`Work email and files are opened only in the approved ${a.platformName} apps or a web browser.`)}</li>
-      <li>Donor or client lists are never downloaded or saved to the device.</li>
+      <li>Donor${a.clients ? t(' or client') : ''} lists are never downloaded or saved to the device.</li>
       ${a.platform==='m365' ? `<li>${t('You agree that ' + a.org + ' may remotely remove organization accounts, email and files (not your personal data) from the device if the device is managed through Microsoft 365.')}</li>` : ''}
       ${a.platform==='google' ? `<li>${t('You agree that ' + a.org + ' may remotely sign your device out of its Google Workspace account.')}</li>` : ''}
       <li>When you leave, you remove ${a.org} accounts and files from the device.</li>
@@ -336,6 +336,7 @@ data(a, pol){
   <p>${trusted} and funders all trust us with their information. This policy explains how that information is classified, stored, shared and destroyed.</p>
   <h3>2. Who it covers</h3>
   <p>Everyone who can see or handle ${a.org} information, on paper or online: ${scope(a, 'volunteers, including short-term and event volunteers')}.</p>
+  <p>If you need an exception to this policy, ask ${a.contact}. Exceptions must be approved in writing.</p>
   <h3>3. Types of information</h3>
   ${cardTable('levels', ['Level', 'Examples', 'Who can see it'], [
     ['<b>Confidential</b>', `Donor giving history, home addresses, bank or card details; ${c ? t('client records such as household size, income, eligibility and case notes') + '; ' : ''}${personnel}organization bank account details; passwords and other sign-in details; confidential board matters`, 'Only people whose role requires it'],
@@ -377,7 +378,7 @@ data(a, pol){
     <li>${a.org} does not sell, rent or trade donor lists or any personal information.</li>
     ${c ? `<li>${t("Client information is shared outside the organization only with the client's consent, or when the law requires it.")}</li>
     <li>${t('Funders receive client information as totals or with names removed, unless the grant agreement requires more and the client has agreed.')}</li>` : ''}
-    <li>Vendors that receive personal information (donor database, mail houses, event platforms${a.staff ? ', payroll services' : ''}) must have a written agreement that covers how they protect it. Vendors with written agreements are marked in the Asset Inventory.</li>
+    <li>Vendors that receive personal information (${a.crmRaw==='spreadsheet' ? t('cloud storage') : 'donor database'}, mail houses, event platforms${a.staff ? ', payroll services' : ''}) must have a written agreement that covers how they protect it. Vendors with written agreements are marked in the Asset Inventory.</li>
     <li>Send files outside the organization as a sharing link that only the named person can open, such as ${t({m365:'a OneDrive or SharePoint link', google:'a Google Drive link'}[a.platform] || 'a link from your shared folder')} set to specific people. Never send confidential files as email attachments.</li>
     <li>Never send Social Security numbers, bank account numbers or card numbers by email or text message.</li>
     <li>Never put confidential information into an AI tool the organization hasn't approved.</li>
@@ -393,7 +394,7 @@ data(a, pol){
     c ? [t('Client records'), t('Only as long as needed to provide services, or as long as a grant or law requires')] : null,
     v ? [t('Volunteer applications and background checks'), t('While the person is active, then for the period legal counsel recommends')] : null,
     ['Training records', 'At least three years, or longer if a law, contract, grant or insurance policy requires it'],
-    ['Exports and copies made for a task', 'Deleted when the task is done'],
+    ['Exports and copies made for a task', 'Deleted when the task is done. Backup copies are kept as the Backup and Recovery Policy says.'],
   ].filter(Boolean))}
   <p>Check these periods with your accountant or legal counsel, because requirements vary by state and grant.</p>
   <ul>
@@ -453,6 +454,7 @@ backup(a, pol){
   <p>Ransomware, a deleted folder or a lost laptop can wipe out years of records. This policy makes sure ${a.org} can get its information back quickly.</p>
   <h3>2. Who it covers</h3>
   <p>Everyone who creates or saves organization information. Most backup tasks belong to ${a.contact}, but everyone must save work files in ${storage}, not only on their own device.</p>
+  <p>If you need an exception to this policy, ask ${a.contact}. Exceptions must be approved in writing.</p>
   <h3>3. What gets backed up</h3>
   <ul>
     <li>Email and files in ${a.platform==='other' ? 'organization accounts and shared storage' : t(a.platformName)}</li>${a.server ? `
@@ -473,7 +475,7 @@ backup(a, pol){
   ${running}
   <h3>6. Protecting the backups</h3>
   <ul>
-    <li>No more than two named people can reach the backups. Both use MFA.</li>
+    <li>No more than two named people can reach the backups. Both use an authenticator app or security key for MFA.</li>
     <li>Backups are kept separate from everyday accounts, so one stolen password cannot delete them.</li>
     <li>Backups and donor exports are Confidential under the Data Protection Policy and are stored encrypted.</li>
   </ul>
@@ -529,7 +531,7 @@ ir(a, pol){
   <h3>Step 5 · Recover</h3>
   <p>Confirm the problem is gone, restore from backups as set out in the Backup and Recovery Policy, and watch the affected accounts for two weeks. Never pay a ransom or contact the attacker without approval from the board${a.insurance ? ', ' + t('the insurance carrier') : ''} and legal counsel. Some ransom payments are illegal.${a.insurance ? '' : ' ' + t('Without cyber insurance, decisions about outside help also go to the board.')}</p>
   <h3>Step 6 · Learn</h3>
-  <p>Within 30 days, hold a short review: what happened, what worked, what to change. Update these policies and the Incident Contact List if needed. This plan is practiced once a year in a tabletop exercise, as described in the Security Awareness and Training Policy. Share lessons from real incidents in the next quarterly security reminder.</p>
+  <p>Within 30 days, hold a short review: what happened, what worked, what to change. Update these policies and the Incident Contact List if needed. This plan is practiced once a year in a tabletop exercise, as described in the Security Awareness and Training Policy. Share lessons from real incidents in a short reminder soon after, as described in the Security Awareness and Training Policy.</p>
   ${acknowledgment()}
   ${approval()}</div>`;
 },
@@ -641,10 +643,10 @@ contacts(a, pol){
   <h3>People</h3>
   ${table(['Role','Name','Phone','After hours or other phone','Email'], [
     row('Incident lead', a.contact, a.contactPhone, '', a.contactEmail),
-    row('Alternate incident contact (if the lead is unreachable or compromised)', a.backupLead, a.backupPhone, '', a.backupEmail),
+    row('Alternate incident contact (if the lead is unreachable or compromised)', a.backupLeadGiven ? a.backupLead : '', a.backupPhone, '', a.backupEmail),
     a.staff ? row('Executive director', '', '', '', '') : '',
     row('Board chair', a.boardChair, '', '', ''),
-    row('Communications contact (donors and media)', '', '', '', ''),
+    row('Communications contact (donors and media)', a.owner, '', '', ''), // the Incident Response Plan names the policy owner as the only spokesperson
     a.itProvider ? row('IT support provider', '', '', '', '') : '',
     a.itProvider ? row('Managed support provider', '', '', '', '') : '',
   ])}
