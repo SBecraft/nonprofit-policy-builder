@@ -55,22 +55,25 @@ const LABEL_KEY = [
 let current = 'aup';
 
 function read(){
-  const v = id => esc($(id).value.trim() || '—');
+  // Every typed answer is wrapped in t(), so "Highlight tailored text" shows all of them. Blank ones stay blank.
+  const tv = s => s ? t(s) : '';
+  const v = id => t(esc($(id).value.trim() || '—'));
+  const typed = id => tv(esc($(id).value.trim()));
   const d = $('date').value ? new Date($('date').value + 'T12:00:00') : today;
   const review = new Date(d); review.setFullYear(d.getFullYear()+1);
   const check = new Date(d); check.setMonth(d.getMonth()+3);
   if(check.getDate() !== d.getDate()) check.setDate(0); // Nov 30 + 3 months = Feb 28, not Mar 2
-  const fmt = x => x.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+  const fmt = x => t(x.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'}));
   const p = $('platform').value;
   return {
     org:v('org'), owner:v('owner'), contact:v('contact'),
-    backupLead:esc($('backupLead').value.trim()) || v('owner'), // the policy owner stands in if left blank
-    printPlace:esc($('printPlace').value.trim()), backupName:esc($('backupName').value.trim()),
-    boardChair:esc($('boardChair').value.trim()), // Incident Contact List only; blank leaves a write-in space
-    contactPhone:esc($('contactPhone').value.trim()), contactEmail:esc($('contactEmail').value.trim()),
-    backupPhone:esc($('backupPhone').value.trim()), backupEmail:esc($('backupEmail').value.trim()), // Incident Contact List only
+    backupLead:typed('backupLead') || v('owner'), // the policy owner stands in if left blank
+    printPlace:typed('printPlace'), backupName:typed('backupName'),
+    boardChair:typed('boardChair'), // Incident Contact List only; blank leaves a write-in space
+    contactPhone:typed('contactPhone'), contactEmail:typed('contactEmail'),
+    backupPhone:typed('backupPhone'), backupEmail:typed('backupEmail'), // Incident Contact List only
     // phone and email together, for sentences; either one alone if the other is blank
-    contactInfo:[$('contactPhone').value.trim(), $('contactEmail').value.trim()].filter(Boolean).map(esc).join(' · ') || '—',
+    contactInfo:t([$('contactPhone').value.trim(), $('contactEmail').value.trim()].filter(Boolean).map(esc).join(' · ') || '—'),
     date:fmt(d), review:fmt(review), check:fmt(check),
     // "Other (type it in)" answers come from the text box under each dropdown
     platform:p, platformName: p==='custom' ? esc($('platformOther').value.trim()) || '—'
@@ -109,7 +112,7 @@ const authApp = a => ({m365:'Microsoft Authenticator', google:'Google Authentica
 const listOf = items => items.length > 1 ? `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}` : items[0];
 // Who a policy covers. vol is the volunteer wording, which differs by policy.
 const scope = (a, vol) => listOf([a.staff && 'staff', 'board members', 'interns', 'contractors', a.volunteers && t(vol)].filter(Boolean));
-const printedAt = a => a.printPlace ? t(a.printPlace) : BLANK;
+const printedAt = a => a.printPlace || BLANK;
 const offboardWindow = a => a.turnover ? t('the same day') : 'within three business days';
 // Shared by the Onboarding and Offboarding forms
 const PASSWORD_NOTE = 'Never write passwords on these sheets. They belong in the password manager.';
@@ -200,7 +203,7 @@ aup(a, pol){
   ${setup}
   ${personal}
   <h3>7. Reporting problems and suspicious requests</h3>
-  <p>Report a lost or stolen device to ${midSentence(a.contact)} at ${t(a.contactInfo)} within 24 hours. Report suspicious messages to the same person right away. Never buy gift cards, send money, or change bank details because of an email or text, even one that appears to come from leadership. Confirm by calling the person at a number you already have.</p>
+  <p>Report a lost or stolen device to ${midSentence(a.contact)} at ${a.contactInfo} within 24 hours. Report suspicious messages to the same person right away. Never buy gift cards, send money, or change bank details because of an email or text, even one that appears to come from leadership. Confirm by calling the person at a number you already have.</p>
   <h3>8. Privacy</h3>
   <p>Organization accounts${a.devices ? ' and devices' : ''} belong to ${a.org}. They may be reviewed when needed to protect the organization or respond to an incident.</p>
   <h3>9. When you leave</h3>
@@ -256,7 +259,7 @@ pw(a, pol){
   <p>No more than two or three people hold administrator rights to email, the donor database or the website. Administrators use a separate admin account for admin work. Administrators for each system are listed in the Asset Inventory.</p>
   <h3>7. Giving and removing access</h3>
   <p>${a.contact} approves every new account and every request for more access. New people get access only after they sign the Policy Acknowledgment Form, using the Onboarding Checklist.</p>
-  <p>When anyone leaves, ${t(a.contact)} removes their access ${offboardWindow(a)}, using the Offboarding Checklist.</p>
+  <p>When anyone leaves, ${a.contact} removes their access ${offboardWindow(a)}, using the Offboarding Checklist.</p>
   <h3>8. If a password is exposed</h3>
   <p>Change it immediately and tell ${a.contact}. If you approved an MFA prompt you didn't start, report it right away. That means someone else has your password.</p>
   ${acknowledgment(9)}
@@ -272,7 +275,7 @@ data(a, pol){
     ? `<p>${t(`${a.org} takes card details by phone or in person.`)} When you do:</p>
       <ul>
         <li>Enter the card directly into the payment system while the donor is on the line.</li>
-        <li>Never write card numbers down, email them, or save them in ${a.crm} or a spreadsheet.</li>
+        <li>Never write card numbers down, email them, or save them in ${t(a.crm)} or a spreadsheet.</li>
         <li>Never ask for or store the three-digit security code after the payment is processed.</li>
         <li>${a.org} completes the PCI DSS self-assessment questionnaire its payment processor requires each year.</li>
       </ul>`
@@ -288,7 +291,7 @@ data(a, pol){
   <h3>1. Purpose</h3>
   <p>${trusted} and funders all trust us with their information. This policy explains how that information is classified, stored, shared and destroyed.</p>
   <h3>2. Who it covers</h3>
-  <p>Everyone who can see or handle ${t(a.org)} information, on paper or online: ${scope(a, 'volunteers, including short-term and event volunteers')}.</p>
+  <p>Everyone who can see or handle ${a.org} information, on paper or online: ${scope(a, 'volunteers, including short-term and event volunteers')}.</p>
   <h3>3. Types of information</h3>
   ${cardTable('levels', ['Level', 'Examples', 'Who can see it'], [
     ['<b>Confidential</b>', `Donor giving history, home addresses, bank or card details; ${c ? t('client records such as household size, income, eligibility and case notes') + '; ' : ''}${personnel}organization bank account details; confidential board matters`, 'Only people whose role requires it'],
@@ -326,13 +329,13 @@ data(a, pol){
   ${cards}
   <h3>8. Sharing information</h3>
   <ul>
-    <li>${t(a.org)} does not sell, rent or trade donor lists or any personal information.</li>
+    <li>${a.org} does not sell, rent or trade donor lists or any personal information.</li>
     ${c ? `<li>${t("Client information is shared outside the organization only with the client's consent, or when the law requires it.")}</li>
     <li>${t('Funders receive client information as totals or with names removed, unless the grant agreement requires more and the client has agreed.')}</li>` : ''}
     <li>Vendors that receive personal information (donor database, mail houses, event platforms${a.staff ? ', payroll services' : ''}) must have a written agreement that covers how they protect it. Vendors with written agreements are marked in the Asset Inventory.</li>
     <li>Files sent outside the organization are shared through a protected link, never as an email attachment.</li>
     <li>Never paste confidential information into AI chatbots or other tools the organization hasn't approved.</li>
-    <li>Requests from police, lawyers or government agencies go to ${t(midSentence(a.owner))} before anything is shared.</li>
+    <li>Requests from police, lawyers or government agencies go to ${midSentence(a.owner)} before anything is shared.</li>
   </ul>
   ${c ? `<p>${t('Some programs and grants have extra legal or contract rules for client information, such as health privacy laws or confidentiality rules for domestic violence services. Check with legal counsel and your grant agreements.')}</p>` : ''}
   <h3>9. Keeping and destroying records</h3>
@@ -350,7 +353,7 @@ data(a, pol){
     ${a.devices ? '<li>Computers and phones are wiped before reuse, donation or disposal. Record the date each device is wiped and disposed of in the Asset Inventory.</li>' : ''}
   </ul>
   <h3>10. Reporting a problem</h3>
-  <p>Report lost, stolen or misdirected information of any kind to ${t(midSentence(a.contact))} within one hour, following the Incident Response Plan. This includes ${a.paper ? t('a lost paper intake form') + ', ' : ''}a file sent to the wrong person, or a device that held confidential information.</p>
+  <p>Report lost, stolen or misdirected information of any kind to ${midSentence(a.contact)} within one hour, following the Incident Response Plan. This includes ${a.paper ? t('a lost paper intake form') + ', ' : ''}a file sent to the wrong person, or a device that held confidential information.</p>
   ${acknowledgment(11)}
   ${approval()}`;
 },
@@ -418,7 +421,7 @@ ir(a, pol){
   return '<div class="onepage">' + head(a,pol,'Incident Response Plan') + `
   <p>Keep this page where everyone can find it, including a printed copy. If something seems wrong, report it. Reporting early is never a mistake.</p>
   <h3>Incident lead</h3>
-  <p>${t(a.contact)} · ${t(a.contactInfo)}<br>Alternate incident contact: ${t(a.backupLead)}</p>
+  <p>${a.contact} · ${a.contactInfo}<br>Alternate incident contact: ${a.backupLead}</p>
   <p>Full contact details${a.insurance ? t(', including the cyber insurance carrier,') : ''} are on the Incident Contact List, kept by ${a.contact} and verified every three months. Printed copies are kept at ${printedAt(a)}.</p>
   <h3>What to report</h3>
   <p>Clicking a suspicious link or entering a password on an unfamiliar page, a lost or stolen device, ransom messages or locked files, unexpected account changes or MFA prompts, confidential information sent to the wrong person, website changes nobody made, or any request to change payment or bank details.</p>
@@ -437,7 +440,7 @@ ir(a, pol){
   <h3>Step 4 · Notify</h3>
   <ol>
     ${a.insurance ? `<li>${t('Cyber insurance carrier first, before hiring outside help. Most policies require early notice and approved vendors.')}</li>` : ''}
-    <li>${a.owner} and the board chair${a.boardChair ? ', ' + t(a.boardChair) : ''}.</li>${a.cards || a.online ? `
+    <li>${a.owner} and the board chair${a.boardChair ? ', ' + a.boardChair : ''}.</li>${a.cards || a.online ? `
     <li>${t('Payment processor, right away, if card data may have been exposed.')}</li>` : ''}
     <li>${a.itProvider ? 'IT support or managed support provider, website host or domain registrar' : t('Website host or domain registrar')}, if their systems are involved.</li>
     <li>Fraud or ransomware: FBI at ic3.gov. CISA accepts reports at cisa.gov/report.</li>
@@ -452,7 +455,7 @@ ir(a, pol){
 },
 
 train(a, pol){
-  const org = t(a.org), owner = t(a.owner), contact = t(a.contact);
+  const org = a.org, owner = a.owner, contact = a.contact;
   const logTool = {m365:'an Excel spreadsheet', google:'a Google Sheets spreadsheet'}[a.platform] || 'an Excel or Google Sheets spreadsheet';
   const logHome = {m365:'OneDrive or SharePoint', google:'Google Drive'}[a.platform] || 'the approved shared storage';
   const everyone = scope(a, 'volunteers');
@@ -520,7 +523,7 @@ train(a, pol){
   <h3>6. Roles and responsibilities</h3>
   ${cardTable('roles', ['Who', 'Responsibility'], roles)}
   <h3>7. Reporting mistakes without blame</h3>
-  <p>Anyone can click a bad link or send a file to the wrong person. Report it right away to ${t(midSentence(a.contact))} at ${t(a.contactPhone || a.contactInfo)}. Fast reporting limits the damage, and nobody is punished for an honest mistake they report. Hiding a mistake, or repeatedly ignoring the policies, is handled under the Acceptable Use Policy.</p>
+  <p>Anyone can click a bad link or send a file to the wrong person. Report it right away to ${midSentence(a.contact)} at ${a.contactPhone || a.contactInfo}. Fast reporting limits the damage, and nobody is punished for an honest mistake they report. Hiding a mistake, or repeatedly ignoring the policies, is handled under the Acceptable Use Policy.</p>
   <h3>8. Training records</h3>
   <p>The primary IT contact keeps a training log and records every session in it. Use a simple tool you already have, such as ${t(logTool)}, a shared document or a printed sheet. Model your log on the example below, but keep it separate from this policy. Store a digital log in ${t(logHome)}, not a personal account. The log shows funders, auditors and insurers that training actually happens.</p>
   ${cardTable('fill trainlog', ['Date', 'Name', 'Role', 'Activity (onboarding, yearly, quarterly, phishing test, tabletop, policy update, incident)', 'Given by'], Array(2).fill(['', '', '', '', '']))}
@@ -552,10 +555,10 @@ contacts(a, pol){
   <p class="note"><b>Confidential:</b> Give this sheet only to people who may need it during an incident. Keep a printed copy at ${printedAt(a)}, in case email or files are locked. Store at least one printed copy of this contact list somewhere other than the primary office if practical. Print it double-sided so both pages stay together. <b>Call, don't email:</b> if email may be compromised, the attacker may be reading it.</p>
   <h3>People</h3>
   ${table(['Role','Name','Phone','After hours or other phone','Email'], [
-    row('Incident lead', t(a.contact), a.contactPhone ? t(a.contactPhone) : '', '', a.contactEmail ? t(a.contactEmail) : ''),
-    row('Alternate incident contact (if the lead is unreachable or compromised)', t(a.backupLead), a.backupPhone ? t(a.backupPhone) : '', '', a.backupEmail ? t(a.backupEmail) : ''),
+    row('Incident lead', a.contact, a.contactPhone, '', a.contactEmail),
+    row('Alternate incident contact (if the lead is unreachable or compromised)', a.backupLead, a.backupPhone, '', a.backupEmail),
     a.staff ? row('Executive director', '', '', '', '') : '',
-    row('Board chair', a.boardChair ? t(a.boardChair) : '', '', '', ''),
+    row('Board chair', a.boardChair, '', '', ''),
     row('Communications contact (donors and media)', '', '', '', ''),
     a.itProvider ? row('IT support provider', '', '', '', '') : '',
     a.itProvider ? row('Managed support provider', '', '', '', '') : '',
@@ -567,7 +570,7 @@ contacts(a, pol){
     row('Donor records', t(donorRecords), '', ''),
     processor ? row(t('Payment processor (report possible card data exposure right away)'), '', '', '') : '',
     a.pm==='none' ? '' : row('Password manager', t(esc(a.pm)), '', ''), // where the admin passwords are during an incident
-    a.backup ? row(t('Backup service'), a.backupName ? t(a.backupName) : '', '', '') : '',
+    a.backup ? row(t('Backup service'), a.backupName, '', '') : '',
     row('Domain registration (GoDaddy, Cloudflare, Squarespace, etc.)', '', '', ''),
     row('Website hosting', '', '', ''),
     row('Website developer', '', '', ''),
@@ -599,7 +602,7 @@ onboard(a, pol){
   const { donors, noPM, who, role, stepCols, steps } = checklistParts(a);
   const list = [ // policies and training come first: Passwords & MFA and the training policy require both before first access
     'Give them the policies their role needs and collect their signed Policy Acknowledgment Form.',
-    `Give onboarding security training (see the Security Awareness and Training Policy): how to spot phishing and gift-card or payment scams, and how to report a problem to ${t(a.contact)}.`,
+    `Give onboarding security training (see the Security Awareness and Training Policy): how to spot phishing and gift-card or payment scams, and how to report a problem to ${a.contact}.`,
     a.platform==='other' ? `Create ${t('their own organization email account')}. No shared logins for personal work.`
       : `Create their own ${t(a.platformName)} account. No shared logins for personal work.`,
     `Turn on multi-factor authentication (MFA), a second sign-in step, with an authenticator app such as ${t(authApp(a))}.`,
@@ -651,7 +654,7 @@ ack(a, pol){
   rows.push(['Other:', '', ''], ['Other:', '', '']);
   return `<div class="onepage"><h2>Policy Acknowledgment Form</h2>
   ${chips(pol)}
-  <p>Organization: <b>${t(a.org)}</b></p>
+  <p>Organization: <b>${a.org}</b></p>
   <p>Each person signs this form when they join and again whenever a policy listed below changes. Make sure they initial every policy they received, then keep the signed form in their file.</p>
   <h3>Policies covered</h3>
   <p>The signer initials each policy they received and read. Leave rows blank for policies that don't apply to their role.</p>
@@ -686,7 +689,7 @@ inventory(a, pol){
   const blank = (rows, cols) => Array(rows).fill(Array(cols).fill(''));
   return `<div class="onepage inventory"><h2>Asset Inventory</h2>
   ${chips(pol)}
-  <p>Organization: <b>${t(a.org)}</b></p>
+  <p>Organization: <b>${a.org}</b></p>
   <p>This inventory lists every ${a.devices ? 'account, service and device' : t('account and service')} the organization uses, so you know what to protect, what to back up and what to remove when someone leaves. Review it every six months. Add new apps, cloud or AI services, ${a.devices ? 'bank or social media accounts, or devices' : t('or bank or social media accounts')} as soon as you start using them, and update it when anything is replaced or retired.</p>
   <p class="note">Never write passwords on this form. They belong in the password manager.</p>
   <h3>Accounts and services</h3>
@@ -708,7 +711,7 @@ inventory(a, pol){
     ? cardTable('fill inv devices owned', ['Device (type and label, such as &quot;Front desk laptop&quot;)', 'Used by', 'Organization or personal?', 'Encrypted?', 'Updates on?', 'Firewall on?', 'Date added', 'Date removed'], blank(a.shared ? 5 : 6, 8)) // one row fewer while Shared accounts shows, to stay on one page
     : cardTable('fill inv devices', ['Device (type and label, such as &quot;Front desk laptop&quot;)', 'Assigned to', 'Encrypted?', 'Updates on?', 'Firewall on?', 'Date issued', 'Date returned or disposed'], blank(a.shared ? 5 : 6, 7))}
   ` : ''}<h3>Review log</h3>
-  <p>Inventory owner: ${t(a.contact)}<br>Next review due: ${line(14)} (review every six months)</p>
+  <p>Inventory owner: ${a.contact}<br>Next review due: ${line(14)} (review every six months)</p>
   ${cardTable('fill inv invlog', ['Date reviewed', 'Reviewed by (print name)', 'Initials', 'Changes made'], blank(a.shared ? 3 : 4, 4))}</div>`; // three rows while Shared accounts shows, to stay on one page
 },
 
@@ -716,7 +719,7 @@ summary(a, pol){
   const docs = POLICIES.filter(p => p.maps.length);
   const labels = (p, fw) => p.maps.filter(m => m.startsWith(fw)).map(m => m.slice(fw.length + 1).replace(' · ', ' ')).join(', ');
   return `<div class="onepage"><h2>Framework Summary</h2>
-  <p>Organization: <b>${t(a.org)}</b> &nbsp;&nbsp; Date: <b>${a.date}</b></p>
+  <p>Organization: <b>${a.org}</b> &nbsp;&nbsp; Date: <b>${a.date}</b></p>
   <p>This summary shows which parts of two recognized security frameworks each document supports: the ${FRAMEWORKS.cis} (Implementation Group 1, the starter set for small organizations) and the ${FRAMEWORKS.nist}. To read them, type ${FRAMEWORKS.cisUrl} or ${FRAMEWORKS.nistUrl} into a web browser.</p>
   <p class="note"><b>Alignment, not certification.</b> The labels show which parts of each framework a document supports. Using these documents does not make an organization "compliant" or "certified". Following them in practice is what reduces risk.</p>
   <h3>Documents and their labels</h3>

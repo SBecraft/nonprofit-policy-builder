@@ -222,6 +222,7 @@ p.approval span{white-space:nowrap}
 .note b{color:var(--warn)}
 mark.t{background:transparent;color:inherit}
 .show-tailored mark.t{background:var(--mark);border-radius:2px;padding:0 2px}
+.show-tailored mark.t mark.t{padding:0} /* a typed answer inside a tailored sentence */
 /* footer: full page width under a thin border; text lines up with the page content */
 footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
 .foot-inner{max-width:1200px;margin:0 auto;padding-inline:20px;padding-block:18px calc(24px + env(safe-area-inset-bottom, 0px));display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
