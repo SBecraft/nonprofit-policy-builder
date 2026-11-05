@@ -208,7 +208,7 @@ aup(a, pol){
   ${personal}
   <h3>8. Reporting problems and suspicious requests</h3>
   <ul>
-    <li>If a device used for organization work is lost or stolen, report it to ${midSentence(a.contact)} at ${a.contactInfo} as soon as you notice, and no later than 24 hours.</li>
+    <li>If a device used for organization work is lost or stolen, report it to ${midSentence(a.contact)} at ${a.contactInfo} right away, and within one hour if it had organization email, files or confidential information on it.</li>
     <li>Report suspicious emails, texts or calls to the same person right away.</li>
     <li>Never buy gift cards, send money or change bank details because of an email, text or call, even one that seems to come from leadership. Check first by calling the person at a number you already have.</li>
     <li>If you think you made a mistake, report it right away, even if you're not sure anything went wrong.</li>
@@ -319,8 +319,8 @@ data(a, pol){
     ['Board records', `The Board folder in ${fileStore}, not personal email`, a.staff ? 'Board members and the executive director' : 'Board members'],
     a.server ? [t('Shared files kept on site'), t('The office server or storage device, in folders limited to the people listed'), t('Only people whose role requires it')] : null,
   ].filter(Boolean))}
-  <p>Every system that holds confidential information is listed in the Asset Inventory.</p>
   <p>Folder names and roles are suggestions. Use the names and roles your organization already has, as long as access to each folder is limited to the people listed.</p>
+  <p>Every system that holds confidential information is listed in the Asset Inventory. Never store confidential information in an app or online service that hasn't been approved under the Acceptable Use Policy.</p>
   ${a.crmRaw==='spreadsheet' ? `<p class="note"><b>Risk noted:</b> ${t('Donor records are kept in spreadsheets.')} Limit access to named people and never email copies. Moving to a donor database is recommended.</p>` : ''}
   <h3>5. Who has access</h3>
   <ul>
@@ -333,6 +333,7 @@ data(a, pol){
     <li>Collect only the information you need for the task.${c ? ' ' + t("For example, don't ask clients for details the program doesn't require.") : ''}</li>
     <li>Use information only for the reason it was collected.${c ? ' ' + t('Client information is used to provide services, not for fundraising.') : ''}</li>
     <li>Don't discuss ${c ? t('client or donor') : 'donor'} information with people who don't need it${noTalk ? `, including ${noTalk}` : ''}.</li>
+    ${c ? `<li>${t("Don't use photos, names or stories of the people we serve in newsletters, social media, grant reports or fundraising without their written permission.")}</li>` : ''}
   </ul>
   <h3>7. Card payments</h3>
   ${cards}
@@ -342,8 +343,10 @@ data(a, pol){
     ${c ? `<li>${t("Client information is shared outside the organization only with the client's consent, or when the law requires it.")}</li>
     <li>${t('Funders receive client information as totals or with names removed, unless the grant agreement requires more and the client has agreed.')}</li>` : ''}
     <li>Vendors that receive personal information (donor database, mail houses, event platforms${a.staff ? ', payroll services' : ''}) must have a written agreement that covers how they protect it. Vendors with written agreements are marked in the Asset Inventory.</li>
-    <li>Files sent outside the organization are shared through a protected link, never as an email attachment.</li>
-    <li>Never paste confidential information into AI chatbots or other tools the organization hasn't approved.</li>
+    <li>Send files outside the organization as a sharing link that only the named person can open, such as ${t({m365:'a OneDrive or SharePoint link', google:'a Google Drive link'}[a.platform] || 'a link from your shared folder')} set to specific people. Never send confidential files as email attachments.</li>
+    <li>Never send Social Security numbers, bank account numbers or card numbers by email or text message.</li>
+    <li>Never put confidential information into an AI tool the organization hasn't approved.</li>
+    <li>Honor donor requests to stay anonymous or not to be contacted. If anyone asks what information we hold about them, or asks us to correct or delete it, pass the request to ${a.owner}.</li>
     <li>Requests from police, lawyers or government agencies go to ${midSentence(a.owner)} before anything is shared.</li>
   </ul>
   ${c ? `<p>${t('Some programs and grants have extra legal or contract rules for client information, such as health privacy laws or confidentiality rules for domestic violence services. Check with legal counsel and your grant agreements.')}</p>` : ''}
@@ -363,7 +366,7 @@ data(a, pol){
     ${a.devices ? '<li>Computers and phones are wiped before reuse, donation or disposal. Record the date each device is wiped and disposed of in the Asset Inventory.</li>' : ''}
   </ul>
   <h3>10. Reporting a problem</h3>
-  <p>Report lost, stolen or misdirected information of any kind to ${midSentence(a.contact)} within one hour, following the Incident Response Plan. This includes ${a.paper ? t('a lost paper intake form') + ', ' : ''}a file sent to the wrong person, or a device that held confidential information.</p>
+  <p>Report lost, stolen or misdirected information of any kind to ${midSentence(a.contact)} right away, and within one hour, following the Incident Response Plan. Report even if you're not sure anything was exposed. This includes ${a.paper ? t('a lost paper intake form') + ', ' : ''}a file sent to the wrong person, or a device that held confidential information.</p>
   ${acknowledgment(11)}
   ${approval()}`;
 },
@@ -723,8 +726,8 @@ inventory(a, pol){
   ${cardTable('fill inv shared', ['Shared account (such as info@ or a social media login)', 'Owner', 'Who uses it', 'MFA on?', 'Password last changed'], blank(3, 5))}
   ` : ''}${a.devices ? `<h3>Devices</h3>
   ${a.byod // personal devices allowed too: say who uses each one and who owns it, with dates that suit both kinds (headers stay plain text: they are copied into data-label)
-    ? cardTable('fill inv devices owned', ['Device (type and label, such as &quot;Front desk laptop&quot;)', 'Used by', 'Organization or personal?', 'Encrypted?', 'Updates on?', 'Firewall on?', 'Date added', 'Date removed'], blank(a.shared ? 5 : 6, 8)) // one row fewer while Shared accounts shows, to stay on one page
-    : cardTable('fill inv devices', ['Device (type and label, such as &quot;Front desk laptop&quot;)', 'Assigned to', 'Encrypted?', 'Updates on?', 'Firewall on?', 'Date issued', 'Date returned or disposed'], blank(a.shared ? 5 : 6, 7))}
+    ? cardTable('fill inv devices owned', ['Device (type and label, such as &quot;Front desk laptop&quot;)', 'Used by', 'Organization or personal?', 'Encrypted?', 'Updates on?', 'Firewall on?', 'Date added', 'Date wiped and removed'], blank(a.shared ? 4 : 5, 8)) // 4 rows with Shared accounts, 5 without: room for a long service name to wrap and still fit one page
+    : cardTable('fill inv devices', ['Device (type and label, such as &quot;Front desk laptop&quot;)', 'Assigned to', 'Encrypted?', 'Updates on?', 'Firewall on?', 'Date issued', 'Date wiped and returned or disposed'], blank(a.shared ? 4 : 5, 7))}
   ` : ''}<h3>Review log</h3>
   <p>Inventory owner: ${a.contact}<br>Next review due: ${line(14)} (review every six months)</p>
   ${cardTable('fill inv invlog', ['Date reviewed', 'Reviewed by (print name)', 'Initials', 'Changes made'], blank(a.shared ? 3 : 4, 4))}</div>`; // three rows while Shared accounts shows, to stay on one page
