@@ -42,7 +42,19 @@
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55}
 .wrap{max-width:1200px;margin:0 auto;padding-inline:20px;padding-block:28px 48px}
-header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px;margin-bottom:24px}
+header.top{margin-bottom:24px}
+/* walkthrough video: below the "Before you start" panel by default; beside the intro when both fit at their normal sizes */
+.walk{width:480px;max-width:100%;margin:16px 0 0}
+.walk figcaption{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px} /* same style as the POLICIES label */
+.walk video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+@media (min-width:1120px){ /* 540px intro paragraph + 32px gap + 480px video + 40px padding + scroll bar */
+  header.top{display:grid;grid-template-columns:minmax(0,1fr) 480px;column-gap:32px}
+  header.top>.intro{grid-column:1;grid-row:1}
+  header.top>details.start{grid-column:1;grid-row:2}
+  /* bottom lines up with the closed "Before you start" button: 12px margin + 46px summary (24px line + 20px padding + 2px border), so opening the panel doesn't move it */
+  .walk{grid-column:2;grid-row:1;align-self:end;margin:0 0 -58px}
+}
+@media (max-width:860px){.walk{width:100%}}
 .eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
 .pagetwo{margin-top:28px;padding-top:14px;border-top:1px dashed var(--line)} /* Incident Contact List page 2; a new page in print */
 h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,4vw,40px);line-height:1.05;margin:4px 0 6px;text-wrap:balance}
@@ -52,7 +64,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,4vw,40px);l
 /* "Before you start" panel */
 details.start{width:fit-content;max-width:75ch;margin-top:12px;background:var(--panel);border:1px solid var(--line);border-radius:8px}
 details.start[open]{width:auto}
-details.start summary{padding:10px 14px;cursor:pointer;font-family:var(--f-display);font-weight:600;font-size:15px;color:var(--accent)}
+details.start summary{padding:10px 14px;line-height:24px;cursor:pointer;font-family:var(--f-display);font-weight:600;font-size:15px;color:var(--accent)}
 details.start summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .start-body{padding:0 16px 14px;font-size:15px}
 .start-body h2{font-family:var(--f-display);font-size:16px;margin:14px 0 4px}
@@ -291,12 +303,13 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
 
 <div class="wrap">
   <header class="top">
-    <div>
+    <div class="intro">
       <div class="eyebrow">GRC starter kit · small nonprofits</div>
       <h1 id="top" tabindex="-1">Nonprofit Policy Builder</h1>
       <p class="lede">Answer a few questions about how your organization works, and six plain-English security policies and six forms are tailored to match your answers. Change an answer and every document updates instantly. Built for small nonprofits, including organizations with volunteers, shared logins and frequent turnover. Your answers stay in your browser and are never saved or sent anywhere.</p>
       <p class="disclaimer"><strong>Not legal advice.</strong> These are starting templates. Adjust them to fit your organization, have your board approve them, and ask a lawyer to review them, especially your state’s breach notification and record retention rules.</p>
-      <details class="start">
+    </div>
+    <details class="start">
         <summary>Before you start: what to know and what to gather (2-minute read)</summary>
         <div class="start-body">
           <h2>Free, private, nothing to install</h2>
@@ -346,7 +359,10 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
           <p class="start-close"><button type="button" class="btn primary" id="startClose">Close this section</button></p>
         </div>
       </details>
-    </div>
+    <figure class="walk">
+      <figcaption id="walkLabel">Watch: how to use this page (2 min)</figcaption>
+      <video src="Nonprofit_Policy_Builder_Walkthrough.mp4" poster="walkthrough-poster.jpg" controls preload="none" playsinline width="1920" height="1080" aria-labelledby="walkLabel">Your browser can't play this video.</video>
+    </figure>
   </header>
 
   <div class="grid">

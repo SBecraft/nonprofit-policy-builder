@@ -102,7 +102,7 @@ The app is a security tool, so it follows the practices it recommends:
 ## Using the app
 
 1. Open the live site ([LIVE SITE URL]). No sign-up, download or login.
-2. Open **Before you start** to see what information to gather first.
+2. Watch the two-minute walkthrough video at the top of the page, then open **Before you start** to see what information to gather first.
 3. Replace the example organization's answers with your own. Every question is optional; anything left blank shows as a dash or a line to fill in later. Pin the tab so it's harder to close by accident.
 4. Review each document, then copy or print them, and finish in one sitting.
 5. Edit the documents in Word or Google Docs, have your board approve them, and share them with your team. Keep the Incident Contact List confidential.
@@ -151,6 +151,8 @@ app/                  Everything the live site needs. Deploy this folder only.
   robots.txt          Lets search engines list the site; asks AI training crawlers to stay out
   sitemap.xml         Lists the site's two pages for search engines (linked in the footer)
   og-image.png        Preview picture shown when the site is shared on LinkedIn, Teams, Slack and similar
+  Nonprofit_Policy_Builder_Walkthrough.mp4   Two-minute video on how to use the page
+  walkthrough-poster.jpg                     Still image shown on the video before it plays
 assets/               Screenshots of the app
 documents/            Project plan and other project notes (not needed to run the app)
 COPYRIGHT             Who owns the software
