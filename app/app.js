@@ -228,7 +228,7 @@ aup(a, pol){
 
 pw(a, pol){
   const pmText = a.pm === 'none'
-    ? `<p class="note"><b>Action needed:</b> ${t(`${a.org} does not yet use a password manager. ${a.contact} will choose one within 60 days.`)} Until then, never store passwords in spreadsheets, documents or email.</p>`
+    ? `<p class="note"><b>Action needed:</b> ${t(`${a.org} does not yet use a password manager. ${midSentence(a.contact)} will choose one within 60 days.`)} Until then, never store passwords in spreadsheets, documents or email.</p>`
     : `<p>${t(`${a.org} provides ${esc(a.pm)}`)} for storing organization passwords. Use it for every organization account. Never keep passwords in spreadsheets, sticky notes, documents or email.</p>`;
   const browserText = a.pm === 'none'
     ? `<p>${t("Until a password manager is chosen, you may save organization passwords in your web browser's built-in password manager, but only on a device with a screen lock, and only if your browser account uses MFA.")} Never save them on a shared or public computer.</p>`
