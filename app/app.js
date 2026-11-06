@@ -3,6 +3,7 @@
  * Copyright © 2026 SBecraft
  * All Rights Reserved
  */
+/* global FRAMEWORKS */ // defined in frameworks.js, which index.html loads first
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const t = s => `<mark class="t">${s}</mark>`; // tailored passage (s may contain escaped html)
@@ -91,7 +92,7 @@ function read(){
   };
 }
 
-function meta(a, pol){
+function meta(a){
   return `<div class="docmeta">
     <div>Organization<b>${a.org}</b></div>
     <div>Policy owner<b>${a.owner}</b></div>
@@ -103,7 +104,7 @@ const chips = pol => `<div class="maps">${pol.maps.map(m=>`<span class="chip">${
 function head(a, pol, title){
   return `<div class="eyebrow">${a.org}</div>
   <h2>${title}</h2>
-  ${chips(pol)}${meta(a,pol)}`;
+  ${chips(pol)}${meta(a)}`;
 }
 const BLANK = '____________________';
 // "Dana Ortiz, Operations Manager" needs a closing comma mid-sentence; a name alone does not
@@ -802,7 +803,7 @@ inventory(a, pol){
   ${cardTable('fill inv invlog', ['Date reviewed', 'Reviewed by (print name)', 'Initials', 'Changes made'], blank(a.shared ? 3 : 4, 4))}</div>`; // three rows while Shared accounts shows, to stay on one page
 },
 
-summary(a, pol){
+summary(a){
   const docs = POLICIES.filter(p => p.maps.length);
   const labels = (p, fw) => p.maps.filter(m => m.startsWith(fw)).map(m => m.slice(fw.length + 1).replace(' · ', ' ')).join(', ');
   return `<div class="onepage"><h2>Framework Summary</h2>
@@ -955,7 +956,23 @@ function pasteHTML(html){
   box.querySelectorAll('hr.split').forEach(h => { h.outerHTML = '<br style="page-break-before:always">'; }); // Word starts each document on a new page
   return `<div style="font-family:Georgia,'Times New Roman',serif;font-size:11pt;line-height:1.4;color:#000000">${box.innerHTML}</div>`;
 }
+// Older copy route: works in many cases where the Clipboard API is refused (for example, right after
+// printing, when the browser can still think the print tab has focus). Keeps the formatting through the copy event.
+function legacyCopy(text, html){
+  let done = false;
+  const onCopy = e => {
+    e.clipboardData.setData('text/html', pasteHTML(html));
+    e.clipboardData.setData('text/plain', text);
+    e.preventDefault();
+    done = true;
+  };
+  document.addEventListener('copy', onCopy);
+  try { done = document.execCommand('copy') && done; } catch { done = false; }
+  document.removeEventListener('copy', onCopy);
+  return done;
+}
 async function copyText(text, html, msg, showAll){
+  window.focus(); // in case focus is still with a print tab
   try {
     if(window.ClipboardItem && navigator.clipboard.write){
       await navigator.clipboard.write([new ClipboardItem({
@@ -967,7 +984,8 @@ async function copyText(text, html, msg, showAll){
     }
     flash(msg);
   }
-  catch(err){
+  catch {
+    if(legacyCopy(text, html)){ flash(msg); return; }
     // show everything being copied so the selection matches; the next edit or tab click restores the normal view
     if(showAll) $('paper').innerHTML = html;
     $('paper').querySelector('.maplink')?.remove(); // so Ctrl+C doesn't copy it
@@ -985,10 +1003,29 @@ $('copyOne').addEventListener('click', () => {
   copyText(text, html, 'Copied this document.');
 });
 
+// "Printing in Progress": while the print tab is open, this page shows a modal over everything (the browser won't
+// let this tab copy while the print tab is open). It has no OK button and Escape or outside clicks don't close it;
+// it closes by itself when the print tab closes (checked every 300 ms, and whenever this tab gets focus).
+let printWin = null, printWatch = 0;
+function watchPrintTab(){
+  if(printWin && !printWin.closed){
+    if(!$('printing').open) $('printing').showModal();
+    return;
+  }
+  printWin = null;
+  clearInterval(printWatch); printWatch = 0;
+  if($('printing').open) $('printing').close();
+}
+$('printing').addEventListener('cancel', e => e.preventDefault()); // Escape doesn't close it
+$('printing').addEventListener('close', () => setTimeout(watchPrintTab)); // Chrome closes it on a second Escape: reopen it right away
+window.addEventListener('focus', watchPrintTab);
+document.addEventListener('visibilitychange', watchPrintTab);
+
 // Print in a new tab so nothing can reload this one (answers are never saved, so a reload erases them).
 // Several documents are separated by hr.split, which starts each on a new page.
 function printDocs(list){
   render(); // in case the copy fallback is showing
+  if(printWin && !printWin.closed) printWin.close(); // only one print tab at a time: a new print replaces the old tab
   const w = window.open('', '_blank');
   if(!w){ window.print(); return; } // new tab blocked: print the current document here instead
   const a = read(), d = w.document;
@@ -997,7 +1034,15 @@ function printDocs(list){
   const style = d.createElement('style');
   style.textContent = [...document.querySelectorAll('style')].map(s => s.textContent).join('\n');
   d.head.appendChild(style);
-  d.body.innerHTML = `<div class="wrap"><article class="${$('paper').className}">${list.map(p => build[p.id](a,p)).join('<hr class="split">')}</article></div>`;
+  // no highlights in the print tab: it stays open after printing, so it should look like the printed copy
+  const cls = $('paper').className.replace(/\bshow-tailored\b/, '').trim();
+  d.body.innerHTML = `<div class="wrap"><article class="${cls}">${list.map(p => build[p.id](a,p)).join('<hr class="split">')}</article></div>`;
+  // close the print tab once printing is done or cancelled: left open, it is only a copy of the document
+  // with no buttons, and the browser blocks Copy in this tab while it is open
+  w.addEventListener('afterprint', () => { try { w.close(); } catch { /* the tab may already be closed */ } window.focus(); });
+  printWin = w;
+  watchPrintTab(); // show "Printing in Progress" here
+  if(!printWatch) printWatch = setInterval(watchPrintTab, 300);
   w.focus();
   w.print();
 }

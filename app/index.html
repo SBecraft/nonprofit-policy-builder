@@ -8,7 +8,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
 <title>Nonprofit Policy Builder</title>
 <meta name="description" content="Free for small nonprofits. Answer a short questionnaire and get six plain-English security policies and six forms to print, save as PDF, or copy into Word or Google Docs. No sign-up, download or login. No tracking, and nothing you type is saved or sent.">
 <!-- Share previews (LinkedIn, Facebook, Teams, Slack, Discord, messaging apps). TODO: replace [LIVE SITE URL] with the site's full address once it is live. -->
@@ -42,7 +41,8 @@
   --line:#2c3b39; --accent:#5ec2a5; --accent-ink:#0d1a17; --mark:rgba(245,205,80,.24); --warn:#e3a95a; color-scheme:dark }
 
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55}
+[hidden]{display:none!important}img{max-width:100%}
 .wrap{max-width:1200px;margin:0 auto;padding-inline:20px;padding-block:28px 48px}
 header.top{margin-bottom:24px}
 /* walkthrough video: below the "Before you start" panel by default; beside the intro when both fit at their normal sizes */
@@ -54,12 +54,11 @@ header.top{margin-bottom:24px}
 /* "Watch larger": the video floats over a dimmed page; the figure keeps its height (set in app.js) so the page doesn't shift */
 .walk.big .walk-box{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:var(--scrim)}
 .walk.big figcaption,.walk.big video{width:min(100%,calc((100vh - 110px) * 16 / 9))}
-.walk.big figcaption{margin:0;padding:10px 14px;background:var(--panel);border:1px solid var(--line);border-bottom:0;border-radius:8px 8px 0 0}
+.walk.big figcaption{margin:0;padding:10px 14px;background:var(--panel);border:1px solid var(--line);border-bottom:0;border-radius:8px 8px 0 0;flex-wrap:wrap;column-gap:16px;row-gap:2px}
 .walk.big video{border-radius:0 0 8px 8px}
 /* how to close the larger view: shown only while enlarged; "Esc" wording for keyboard and mouse, "Tap" wording for touch screens */
 .walk-hint{display:none;margin-left:auto;text-transform:none;letter-spacing:0;font-size:12px}
 .walk.big .walk-hint{display:inline}
-.walk.big figcaption{flex-wrap:wrap;column-gap:16px;row-gap:2px}
 @media (max-width:600px){.walk.big figcaption{flex-direction:column;align-items:flex-start;row-gap:4px}.walk.big .walk-hint{margin-left:0}}
 .walk-hint .touch{display:none}
 @media (hover:none),(pointer:coarse){.walk-hint .key{display:none}.walk-hint .touch{display:inline}}
@@ -137,6 +136,12 @@ label.tg small,label.f small{display:block;font-family:var(--f-body);font-weight
 .actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .btn{font-family:var(--f-display);font-weight:500;font-size:14px;border:1px solid var(--accent);background:transparent;color:var(--accent);padding:7px 12px;border-radius:6px;cursor:pointer}
 .btn.primary{background:var(--accent);color:var(--accent-ink)}
+/* "Printing in Progress": a modal that stays up while the print tab is open (no OK button; Escape and outside clicks don't close it) */
+dialog.printing{max-width:min(460px,calc(100% - 32px));padding:22px 24px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+dialog.printing::backdrop{background:var(--scrim)}
+dialog.printing h2{margin:0 0 10px;font-family:var(--f-display);font-size:20px;color:var(--accent)}
+dialog.printing p{margin:0 0 10px}
+dialog.printing p:last-child{margin-bottom:0}
 .btn:hover:not(:disabled),.btn:active:not(:disabled),.btn:focus-visible,details.multi[open] summary.btn{background:var(--accent);color:var(--accent-ink)}
 .btn.primary:hover:not(:disabled){filter:brightness(1.12)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
@@ -271,7 +276,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
   :root:not([data-print]){
     --bg:#ffffff; --panel:#ffffff; --paper:#ffffff; --ink:#000000; --muted:#444444;
     --line:#bbbbbb; --accent:#1d6b58; --mark:transparent; --warn:#9a5b10; color-scheme:light }
-  header.top,form.q,.toolbar,.status,footer.foot,.maplink,.totop{display:none}
+  header.top,form.q,.toolbar,.status,footer.foot,.maplink,.totop,dialog.printing{display:none}
   .wrap{padding:0;max-width:none}
   .grid{display:block}
   article.paper{border:0;box-shadow:none;padding:0}
@@ -377,7 +382,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
       </details>
     <figure class="walk">
       <div class="walk-box">
-      <figcaption><span id="walkLabel">Watch: how to use this page (2 min)</span> <span class="walk-hint"><span class="key">Press Esc or click outside to close</span><span class="touch">Tap outside to close</span></span> <button type="button" class="walk-big" id="walkBig" aria-pressed="false">Watch larger</button></figcaption>
+      <figcaption><span id="walkLabel">How to use the Nonprofit Policy Builder (2&nbsp;min)</span> <span class="walk-hint"><span class="key">Press Esc or click outside to close</span><span class="touch">Tap outside to close</span></span> <button type="button" class="walk-big" id="walkBig" aria-pressed="false">Watch larger</button></figcaption>
       <video src="Nonprofit_Policy_Builder_Walkthrough.mp4" poster="walkthrough-poster.jpg" controls preload="none" playsinline width="1920" height="1080" aria-labelledby="walkLabel">Your browser can't play this video.</video>
       </div>
     </figure>
@@ -507,6 +512,16 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
     <p class="foot-legal">Nonprofit Policy Builder © 2026 SBecraft · Free for nonprofits to use · <span>Not legal advice</span></p>
   </div>
 </footer>
+
+<!-- shown while a print tab is open; closes by itself when that tab closes (printDocs in app.js) -->
+<dialog class="printing" id="printing" aria-labelledby="printingTitle" aria-describedby="printingText">
+  <h2 id="printingTitle">Printing in Progress</h2>
+  <div id="printingText">
+    <p>A document has been opened in a separate tab for printing.</p>
+    <p>To protect your work, other documents are temporarily unavailable while the print tab is open.</p>
+    <p>When you finish printing, close the print tab and return here to continue.</p>
+  </div>
+</dialog>
 
 <script src="frameworks.js"></script>
 <script src="app.js"></script>
