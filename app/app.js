@@ -1059,6 +1059,20 @@ $('startClose').addEventListener('click', () => {
   summary.focus({ preventScroll: true });
 });
 
+// "Watch larger" on the walkthrough video: floats it over a dimmed page without stopping playback (moving the video would pause it).
+// The figure keeps its height while enlarged so the page behind doesn't shift. Escape, the button or a click on the dimmed area closes it.
+const walk = document.querySelector('.walk'), walkBig = $('walkBig');
+function setWalkBig(on){
+  walk.style.height = on ? `${walk.getBoundingClientRect().height}px` : '';
+  walk.classList.toggle('big', on);
+  walkBig.setAttribute('aria-pressed', String(on));
+  walkBig.textContent = on ? 'Close larger view' : 'Watch larger';
+  walkBig.focus({ preventScroll: true });
+}
+walkBig.addEventListener('click', () => setWalkBig(!walk.classList.contains('big')));
+walk.querySelector('.walk-box').addEventListener('click', e => { if(e.target === e.currentTarget && walk.classList.contains('big')) setWalkBig(false); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && walk.classList.contains('big') && !document.fullscreenElement) setWalkBig(false); });
+
 // "Back to top" links (end of the questionnaire, above the footer): the panel scrolls on its own above 860 px, so reset both it and the page
 document.querySelectorAll('.totop a').forEach(link => link.addEventListener('click', e => {
   e.preventDefault(); // keep "#top" out of the address bar

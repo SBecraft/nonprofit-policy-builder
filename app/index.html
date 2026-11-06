@@ -28,6 +28,7 @@
 :root{
   --bg:#e9eeec; --panel:#f6f8f7; --paper:#ffffff; --ink:#1b2726; --muted:#596a67;
   --line:#cfd8d5; --accent:#1d6b58; --accent-ink:#ffffff; --mark:#fbeaa6; --warn:#9a5b10;
+  --scrim:rgba(0,0,0,.8); /* behind the enlarged video; the same in both themes */
   --f-display:"Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
   --f-body:Charter, "Bitstream Charter", Cambria, Georgia, "Times New Roman", serif;
   --f-mono:ui-monospace, "Cascadia Mono", Consolas, Menlo, monospace;
@@ -45,8 +46,22 @@ body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:1
 header.top{margin-bottom:24px}
 /* walkthrough video: below the "Before you start" panel by default; beside the intro when both fit at their normal sizes */
 .walk{width:480px;max-width:100%;margin:16px 0 0}
-.walk figcaption{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px} /* same style as the POLICIES label */
+.walk figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px} /* same style as the POLICIES label */
 .walk video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+.walk-big{flex:none;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--accent);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.walk-big:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* "Watch larger": the video floats over a dimmed page; the figure keeps its height (set in app.js) so the page doesn't shift */
+.walk.big .walk-box{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:var(--scrim)}
+.walk.big figcaption,.walk.big video{width:min(100%,calc((100vh - 110px) * 16 / 9))}
+.walk.big figcaption{margin:0;padding:10px 14px;background:var(--panel);border:1px solid var(--line);border-bottom:0;border-radius:8px 8px 0 0}
+.walk.big video{border-radius:0 0 8px 8px}
+/* how to close the larger view: shown only while enlarged; "Esc" wording for keyboard and mouse, "Tap" wording for touch screens */
+.walk-hint{display:none;margin-left:auto;text-transform:none;letter-spacing:0;font-size:12px}
+.walk.big .walk-hint{display:inline}
+.walk.big figcaption{flex-wrap:wrap;column-gap:16px;row-gap:2px}
+@media (max-width:600px){.walk.big figcaption{flex-direction:column;align-items:flex-start;row-gap:4px}.walk.big .walk-hint{margin-left:0}}
+.walk-hint .touch{display:none}
+@media (hover:none),(pointer:coarse){.walk-hint .key{display:none}.walk-hint .touch{display:inline}}
 @media (min-width:1120px){ /* 540px intro paragraph + 32px gap + 480px video + 40px padding + scroll bar */
   header.top{display:grid;grid-template-columns:minmax(0,1fr) 480px;column-gap:32px}
   header.top>.intro{grid-column:1;grid-row:1}
@@ -360,8 +375,10 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
         </div>
       </details>
     <figure class="walk">
-      <figcaption id="walkLabel">Watch: how to use this page (2 min)</figcaption>
+      <div class="walk-box">
+      <figcaption><span id="walkLabel">Watch: how to use this page (2 min)</span> <span class="walk-hint"><span class="key">Press Esc or click outside to close</span><span class="touch">Tap outside to close</span></span> <button type="button" class="walk-big" id="walkBig" aria-pressed="false">Watch larger</button></figcaption>
       <video src="Nonprofit_Policy_Builder_Walkthrough.mp4" poster="walkthrough-poster.jpg" controls preload="none" playsinline width="1920" height="1080" aria-labelledby="walkLabel">Your browser can't play this video.</video>
+      </div>
     </figure>
   </header>
 
