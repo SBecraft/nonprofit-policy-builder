@@ -74,9 +74,9 @@ Like every website, the host that delivers the page sees visitors' IP addresses.
 
 When someone shares the site's link on LinkedIn, Facebook, Microsoft Teams, Slack, Discord or a messaging app, that app builds a preview card from Open Graph tags in each page's `<head>`. Both pages (`index.html` and `how.html`) have their own title, description and picture tags, plus a plain `meta name="description"` for search results.
 
-![The preview card: Nonprofit Policy Builder, with "Private by design" and "Built on recognized standards" rows](app/og-image.png)
+![The preview card: Nonprofit Policy Builder, "Free for small nonprofits", privacy and framework chips, and a sample Acceptable Use Policy](app/og-image.png)
 
-- **The picture** (`app/og-image.png`, 1200 × 630) was made for this project in the app's own colors and fonts. Privacy leads: a "Private by design" row says no sign-up, download or login, no tracking, and nothing saved or sent. A lighter "Built on recognized standards" row says the documents are mapped to CIS Controls and NIST CSF ("mapped to", not certified).
+- **The picture** (`app/og-image.png`, 1200 × 630) was made for this project in the app's own colors. On the left: "Free for small nonprofits", the name, "Security policies and forms, tailored to your answers.", two solid chips for privacy (No sign-up or login · Nothing saved or sent) and a lighter outlined chip, "Mapped to CIS & NIST CSF" ("mapped to", not certified). On the right: a tilted view of the sample Acceptable Use Policy with its tailored text highlighted.
 - **The title and description** repeat the privacy points, because some apps show a small picture or none.
 - **Privacy:** visitors' browsers ignore the tags. They load nothing and share nothing about the visitor. Only the app building the preview reads them, and it sees just the page with sample answers.
 - **Waiting on the live site:** `og:url` and `og:image` need full addresses, so they use the `[LIVE SITE URL]` placeholder until launch. Until then, a shared link shows no picture.
