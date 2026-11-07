@@ -1136,7 +1136,10 @@ document.querySelectorAll('.totop a').forEach(link => link.addEventListener('cli
 let clearSet = null;
 document.querySelectorAll('.clear-all').forEach(btn => btn.addEventListener('click', () => {
   clearSet = btn.closest('fieldset');
-  $('clearAskTitle').textContent = `Clear all answers in "${clearSet.querySelector('legend').textContent.toUpperCase()}"?`;
+  const name = document.createElement('span'); // the quoted section name never splits across lines
+  name.className = 'nowrap';
+  name.textContent = `"${clearSet.querySelector('legend').textContent.toUpperCase()}"?`;
+  $('clearAskTitle').replaceChildren('Clear all answers in ', name);
   $('clearAsk').returnValue = '';
   $('clearAsk').showModal();
 }));

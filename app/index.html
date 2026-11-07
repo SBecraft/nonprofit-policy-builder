@@ -149,6 +149,8 @@ dialog.printing,dialog.ask{max-width:min(460px,calc(100% - 32px));padding:22px 2
 dialog.printing::backdrop,dialog.ask::backdrop{background:var(--scrim)}
 dialog.printing h2,dialog.ask h2{margin:0 0 10px;font-family:var(--f-display);font-size:20px;color:var(--accent)}
 dialog.printing p,dialog.ask p{margin:0 0 10px}
+dialog.ask{max-width:min(560px,calc(100% - 32px))} /* wide enough for "Clear all answers in "YOUR ORGANIZATION"?" on one line */
+dialog.ask .nowrap{white-space:nowrap}
 .ask-btns{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
 dialog.printing p:last-child{margin-bottom:0}
 .btn:hover:not(:disabled),.btn:active:not(:disabled),.btn:focus-visible,details.multi[open] summary.btn{background:var(--accent);color:var(--accent-ink)}
