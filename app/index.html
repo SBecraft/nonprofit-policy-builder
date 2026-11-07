@@ -140,10 +140,11 @@ label.tg small,label.f small{display:block;font-family:var(--f-body);font-weight
 .btn{font-family:var(--f-display);font-weight:500;font-size:14px;border:1px solid var(--accent);background:transparent;color:var(--accent);padding:7px 12px;border-radius:6px;cursor:pointer}
 .btn.primary{background:var(--accent);color:var(--accent-ink)}
 /* "Printing in Progress": a modal that stays up while the print tab is open (no OK button; Escape and outside clicks don't close it) */
-dialog.printing{max-width:min(460px,calc(100% - 32px));padding:22px 24px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
-dialog.printing::backdrop{background:var(--scrim)}
-dialog.printing h2{margin:0 0 10px;font-family:var(--f-display);font-size:20px;color:var(--accent)}
-dialog.printing p{margin:0 0 10px}
+dialog.printing,dialog.ask{max-width:min(460px,calc(100% - 32px));padding:22px 24px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+dialog.printing::backdrop,dialog.ask::backdrop{background:var(--scrim)}
+dialog.printing h2,dialog.ask h2{margin:0 0 10px;font-family:var(--f-display);font-size:20px;color:var(--accent)}
+dialog.printing p,dialog.ask p{margin:0 0 10px}
+.ask-btns{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
 dialog.printing p:last-child{margin-bottom:0}
 .btn:hover:not(:disabled),.btn:active:not(:disabled),.btn:focus-visible,details.multi[open] summary.btn{background:var(--accent);color:var(--accent-ink)}
 .btn.primary:hover:not(:disabled){filter:brightness(1.12)}
@@ -279,7 +280,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
   :root:not([data-print]){
     --bg:#ffffff; --panel:#ffffff; --paper:#ffffff; --ink:#000000; --muted:#444444;
     --line:#bbbbbb; --accent:#1d6b58; --mark:transparent; --warn:#9a5b10; color-scheme:light }
-  header.top,form.q,.toolbar,.status,footer.foot,.maplink,.totop,dialog.printing{display:none}
+  header.top,form.q,.toolbar,.status,footer.foot,.maplink,.totop,dialog.printing,dialog.ask{display:none}
   .wrap{padding:0;max-width:none}
   .grid{display:block}
   article.paper{border:0;box-shadow:none;padding:0}
@@ -526,6 +527,18 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
     <p>To protect your work, other documents are temporarily unavailable while the print tab is open.</p>
     <p>When you finish printing, close the print tab and return here to continue.</p>
   </div>
+</dialog>
+
+<!-- asks before a "Clear all" link empties a questionnaire section (app.js fills in the section name) -->
+<dialog class="ask" id="clearAsk" aria-labelledby="clearAskTitle" aria-describedby="clearAskText">
+  <form method="dialog">
+    <h2 id="clearAskTitle">Clear all answers?</h2>
+    <p id="clearAskText">This action cannot be undone. All answers in this section will be removed.</p>
+    <div class="ask-btns">
+      <button type="submit" class="btn" value="cancel" autofocus>Cancel</button>
+      <button type="submit" class="btn primary" value="clear">Clear all</button>
+    </div>
+  </form>
 </dialog>
 
 <script src="frameworks.js"></script>

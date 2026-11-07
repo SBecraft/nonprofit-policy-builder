@@ -1127,16 +1127,25 @@ document.querySelectorAll('.totop a').forEach(link => link.addEventListener('cli
 }));
 
 // "Clear all" beside "Your organization" and "How you work": empties that section's text boxes and unticks its checkboxes (the sample answers).
-// Always asks first. render() then re-applies syncOther(), so no devices still ticks and locks personal devices.
+// Always asks first in dialog#clearAsk (Cancel is focused; Escape cancels). render() then re-applies syncOther(), so no devices still ticks and locks personal devices.
+let clearSet = null;
 document.querySelectorAll('.clear-all').forEach(btn => btn.addEventListener('click', () => {
-  const set = btn.closest('fieldset'), boxes = [...set.querySelectorAll('input')];
-  if(!confirm(`Clear every answer in "${set.querySelector('legend').textContent}"? This can't be undone.`)) return;
+  clearSet = btn.closest('fieldset');
+  $('clearAskTitle').textContent = `Clear all answers in "${clearSet.querySelector('legend').textContent}"?`;
+  $('clearAsk').returnValue = '';
+  $('clearAsk').showModal();
+}));
+$('clearAsk').addEventListener('close', () => {
+  const set = clearSet; clearSet = null;
+  if(!set) return;
+  if($('clearAsk').returnValue !== 'clear'){ set.querySelector('.clear-all').focus(); return; }
+  const boxes = [...set.querySelectorAll('input')];
   boxes.forEach(b => { if(b.type === 'checkbox') b.checked = false; else b.value = ''; });
   edited = true;
   render();
   updateMore();
   boxes[0].focus();
-}));
+});
 
 render();
 updateMore();
