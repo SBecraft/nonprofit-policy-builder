@@ -103,7 +103,7 @@ The app is a security tool, so it follows the practices it recommends:
 
 1. Open the live site ([LIVE SITE URL]). No sign-up, download or login.
 2. Watch the two-minute walkthrough video at the top of the page, then open **Before you start** to see what information to gather first.
-3. Replace the example organization's answers with your own. Every question is optional; anything left blank shows as a dash or a line to fill in later. Pin the tab so it's harder to close by accident.
+3. Replace the example organization's answers with your own. **Clear all** beside "Your organization" or "How you work" removes the sample answers in that section in one click. Every question is optional; anything left blank shows as a dash or a line to fill in later. Pin the tab so it's harder to close by accident.
 4. Review each document, then copy or print them, and finish in one sitting.
 5. Edit the documents in Word or Google Docs, have your board approve them, and share them with your team. Keep the Incident Contact List confidential.
 
