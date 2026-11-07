@@ -1131,7 +1131,7 @@ document.querySelectorAll('.totop a').forEach(link => link.addEventListener('cli
 let clearSet = null;
 document.querySelectorAll('.clear-all').forEach(btn => btn.addEventListener('click', () => {
   clearSet = btn.closest('fieldset');
-  $('clearAskTitle').textContent = `Clear all answers in "${clearSet.querySelector('legend').textContent}"?`;
+  $('clearAskTitle').textContent = `Clear all answers in "${clearSet.querySelector('legend').textContent.toUpperCase()}"?`;
   $('clearAsk').returnValue = '';
   $('clearAsk').showModal();
 }));
