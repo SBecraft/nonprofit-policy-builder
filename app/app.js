@@ -10,7 +10,7 @@ const t = s => `<mark class="t">${s}</mark>`; // tailored passage (s may contain
 
 const today = new Date();
 const pad = n => String(n).padStart(2,'0');
-$('date').value = $('date').defaultValue = `${today.getFullYear()}-${pad(today.getMonth()+1)}-${pad(today.getDate())}`; // local date, not UTC; also the default, so "Clear all" doesn't count it as typed
+$('date').value = `${today.getFullYear()}-${pad(today.getMonth()+1)}-${pad(today.getDate())}`; // local date, not UTC
 
 // Forms are in the order an organization uses them: set-up forms, then joining to leaving
 const POLICIES = [
@@ -1127,11 +1127,10 @@ document.querySelectorAll('.totop a').forEach(link => link.addEventListener('cli
 }));
 
 // "Clear all" beside "Your organization" and "How you work": empties that section's text boxes and unticks its checkboxes (the sample answers).
-// Asks first only if something other than a sample answer would be lost. render() then re-applies syncOther(), so no devices still ticks and locks personal devices.
+// Always asks first. render() then re-applies syncOther(), so no devices still ticks and locks personal devices.
 document.querySelectorAll('.clear-all').forEach(btn => btn.addEventListener('click', () => {
   const set = btn.closest('fieldset'), boxes = [...set.querySelectorAll('input')];
-  const changed = boxes.some(b => b.type === 'checkbox' ? b.checked !== b.defaultChecked : b.value && b.value !== b.defaultValue);
-  if(changed && !confirm(`Clear every answer in "${set.querySelector('legend').textContent}"? This can't be undone.`)) return;
+  if(!confirm(`Clear every answer in "${set.querySelector('legend').textContent}"? This can't be undone.`)) return;
   boxes.forEach(b => { if(b.type === 'checkbox') b.checked = false; else b.value = ''; });
   edited = true;
   render();
