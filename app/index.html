@@ -95,9 +95,9 @@ details.start summary:focus-visible{outline:2px solid var(--accent);outline-offs
 a{color:var(--accent)}
 .totop{margin:0;font-size:13px;font-family:var(--f-display);text-align:center}
 .totop.page-end{padding:0 16px 14px} /* above the footer border */
-fieldset:has(> .clear-org){position:relative}
-.clear-org{position:absolute;top:-28px;right:0;font-size:13px;font-family:var(--f-display);color:var(--accent);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
-.clear-org:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+fieldset:has(> .clear-all){position:relative}
+.clear-all{position:absolute;top:-28px;right:0;font-size:13px;font-family:var(--f-display);color:var(--accent);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
+.clear-all:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 h1#top:focus{outline:none} /* focused by "Back to top" so keyboard users start there; it is not a control */
 .grid{display:grid;grid-template-columns:minmax(0,21rem) minmax(0,1fr);gap:24px;align-items:start}
 @media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
@@ -396,7 +396,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
       <div class="howto">
         <h2>How to use this page</h2>
         <ol>
-          <li><strong>Delete the sample answers</strong> and type in your own or leave blank. "Clear all" beside "Your organization" removes them in one click.</li>
+          <li><strong>Delete the sample answers</strong> and type in your own or leave blank. "Clear all" beside "Your organization" or "How you work" removes them in one click.</li>
           <li><strong>Fill this out once, down to the last question.</strong> All twelve documents fill in for you as you type. Every question is optional, so skip any you can't answer and fill in the blank later.</li>
           <li><strong>Print or copy.</strong> Use "Print" or "Copy" for the document on screen, or "More" for some or all of them.</li>
           <li><strong>Fill in any blanks.</strong> Some details aren't asked for here, so add them after you copy the documents into your own files. Add or remove table rows there as needed.</li>
@@ -405,7 +405,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
       </div>
       <fieldset>
         <legend>Your organization</legend>
-        <button type="button" class="clear-org" id="clearOrg">Clear all</button>
+        <button type="button" class="clear-all" id="clearOrg">Clear all</button>
         <label class="f">Organization name<input type="text" id="org" value="Riverbend Community Pantry (example)"></label>
         <label class="f">Policy owner (name, title)<small>The person who approves and updates these policies, often the executive director or board chair.</small><input type="text" id="owner" value="Maria Chen, Executive Director"></label>
         <label class="f">Primary IT contact (who handles IT issues)<input type="text" id="contact" value="Dana Ortiz, Operations Manager"></label>
@@ -455,6 +455,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
 
       <fieldset>
         <legend>How you work</legend>
+        <button type="button" class="clear-all" id="clearWork">Clear all</button>
         <label class="tg"><input type="checkbox" id="staff" checked><span>We have paid staff<small>Untick if everyone is a volunteer or board member.</small></span></label>
         <label class="tg"><input type="checkbox" id="volunteers" checked><span>We use volunteers<small>Regular, short-term or event volunteers. Board members are always covered.</small></span></label>
         <label class="tg"><input type="checkbox" id="devices" checked><span>We provide organization-owned devices<small>Computers or phones the organization owns. If you have none, personal devices are assumed.</small></span></label>

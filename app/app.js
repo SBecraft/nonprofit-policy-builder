@@ -1126,16 +1126,18 @@ document.querySelectorAll('.totop a').forEach(link => link.addEventListener('cli
   $('top').focus({ preventScroll: true });
 }));
 
-// "Clear all" beside "Your organization": empties that section's boxes (the sample answers). Asks first only if something other than a sample answer would be lost.
-$('clearOrg').addEventListener('click', () => {
-  const boxes = [...$('clearOrg').closest('fieldset').querySelectorAll('input')];
-  const typed = boxes.some(b => b.value && b.value !== b.defaultValue);
-  if(typed && !confirm('Clear every answer in "Your organization"? This can\'t be undone.')) return;
-  boxes.forEach(b => { b.value = ''; });
+// "Clear all" beside "Your organization" and "How you work": empties that section's text boxes and unticks its checkboxes (the sample answers).
+// Asks first only if something other than a sample answer would be lost. render() then re-applies syncOther(), so no devices still ticks and locks personal devices.
+document.querySelectorAll('.clear-all').forEach(btn => btn.addEventListener('click', () => {
+  const set = btn.closest('fieldset'), boxes = [...set.querySelectorAll('input')];
+  const changed = boxes.some(b => b.type === 'checkbox' ? b.checked !== b.defaultChecked : b.value && b.value !== b.defaultValue);
+  if(changed && !confirm(`Clear every answer in "${set.querySelector('legend').textContent}"? This can't be undone.`)) return;
+  boxes.forEach(b => { if(b.type === 'checkbox') b.checked = false; else b.value = ''; });
   edited = true;
   render();
+  updateMore();
   boxes[0].focus();
-});
+}));
 
 render();
 updateMore();
