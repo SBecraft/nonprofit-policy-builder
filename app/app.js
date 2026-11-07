@@ -10,7 +10,7 @@ const t = s => `<mark class="t">${s}</mark>`; // tailored passage (s may contain
 
 const today = new Date();
 const pad = n => String(n).padStart(2,'0');
-$('date').value = `${today.getFullYear()}-${pad(today.getMonth()+1)}-${pad(today.getDate())}`; // local date, not UTC
+$('date').value = $('date').defaultValue = `${today.getFullYear()}-${pad(today.getMonth()+1)}-${pad(today.getDate())}`; // local date, not UTC; also the default, so "Clear all" doesn't count it as typed
 
 // Forms are in the order an organization uses them: set-up forms, then joining to leaving
 const POLICIES = [
@@ -1125,6 +1125,17 @@ document.querySelectorAll('.totop a').forEach(link => link.addEventListener('cli
   window.scrollTo(0, 0);
   $('top').focus({ preventScroll: true });
 }));
+
+// "Clear all" beside "Your organization": empties that section's boxes (the sample answers). Asks first only if something other than a sample answer would be lost.
+$('clearOrg').addEventListener('click', () => {
+  const boxes = [...$('clearOrg').closest('fieldset').querySelectorAll('input')];
+  const typed = boxes.some(b => b.value && b.value !== b.defaultValue);
+  if(typed && !confirm('Clear every answer in "Your organization"? This can\'t be undone.')) return;
+  boxes.forEach(b => { b.value = ''; });
+  edited = true;
+  render();
+  boxes[0].focus();
+});
 
 render();
 updateMore();

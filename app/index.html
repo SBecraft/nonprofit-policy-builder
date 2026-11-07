@@ -95,6 +95,9 @@ details.start summary:focus-visible{outline:2px solid var(--accent);outline-offs
 a{color:var(--accent)}
 .totop{margin:0;font-size:13px;font-family:var(--f-display);text-align:center}
 .totop.page-end{padding:0 16px 14px} /* above the footer border */
+fieldset:has(> .clear-org){position:relative}
+.clear-org{position:absolute;top:-28px;right:0;font-size:13px;font-family:var(--f-display);color:var(--accent);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
+.clear-org:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 h1#top:focus{outline:none} /* focused by "Back to top" so keyboard users start there; it is not a control */
 .grid{display:grid;grid-template-columns:minmax(0,21rem) minmax(0,1fr);gap:24px;align-items:start}
 @media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
@@ -402,6 +405,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
       </div>
       <fieldset>
         <legend>Your organization</legend>
+        <button type="button" class="clear-org" id="clearOrg">Clear all</button>
         <label class="f">Organization name<input type="text" id="org" value="Riverbend Community Pantry (example)"></label>
         <label class="f">Policy owner (name, title)<small>The person who approves and updates these policies, often the executive director or board chair.</small><input type="text" id="owner" value="Maria Chen, Executive Director"></label>
         <label class="f">Primary IT contact (who handles IT issues)<input type="text" id="contact" value="Dana Ortiz, Operations Manager"></label>
