@@ -839,6 +839,7 @@ function syncOther(){ // show each "Other" text box only when its dropdown says 
   const noDevices = !$('devices').checked; // then everyone must be on personal devices
   if(noDevices) $('byod').checked = true;
   $('byod').disabled = noDevices;
+  $('byodLocked').hidden = !noDevices; // short note explaining why it is locked
 }
 function render(){
   syncOther();

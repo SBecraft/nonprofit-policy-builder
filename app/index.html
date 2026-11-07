@@ -122,6 +122,9 @@ input:focus-visible,select:focus-visible,button:focus-visible,article.paper:focu
 label.tg{display:flex;gap:10px;align-items:flex-start;font-family:var(--f-display);font-size:14px;font-weight:500;cursor:pointer}
 label.tg input{margin-top:3px;accent-color:var(--accent);width:16px;height:16px;flex:none}
 label.tg small,label.f small{display:block;font-family:var(--f-body);font-weight:400;color:var(--muted);font-size:13px}
+label.tg small.lock-note{color:var(--accent);font-style:italic;margin-top:2px} /* shown only while "personal devices" is locked on (syncOther in app.js) */
+label.tg:has(input:disabled){cursor:not-allowed}
+label.tg small[hidden]{display:none}
 
 /* document area */
 .doc-area{min-width:0;display:flex;flex-direction:column}
@@ -462,7 +465,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
         <label class="tg"><input type="checkbox" id="staff" checked><span>We have paid staff<small>Untick if everyone is a volunteer or board member.</small></span></label>
         <label class="tg"><input type="checkbox" id="volunteers" checked><span>We use volunteers<small>Regular, short-term or event volunteers. Board members are always covered.</small></span></label>
         <label class="tg"><input type="checkbox" id="devices" checked><span>We provide organization-owned devices<small>Computers or phones the organization owns. If you have none, personal devices are assumed.</small></span></label>
-        <label class="tg"><input type="checkbox" id="byod" checked><span>Volunteers or staff use personal devices<small>Phones or laptops they own, used for work email or files.</small></span></label>
+        <label class="tg"><input type="checkbox" id="byod" checked aria-describedby="byodLocked"><span>Volunteers or staff use personal devices<small>Phones or laptops they own, used for work email or files.</small><small class="lock-note" id="byodLocked" hidden>Ticked for you: with no organization-owned devices, people use their own.</small></span></label>
         <label class="tg"><input type="checkbox" id="shared" checked><span>Some logins are shared<small>For example, one social media or event account used by several people.</small></span></label>
         <label class="tg"><input type="checkbox" id="turnover" checked><span>High turnover<small>Volunteers or staff join and leave every few months.</small></span></label>
         <label class="tg"><input type="checkbox" id="online" checked><span>We take donations online<small>Through a giving page run by a payment processor or donor database.</small></span></label>
