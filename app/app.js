@@ -836,11 +836,15 @@ function syncOther(){ // show each "Other" text box only when its dropdown says 
   $('pmOther').hidden = $('pm').value !== 'other';
   $('paperClientsRow').hidden = !$('clients').checked; // follows its parent checkbox
   $('backupNameRow').hidden = !$('backup').checked;
-  const noDevices = !$('devices').checked; // then everyone must be on personal devices
-  if(noDevices) $('byod').checked = true;
-  $('byod').disabled = noDevices;
-  $('byodLocked').hidden = !noDevices; // short note explaining why it is locked
+  // No organization devices: everyone must be on personal devices, so that box is ticked and locked.
+  // Not straight after "Clear all" in How you work, which leaves both unticked (read() still assumes personal devices) until devices is changed again.
+  const lock = !$('devices').checked && !devicesCleared;
+  if(lock) $('byod').checked = true;
+  $('byod').disabled = lock;
+  $('byodLocked').hidden = !lock; // short note explaining why it is locked
 }
+let devicesCleared = false;
+$('devices').addEventListener('change', () => { devicesCleared = false; }); // runs before render(): changing it on purpose brings the lock back
 function render(){
   syncOther();
   const a = read();
@@ -1142,6 +1146,7 @@ $('clearAsk').addEventListener('close', () => {
   if($('clearAsk').returnValue !== 'clear'){ set.querySelector('.clear-all').focus(); return; }
   const boxes = [...set.querySelectorAll('input')];
   boxes.forEach(b => { if(b.type === 'checkbox') b.checked = false; else b.value = ''; });
+  if(set.contains($('devices'))) devicesCleared = true; // leave personal devices unticked and unlocked too
   edited = true;
   render();
   updateMore();
