@@ -1105,6 +1105,7 @@ document.querySelector('details.start').addEventListener('toggle', updateMore);
 $('startClose').addEventListener('click', () => {
   const start = document.querySelector('details.start'), summary = start.querySelector('summary');
   start.open = false;
+  start.querySelector('.start-body').scrollTop = 0;
   summary.scrollIntoView({ block: 'nearest' });
   summary.focus({ preventScroll: true });
 });

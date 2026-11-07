@@ -109,7 +109,7 @@ The app is a security tool, so it follows the practices it recommends:
 
 ## Download the app
 
-You can keep your own copy of the app on your computer. It's free, needs no installation and works without an internet connection.
+You can keep your own copy of the app on your computer. It's free, needs no installation and works without an internet connection. Use this if your organization doesn't allow staff to use websites or online tools for this kind of work.
 
 1. Go to the [latest release](../../releases/latest).
 2. Under **Assets**, download **Source code (zip)**.
