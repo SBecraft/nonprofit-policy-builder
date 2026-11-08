@@ -113,9 +113,11 @@ The app is a security tool, so it follows the practices it recommends:
 You can keep your own copy of the app on your computer. It's free, needs no installation and works without an internet connection. Use this if your organization doesn't allow staff to use websites or online tools for this kind of work.
 
 1. Go to the [latest release](../../releases/latest).
-2. Under **Assets**, download **Source code (zip)**.
+2. Under **Assets**, download **`nonprofit-policy-builder-<version>.zip`** (for example, `nonprofit-policy-builder-1.0.0.zip`). It holds only the app, plus the LICENSE and NOTICE files. You don't need the **Source code** files that GitHub adds to every release.
 3. Unzip the file.
 4. Open the `app` folder and double-click `index.html`. The app opens in your browser.
+
+**Optional: check the download.** Each release lists the zip's SHA-256 hash. If your copy's hash matches, the file hasn't been changed. On Windows, run `certutil -hashfile nonprofit-policy-builder-1.0.0.zip SHA256` in Command Prompt; on a Mac, run `shasum -a 256 nonprofit-policy-builder-1.0.0.zip` in Terminal.
 
 A downloaded copy doesn't update itself. To check for a newer version, compare the version number in the app's footer with the [latest release](../../releases/latest).
 
