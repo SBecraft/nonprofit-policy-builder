@@ -1080,12 +1080,16 @@ function printDocs(list){
   d.body.innerHTML = `<div class="wrap"><article class="${cls}">${list.map(p => build[p.id](a,p)).join('<hr class="split">')}</article></div>`;
   // close the print tab once printing is done or cancelled: left open, it is only a copy of the document
   // with no buttons, and the browser blocks Copy in this tab while it is open
-  w.addEventListener('afterprint', () => { try { w.close(); } catch { /* the tab may already be closed */ } window.focus(); });
+  let printed = false;
+  w.addEventListener('afterprint', () => { printed = true; try { w.close(); } catch { /* the tab may already be closed */ } window.focus(); });
   printWin = w;
-  watchPrintTab(); // show "Printing in Progress" here
+  watchPrintTab(); // show "Printing in Progress" here, so it is up if the user switches back while the print dialog is open
   if(!printWatch) printWatch = setInterval(watchPrintTab, 300);
   w.focus();
-  w.print();
+  w.print(); // in Chrome this waits until the print dialog closes
+  // Printing finished or was cancelled: close the box now, before this tab is drawn again. Waiting for the next
+  // 300 ms check made it flash. Only when afterprint has fired, so a print that is still going is never cut short.
+  if(printed){ printWin = null; watchPrintTab(); }
 }
 $('print').addEventListener('click', () => {
   const list = [POLICIES.find(p=>p.id===current)];
