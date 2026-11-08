@@ -1,9 +1,6 @@
 # Private project notes: stay on this computer, never uploaded
 documents/
 HANDOFF.md
-# CLAUDE.md is listed in the README and will be published later.
-# To publish it, delete the next line, then run: git add CLAUDE.md
-CLAUDE.md
 
 # Claude Code local settings
 .claude/

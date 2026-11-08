@@ -178,7 +178,7 @@ The Nonprofit Policy Builder was conceived, designed, and developed by the creat
 
 **Claude Code**, Anthropic's AI coding assistant, was used as a development tool to help implement the application. It assisted with coding tasks, drafting policy language, generating policy templates, refining tailoring logic, reviewing code, and identifying potential issues.
 
-`CLAUDE.md` provides standing instructions for the AI assistant, including security requirements such as escaping all input, avoiding inline scripts, and never loading external resources. These guardrails help maintain the application's security design during future development.
+[`CLAUDE.md`](CLAUDE.md) provides standing instructions for the AI assistant, including security requirements such as escaping all input, avoiding inline scripts, and never loading external resources. These guardrails help maintain the application's security design during future development.
 
 AI-generated code and content were treated as drafts. The creator reviewed, edited, tested, and approved all code, policy content, framework mappings, and security controls before deployment. Final decisions regarding application design, policy content, nonprofit use cases, framework alignment, and security requirements were made by the creator.
 
