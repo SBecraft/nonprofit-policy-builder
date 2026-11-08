@@ -154,6 +154,7 @@ app/                  Everything the live site needs. Deploy this folder only.
   og-image.png        Preview picture shown when the site is shared on LinkedIn, Teams, Slack and similar
   Nonprofit_Policy_Builder_Walkthrough.mp4   Two-minute video on how to use the page
   walkthrough-poster.jpg                     Still image shown on the video before it plays
+.github/ISSUE_TEMPLATE/problem-report.md   Form for reporting a problem on GitHub
 assets/               Screenshots of the app
 documents/            Project plan and other project notes (not needed to run the app)
 LICENSE               Who may use the software and how
