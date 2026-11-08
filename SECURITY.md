@@ -17,8 +17,7 @@ The version number is shown at the bottom of the app.
 
 **Please report security problems privately. Do not open a public issue.**
 
-1. **Preferred:** use GitHub's private reporting. Go to this repository's **Security** tab and choose **Report a vulnerability**. Only the maintainer can see the report.
-2. **If you can't use GitHub:** email [SECURITY CONTACT EMAIL] with "Security: Nonprofit Policy Builder" in the subject line.
+Use GitHub's private reporting: go to this repository's **Security** tab and choose **Report a vulnerability**. Only the maintainer can see the report. You'll need a free GitHub account.
 
 Please include:
 
