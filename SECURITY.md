@@ -57,7 +57,7 @@ The app is a static web page: `index.html`, `app.js`, `frameworks.js`, `how.html
 ## Testing guidelines
 
 - **Test a copy you control whenever you can.** Download the files and run them locally, for example with `python -m http.server`. You don't need the live site to test most of the app.
-- If you do test the live site, keep it light: no heavy automated scanning, no load testing, and nothing that could affect other visitors.
+- If you do test the live site (https://policies-for-small-nonprofits.netlify.app), keep it light: no heavy automated scanning, no load testing, and nothing that could affect other visitors.
 - Never access, change or delete anyone else's data. The app doesn't collect any, so a test that seems to reach someone's data is itself worth reporting.
 - Stop and report as soon as you've confirmed a problem.
 

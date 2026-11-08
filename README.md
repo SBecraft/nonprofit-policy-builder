@@ -2,7 +2,7 @@
 
 **Plain-English security policies for any small nonprofit, including volunteer-run teams, tailored in about 15 minutes, free, and with nothing you type ever leaving your browser.**
 
-**Live site:** [LIVE SITE URL] · **Version:** 1.0.0 · **[Download the app](#download-the-app)** · **Report a problem:** [Issues](../../issues) · **Report a security problem:** [SECURITY.md](SECURITY.md)
+**Live site:** https://policies-for-small-nonprofits.netlify.app · **Version:** 1.0.0 · **[Download the app](#download-the-app)** · **Report a problem:** [Issues](../../issues) · **Report a security problem:** [SECURITY.md](SECURITY.md)
 
 > **Not legal advice.** These are starting templates for discussion. Have your board approve them, and ask a lawyer to check your state's breach notification and record retention rules.
 
@@ -84,12 +84,12 @@ When someone shares the site's link on LinkedIn, Facebook, Microsoft Teams, Slac
 - **The picture** (`app/og-image.png`, 1200 × 630) was made for this project in the app's own colors. On the left: "Free for small nonprofits", the name, "Security policies and forms, tailored to your answers.", then, under a thin line, a checklist with green check marks: No sign-up or login · Nothing saved or sent online · Mapped to CIS & NIST CSF ("mapped to", not certified). On the right: a tilted view of the sample Acceptable Use Policy with its tailored text highlighted.
 - **The title and description** repeat the privacy points, because some apps show a small picture or none.
 - **Privacy:** visitors' browsers ignore the tags. They load nothing and share nothing about the visitor. Only the app building the preview reads them, and it sees just the page with sample answers.
-- **Waiting on the live site:** `og:url` and `og:image` need full addresses, so they use the `[LIVE SITE URL]` placeholder until launch. Until then, a shared link shows no picture.
+- **Full addresses:** `og:url` and `og:image` need the site's full address, so they use https://policies-for-small-nonprofits.netlify.app.
 
 ### Search engines and AI crawlers
 
 - **`robots.txt`** lets search engines and AI search tools list the site, and asks AI training crawlers (such as GPTBot, ClaudeBot, Google-Extended and CCBot) not to copy it. It is a request, not a security control, and it lists no private paths, because the site has none. The crawlers that build share previews are allowed.
-- **`sitemap.xml`** lists the site's two pages for search engines and is linked from the footer. It also uses the `[LIVE SITE URL]` placeholder until launch.
+- **`sitemap.xml`** lists the site's two pages for search engines and is linked from the footer. `robots.txt` points to it with a `Sitemap:` line.
 
 ## Security
 
@@ -106,7 +106,7 @@ The app is a security tool, so it follows the practices it recommends:
 
 ## Using the app
 
-1. Open the live site ([LIVE SITE URL]). No sign-up, download or login.
+1. Open the live site (https://policies-for-small-nonprofits.netlify.app). No sign-up, download or login.
 2. Watch the two-minute walkthrough video at the top of the page, then open **Before you start** to see what information to gather first.
 3. Replace the example organization's answers with your own. **Clear all** beside "Your organization" or "How you work" removes the sample answers in that section in one click. Every question is optional; anything left blank shows as a dash or a line to fill in later. Pin the tab so it's harder to close by accident.
 4. Review each document, then copy or print them, and finish in one sitting.
@@ -144,7 +144,7 @@ The security headers in `app/_headers` are sent by Netlify, so they only apply o
 
 Upload the **whole `app` folder** to Netlify, either by drag-and-drop or with `netlify deploy --prod`. It contains only the files the site needs. Keep the `_headers` file name exactly as it is, with no file extension. After deploying, re-test the live site. Netlify's deploy history allows an instant rollback.
 
-**Before the first deploy,** replace `[LIVE SITE URL]` with the site's full address (starting with `https://`, no slash at the end) in `index.html` and `how.html` (the Open Graph tags), `sitemap.xml`, and the commented-out `Sitemap:` line in `robots.txt`, which you then switch on. After deploying, check the share preview with LinkedIn Post Inspector and Facebook's Sharing Debugger, which also refresh old previews.
+**The site's address** (https://policies-for-small-nonprofits.netlify.app) is written into `index.html` and `how.html` (the Open Graph tags), `sitemap.xml` and the `Sitemap:` line in `robots.txt`. If the address ever changes, update all four. After deploying, check the share preview with LinkedIn Post Inspector and Facebook's Sharing Debugger, which also refresh old previews.
 
 ## Project structure
 

@@ -19,5 +19,5 @@ Disallow: /
 User-agent: *
 Allow: /
 
-# TODO: once the site is live, remove the # below and put in its full address.
-# Sitemap: [LIVE SITE URL]/sitemap.xml
+# The list of pages for search engines.
+Sitemap: https://policies-for-small-nonprofits.netlify.app/sitemap.xml
