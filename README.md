@@ -6,6 +6,10 @@
 
 > **Not legal advice.** These are starting templates for discussion. Have your board approve them, and ask a lawyer to check your state's breach notification and record retention rules.
 
+<a href="assets/app-full-page.png"><img src="assets/app-preview.png" width="640" alt="The Nonprofit Policy Builder: the questionnaire on the left, the walkthrough video at the top right, and the tailored Acceptable Use Policy with its tailored text highlighted"></a>
+
+*The app with its sample answers. Click the picture to see the whole page.*
+
 ## Why it exists
 
 Small nonprofits hold sensitive information: donor names, home addresses, giving history, payment details and records about the people they serve. Most have no IT staff. Work is done by part-time staff and volunteers on their own phones and laptops, logins for social media and event accounts are shared, and people come and go every few months.
@@ -157,7 +161,7 @@ app/                  Everything the live site needs. Deploy this folder only.
   Nonprofit_Policy_Builder_Walkthrough.mp4   Two-minute video on how to use the page
   walkthrough-poster.jpg                     Still image shown on the video before it plays
 .github/ISSUE_TEMPLATE/problem-report.md   Form for reporting a problem on GitHub
-assets/               Screenshots of the app
+assets/               Screenshots of the app (shown at the top of this file)
 documents/            Project plan and other project notes (not needed to run the app)
 LICENSE               Who may use the software and how
 NOTICE                Third-party, framework and legal notices
