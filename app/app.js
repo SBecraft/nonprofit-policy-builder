@@ -1047,10 +1047,18 @@ $('copyOne').addEventListener('click', () => checkSamples([POLICIES.find(p=>p.id
 // "Printing in Progress": while the print tab is open, this page shows a modal over everything (the browser won't
 // let this tab copy while the print tab is open). It has no OK button and Escape or outside clicks don't close it;
 // it closes by itself when the print tab closes (checked every 300 ms, and whenever this tab gets focus).
-let printWin = null, printWatch = 0;
+// It only opens once this tab has been on screen for a moment while the print tab is still open. Showing it at once
+// made it flash: closing the print tab brings this tab back with the box still up until the next check closes it.
+let printWin = null, printWatch = 0, visibleSince = Date.now();
 function watchPrintTab(){
+  // read visibility directly each time rather than trusting the visibilitychange event alone
+  if(document.visibilityState !== 'visible') visibleSince = Infinity;
+  else if(visibleSince === Infinity) visibleSince = Date.now();
   if(printWin && !printWin.closed){
-    if(!$('printing').open) $('printing').showModal();
+    if(!$('printing').open){
+      if(Date.now() - visibleSince >= 250) $('printing').showModal();
+      else setTimeout(watchPrintTab, 260); // just came back into view: check again once the print tab has had time to close
+    }
     return;
   }
   printWin = null;
@@ -1082,7 +1090,7 @@ function printDocs(list){
   // with no buttons, and the browser blocks Copy in this tab while it is open
   w.addEventListener('afterprint', () => { try { w.close(); } catch { /* the tab may already be closed */ } window.focus(); });
   printWin = w;
-  watchPrintTab(); // show "Printing in Progress" here
+  visibleSince = Date.now(); // the print tab is taking over: "Printing in Progress" waits until this tab has been back on screen for a moment
   if(!printWatch) printWatch = setInterval(watchPrintTab, 300);
   w.focus();
   w.print();
