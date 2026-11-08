@@ -146,6 +146,8 @@ dialog.printing h2,dialog.ask h2{margin:0 0 10px;font-family:var(--f-display);fo
 dialog.printing p,dialog.ask p{margin:0 0 10px}
 dialog.ask{max-width:min(560px,calc(100% - 32px))} /* wide enough for "Clear all answers in "YOUR ORGANIZATION"?" on one line */
 dialog.ask .nowrap{white-space:nowrap}
+dialog.ask ul{margin:0 0 10px;padding-left:22px}
+dialog.ask li{margin:2px 0;overflow-wrap:anywhere} /* long sample emails wrap instead of widening the box */
 .ask-btns{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
 dialog.printing p:last-child{margin-bottom:0}
 .btn:hover:not(:disabled),.btn:active:not(:disabled),.btn:focus-visible,details.multi[open] summary.btn{background:var(--accent);color:var(--accent-ink)}
@@ -403,7 +405,7 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
         <ol>
           <li><strong>Delete the sample answers</strong> and type in your own or leave blank. "Clear all" beside "Your organization" or "How you work" removes them in one click.</li>
           <li><strong>Fill this out once, down to the last question.</strong> All twelve documents fill in for you as you type. Every question is optional, so skip any you can't answer and fill in the blank later.</li>
-          <li><strong>Print or copy.</strong> Use "Print" or "Copy" for the document on screen, or "More" for some or all of them.</li>
+          <li><strong>Print or copy.</strong> Use "Print" or "Copy" for the document on screen, or "More" for some or all of them. If a sample answer is still in a document, you'll be asked first.</li>
           <li><strong>Fill in any blanks.</strong> Some details aren't asked for here, so add them after you copy the documents into your own files. Add or remove table rows there as needed.</li>
         </ol>
         <p class="hint">You can't edit documents on this page. To make changes, copy and paste them into Word or Google Docs, or print to PDF and use a PDF editor.</p>
@@ -541,6 +543,21 @@ footer.foot{border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
     <div class="ask-btns">
       <button type="submit" class="btn" value="cancel" autofocus>Cancel</button>
       <button type="submit" class="btn primary" value="clear">Clear all</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- asks before printing or copying a document that still has a sample answer in it (app.js fills in the list and the button names) -->
+<dialog class="ask" id="sampleAsk" aria-labelledby="sampleAskTitle" aria-describedby="sampleAskText">
+  <form method="dialog">
+    <h2 id="sampleAskTitle">Sample answers are still in this document</h2>
+    <div id="sampleAskText">
+      <p id="sampleAskIntro">These answers came with the page. Change them to your own before you print.</p>
+      <ul id="sampleList"></ul>
+    </div>
+    <div class="ask-btns">
+      <button type="submit" class="btn" value="back" autofocus>Go back and change</button>
+      <button type="button" class="btn primary" id="sampleGo">Print anyway</button>
     </div>
   </form>
 </dialog>

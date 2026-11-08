@@ -995,13 +995,54 @@ async function copyText(text, html, msg, showAll){
                        : 'Copy was blocked. The document is selected; press Ctrl+C or Cmd+C.');
   }
 }
-$('copyOne').addEventListener('click', () => {
+// Sample answers: the typed answers the page comes with (the inputs' value attributes in index.html). Before printing or
+// copying, if any is unchanged and appears in the documents going out, dialog#sampleAsk lists them first.
+// "Go back and change" (focused; Escape too) selects the first one; "Print anyway" / "Copy anyway" carries on.
+// The action runs straight from that button's click, because opening the print tab and writing to the clipboard need one.
+const SAMPLE_FIELDS = ['org','owner','contact','contactPhone','contactEmail','backupLead','backupPhone','backupEmail','boardChair','printPlace'];
+function samplesIn(list){
+  const left = SAMPLE_FIELDS.map(id => $(id)).filter(f => f.defaultValue && f.value.trim() === f.defaultValue);
+  if(!left.length) return [];
+  const a = read(), box = document.createElement('div');
+  box.innerHTML = list.map(p => build[p.id](a,p)).join(' ');
+  const text = box.textContent;
+  return left.filter(f => text.includes(f.defaultValue));
+}
+let sampleNext = null, sampleFirst = null;
+function checkSamples(list, verb, go){
+  const found = samplesIn(list);
+  if(!found.length){ go(); return; }
+  $('sampleAskTitle').textContent = `Sample answers are still in ${list.length === 1 ? 'this document' : 'these documents'}`;
+  $('sampleAskIntro').textContent = `These answers came with the page. Change them to your own before you ${verb.toLowerCase()}.`;
+  $('sampleList').replaceChildren(...found.map(f => {
+    const li = document.createElement('li');
+    li.textContent = `${f.closest('label').firstChild.textContent.trim().replace(/\s*\([^)]*\)$/, '')}: ${f.defaultValue}`;
+    return li;
+  }));
+  $('sampleGo').textContent = `${verb} anyway`;
+  sampleNext = go; sampleFirst = found[0];
+  $('sampleAsk').returnValue = '';
+  $('sampleAsk').showModal();
+}
+$('sampleGo').addEventListener('click', () => {
+  const go = sampleNext; sampleNext = null;
+  $('sampleAsk').close('go');
+  if(go) go();
+});
+$('sampleAsk').addEventListener('close', () => {
+  if($('sampleAsk').returnValue === 'go' || !sampleFirst) return;
+  sampleNext = null;
+  sampleFirst.focus(); // scrolls it into view, in the panel too
+  sampleFirst.select(); // ready to type over
+});
+
+$('copyOne').addEventListener('click', () => checkSamples([POLICIES.find(p=>p.id===current)], 'Copy', () => {
   const link = $('paper').querySelector('.maplink'), maps = link?.parentNode;
   link?.remove(); // the help link is for the screen only
   const text = $('paper').innerText, html = $('paper').innerHTML;
   if(link) maps.append(link);
   copyText(text, html, 'Copied this document.');
-});
+}));
 
 // "Printing in Progress": while the print tab is open, this page shows a modal over everything (the browser won't
 // let this tab copy while the print tab is open). It has no OK button and Escape or outside clicks don't close it;
@@ -1046,7 +1087,10 @@ function printDocs(list){
   w.focus();
   w.print();
 }
-$('print').addEventListener('click', () => printDocs([POLICIES.find(p=>p.id===current)]));
+$('print').addEventListener('click', () => {
+  const list = [POLICIES.find(p=>p.id===current)];
+  checkSamples(list, 'Print', () => printDocs(list));
+});
 
 // "More" menu (print or copy several): pick any of the twelve to print or copy together
 $('picks').innerHTML = POLICIES.map(p =>
@@ -1057,10 +1101,18 @@ $('picks').addEventListener('change', updatePicks);
 const setAll = on => { $('picks').querySelectorAll('input').forEach(i => { i.checked = on; }); updatePicks(); };
 $('pickAll').addEventListener('click', () => setAll(true));
 $('pickNone').addEventListener('click', () => setAll(false));
-$('printSel').addEventListener('click', () => { $('multi').open = false; printDocs(picked()); });
-$('copySel').addEventListener('click', () => {
-  const list = picked(), a = read(), box = $('hidden-all');
+$('printSel').addEventListener('click', () => {
+  const list = picked();
   $('multi').open = false;
+  checkSamples(list, 'Print', () => printDocs(list));
+});
+$('copySel').addEventListener('click', () => {
+  const list = picked();
+  $('multi').open = false;
+  checkSamples(list, 'Copy', () => copySeveral(list));
+});
+function copySeveral(list){
+  const a = read(), box = $('hidden-all');
   box.hidden = false;
   const html = list.map(p => build[p.id](a,p));
   const parts = html.map(h => { box.innerHTML = h; return box.innerText; });
@@ -1068,7 +1120,7 @@ $('copySel').addEventListener('click', () => {
   box.innerHTML = '';
   copyText(parts.join('\n\n————————————————\n\n'), html.join('<hr class="split">'),
     list.length === 1 ? `Copied ${list[0].name}.` : `Copied ${list.length} documents.`, true);
-});
+}
 // close the dropdown on Escape or a click outside it
 document.addEventListener('click', e => { if($('multi').open && !$('multi').contains(e.target)) $('multi').open = false; });
 document.addEventListener('keydown', e => { if(e.key === 'Escape' && $('multi').open){ $('multi').open = false; $('multi').querySelector('summary').focus(); } });
