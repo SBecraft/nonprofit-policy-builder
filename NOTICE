@@ -5,6 +5,18 @@ This software is covered by the Nonprofit Policy Builder License. See the LICENS
 THIRD-PARTY SOFTWARE
 This software contains no third-party code, libraries or fonts.
 
+THIRD-PARTY MATERIAL
+This project includes or references the following third-party material:
+
+Walkthrough video narration
+  Voice: Piper TTS, en_US-lessac-medium
+  License: non-commercial use only
+
+Framework references
+  CIS Critical Security Controls v8.1, © Center for Internet Security,
+  licensed under CC BY-NC-ND 4.0. Control numbers are cited for reference only.
+  NIST Cybersecurity Framework 2.0, a U.S. government work in the public domain.
+
 FRAMEWORKS
 This software maps its documents to the CIS Controls, from the Center for Internet Security, and the NIST Cybersecurity Framework, from the U.S. National Institute of Standards and Technology. Those names belong to their owners. This software is not affiliated with or endorsed by either organization, and using it does not make an organization certified or compliant.
 

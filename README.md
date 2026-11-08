@@ -176,6 +176,13 @@ The Nonprofit Policy Builder was conceived, designed, and developed by the creat
 
 AI-generated code and content were treated as drafts. The creator reviewed, edited, tested, and approved all code, policy content, framework mappings, and security controls before deployment. Final decisions regarding application design, policy content, nonprofit use cases, framework alignment, and security requirements were made by the creator.
 
+## Tools used
+
+- **Visual Studio Code:** code editor.
+- **Claude Code CLI:** AI coding assistant used in the terminal to help write and review the code and draft content.
+- **Claude desktop app:** used to make the share preview picture (`app/og-image.png`).
+- **Piper TTS (voice: en_US-lessac-medium):** text-to-speech voice for the walkthrough video's narration, licensed for non-commercial use only. See [NOTICE](NOTICE).
+
 ## Limitations
 
 - The policies are templates, not legal advice.
