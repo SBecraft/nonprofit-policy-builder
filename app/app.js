@@ -1,8 +1,3 @@
-/*
- * Nonprofit Policy Builder
- * Copyright © 2026 SBecraft
- * All Rights Reserved
- */
 /* global FRAMEWORKS */ // defined in frameworks.js, which index.html loads first
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

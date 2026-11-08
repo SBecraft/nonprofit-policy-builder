@@ -1,7 +1,3 @@
-# Nonprofit Policy Builder
-# Copyright © 2026 SBecraft
-# All Rights Reserved
-
 # AI training and data collection crawlers may not copy the site.
 User-agent: GPTBot
 User-agent: ClaudeBot

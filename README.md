@@ -64,6 +64,7 @@ The mappings show alignment, not certification. The policy wording and mappings 
 
 - **Nothing is saved.** Answers live only in the open browser tab: no cookies, no local storage, no database. Closing or refreshing the tab erases them, and the browser asks you to confirm first.
 - **Nothing is sent.** No server, accounts or logins. The app makes no network calls and loads no outside fonts, analytics or trackers.
+- **After you print, copy or save, your devices take over.** This app can’t protect documents after they leave this page. Print and save only on a trusted network, such as your organization’s network or a secured home network, not public Wi-Fi. Use a printer and storage you trust, such as an organization account, and remember that shared printers and synced folders may keep a copy. Treat these documents like any other internal record.
 - **You can check this yourself.** Open the browser's developer tools and watch the Network tab while filling in the form. No requests appear.
 
 Like every website, the host that delivers the page sees visitors' IP addresses. It never receives anything typed into the app.
@@ -155,7 +156,6 @@ app/                  Everything the live site needs. Deploy this folder only.
   walkthrough-poster.jpg                     Still image shown on the video before it plays
 assets/               Screenshots of the app
 documents/            Project plan and other project notes (not needed to run the app)
-COPYRIGHT             Who owns the software
 LICENSE               Who may use the software and how
 NOTICE                Third-party, framework and legal notices
 README.md             This file
@@ -189,6 +189,6 @@ AI-generated code and content were treated as drafts. The creator reviewed, edit
 
 This software is made available for free use by nonprofit organizations for internal purposes. Modification, creation of derivative works, redistribution, rebranding, incorporation into other products, and commercial use are prohibited without prior written permission from SBecraft.
 
-The full terms, including what you may do with the documents the app generates, are in the [Nonprofit Policy Builder License](LICENSE). See also [NOTICE](NOTICE) and [COPYRIGHT](COPYRIGHT).
+The full terms, including what you may do with the documents the app generates, are in the [Nonprofit Policy Builder License](LICENSE). See also [NOTICE](NOTICE).
 
 Nonprofit Policy Builder © 2026 SBecraft · Free for nonprofits to use · Not legal advice
