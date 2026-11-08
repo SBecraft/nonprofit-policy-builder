@@ -166,6 +166,7 @@ LICENSE               Who may use the software and how
 NOTICE                Third-party, framework and legal notices
 README.md             This file
 SECURITY.md           How to report a security problem
+CLAUDE.md             Standing rules for Claude Code when working on this project
 ```
 
 Only `app/` is deployed. Everything else stays in the repository.
