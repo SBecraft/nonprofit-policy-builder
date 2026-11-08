@@ -64,7 +64,7 @@ The mappings show alignment, not certification. The policy wording and mappings 
 
 - **Nothing is saved.** Answers live only in the open browser tab: no cookies, no local storage, no database. Closing or refreshing the tab erases them, and the browser asks you to confirm first.
 - **Nothing is sent.** No server, accounts or logins. The app makes no network calls and loads no outside fonts, analytics or trackers.
-- **After you print, copy or save, your devices take over.** This app can’t protect documents after they leave this page. Print and save only on a trusted network, such as your organization’s network or a secured home network, not public Wi-Fi. Use a printer and storage you trust, such as an organization account, and remember that shared printers and synced folders may keep a copy. Treat these documents like any other internal record.
+- **After you print, copy or save, your devices take over.** This app can’t protect documents after they leave this page. Print and save only on a trusted network, such as your organization’s network or a secured home network, not public Wi-Fi. Use a printer and storage you trust. Shared printers and folders that copy to the cloud, like OneDrive, Google Drive or Dropbox, may keep a copy. Pick up printouts right away, and save only to your organization’s account, not a personal one. Treat these documents like any other internal record.
 - **You can check this yourself.** Open the browser's developer tools and watch the Network tab while filling in the form. No requests appear.
 
 Like every website, the host that delivers the page sees visitors' IP addresses. It never receives anything typed into the app.
