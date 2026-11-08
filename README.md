@@ -119,7 +119,7 @@ You can keep your own copy of the app on your computer. It's free, needs no inst
 
 A downloaded copy doesn't update itself. To check for a newer version, compare the version number in the app's footer with the [latest release](../../releases/latest).
 
-Your answers are not saved in a downloaded copy either, so finish in one sitting. The site's security settings don't apply to a copy on your computer, because they are sent by the web host. The app still makes no network calls and saves nothing.
+Your answers are not saved in a downloaded copy either, so finish in one sitting. The site's security settings don't apply to a copy on your computer, because they are sent by the web host. The app still never saves your answers or sends them over the internet.
 
 ## Running it locally
 
@@ -132,7 +132,7 @@ The app needs no build step and no server.
   python -m http.server 8000
   ```
 
-The security headers in `app/_headers` are sent by Netlify, so they only apply on the live site. A local copy still makes no network calls and saves nothing.
+The security headers in `app/_headers` are sent by Netlify, so they only apply on the live site. A local copy still never saves your answers or sends them over the internet.
 
 ## Deploying
 
