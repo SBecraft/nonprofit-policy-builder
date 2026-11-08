@@ -154,7 +154,7 @@ aup(a, pol){
     <p>${t(`${midSentence(a.contact)} also makes sure that:`)}</p>
     <ul>
       <li>${t('Default passwords on the Wi-Fi router, printers and other office equipment are changed.')}</li>
-      <li>${t('Office Wi-Fi uses WPA2 or WPA3 with a strong password, and visitors and clients use a separate guest network.')}</li>
+      <li>${t(`Office Wi-Fi uses WPA2 or WPA3 with a strong password, and ${a.clients ? 'visitors and clients' : 'visitors'} use a separate guest network.`)}</li>
     </ul>` : ''}${a.server ? `
     <p>${t(`${midSentence(a.contact)} also makes sure that:`)}</p>
     <ul>
@@ -591,7 +591,7 @@ train(a, pol){
     <li>Training can be in person, by video call, or through free online material from trusted public sources such as the Cybersecurity and Infrastructure Security Agency (CISA).</li>
     <li>Keep it short and use real examples, such as a scam email the organization actually received.</li>
     <li>Quarterly reminders can be a short email, a newsletter item or five minutes at a team meeting.</li>
-    ${a.volunteers ? `<li>${t("Volunteers who only help at events and never use organization accounts get a two-minute reminder instead: don't share personal information about clients or donors, and report anything suspicious to their coordinator.")}</li>` : ''}
+    ${a.volunteers ? `<li>${t(`Volunteers who only help at events and never use organization accounts get a two-minute reminder instead: don't share personal information about ${a.clients ? 'clients or donors' : 'donors'}, and report anything suspicious to their coordinator.`)}</li>` : ''}
   </ul>
   <p><b>If you use practice phishing emails</b></p>
   <ul>
@@ -714,7 +714,7 @@ offboard(a, pol){
     noPM ? t('Note every shared password they knew; step 5 changes them.') : `Remove them from ${t(esc(a.pm))}.`,
     a.shared ? 'Change the password on every shared account they could use (see &quot;Who uses it&quot; in the Asset Inventory), record the date under &quot;Password last changed&quot;, and move any MFA codes off their phone.'
       : t('Change any passwords they knew, such as Wi-Fi or alarm codes.'), // stays step 5 either way: the no-password-manager line points to it
-    'Remove them from website, social media, online banking and AI tool admin roles, group chats and email lists.',
+    `Remove them from website, social media, online banking${a.cards || a.online ? t(', payment and donation platforms') : ''} and AI tool admin roles, group chats and email lists.`, // payment platforms: only with cards or online donations
     'Remove their access to backups. If they owned the backups, hand ownership to someone else first.',
     a.server ? t('Remove their access to the office server or storage device.') : '',
     a.byod ? t('Person leaving: confirm you removed organization accounts and files from your personal devices.') : '',
