@@ -161,6 +161,7 @@ app/                  Everything the live site needs. Deploy this folder only.
   Nonprofit_Policy_Builder_Walkthrough.mp4   Two-minute video on how to use the page
   walkthrough-poster.jpg                     Still image shown on the video before it plays
 .github/ISSUE_TEMPLATE/problem-report.md   Form for reporting a problem on GitHub
+coming-soon/          One-page "Coming soon" placeholder with its own security headers (not part of the app)
 assets/               Screenshots of the app (shown at the top of this file)
 LICENSE               Who may use the software and how
 NOTICE                Third-party, framework and legal notices
