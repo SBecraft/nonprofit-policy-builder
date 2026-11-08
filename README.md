@@ -162,13 +162,10 @@ app/                  Everything the live site needs. Deploy this folder only.
   walkthrough-poster.jpg                     Still image shown on the video before it plays
 .github/ISSUE_TEMPLATE/problem-report.md   Form for reporting a problem on GitHub
 assets/               Screenshots of the app (shown at the top of this file)
-documents/            Project plan and other project notes (not needed to run the app)
 LICENSE               Who may use the software and how
 NOTICE                Third-party, framework and legal notices
 README.md             This file
 SECURITY.md           How to report a security problem
-CLAUDE.md             Standing rules for Claude Code when working on this project
-HANDOFF.md            Where the work stands: done, open items and next steps
 ```
 
 Only `app/` is deployed. Everything else stays in the repository.
