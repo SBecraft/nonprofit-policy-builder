@@ -100,13 +100,16 @@ The app is a security tool, so it follows the practices it recommends:
 - **No third-party code:** no outside scripts, fonts or libraries, so there's no supply chain to tamper with.
 - **Other headers:** HSTS, `nosniff`, `Referrer-Policy: no-referrer` and a restrictive `Permissions-Policy`.
 
-**Testing** (November 8, 2026, on a local copy; no problems found so far):
+**Testing** (November 8, 2026, on a local copy; no problems in the code so far):
 
 - **Dependencies:** none. The app has no third-party code, libraries, fonts or package files and makes no network calls, so there is nothing for tools such as `npm audit` or Dependabot to scan.
 - **Semgrep:** 130 rules (JavaScript, XSS, security audit, secrets, OWASP Top Ten), 0 findings. All 16 places the code inserts HTML were also reviewed by hand: every typed answer passes through `esc()` first.
 - **Script injection:** the five payloads from the test plan were entered in each of the 14 text fields (70 checks) and checked across all 12 documents, the print tab and the copied HTML. All passed; every payload showed as plain text. The test ran without the site's security headers, so it checked the app's own escaping alone.
 
-Still planned before launch: header and HTTPS scans and the OWASP ZAP scans. Results will be summarized here and on the app's help page.
+- **OWASP ZAP 2.17.0 active scan** (local copy): no active-scan alerts. Its passive alerts were the security headers a local test server doesn't send (they're set in `app/_headers` for Netlify) and two false alarms.
+- **AI-assisted code review** (Claude Code, as a second opinion to Semgrep): no code problems. Three Informational hardening points in `app/_headers`: remove the unused `data:` from `img-src`, decide on `style-src 'unsafe-inline'`, and add `Cross-Origin-Opener-Policy: same-origin`. These are planned fixes, to be re-tested.
+
+Still planned before launch: header and HTTPS scans and the ZAP baseline scan of the live site. Results will be summarized here and on the app's help page.
 
 **Found a problem?** Please report it privately. See [SECURITY.md](SECURITY.md).
 
