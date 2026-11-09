@@ -98,7 +98,7 @@ The app is a security tool, so it follows the practices it recommends:
 - **Output escaping:** everything typed is shown as plain text and can never run as code.
 - **Strict Content Security Policy** (`app/_headers`): only the site's own script files run. Inline and injected scripts are refused, outgoing connections and form submissions are blocked, and the app can't be embedded in another site.
 - **No third-party code:** no outside scripts, fonts or libraries, so there's no supply chain to tamper with.
-- **Other headers:** HSTS, `nosniff`, `Referrer-Policy: no-referrer` and a restrictive `Permissions-Policy`.
+- **Other headers:** HSTS, `nosniff`, `Referrer-Policy: no-referrer`, a restrictive `Permissions-Policy` and `Cross-Origin-Opener-Policy: same-origin`.
 
 **Testing** (November 8, 2026, on a local copy; no problems in the code so far):
 
@@ -107,7 +107,7 @@ The app is a security tool, so it follows the practices it recommends:
 - **Script injection:** the five payloads from the test plan were entered in each of the 14 text fields (70 checks) and checked across all 12 documents, the print tab and the copied HTML. All passed; every payload showed as plain text. The test ran without the site's security headers, so it checked the app's own escaping alone.
 
 - **OWASP ZAP 2.17.0 active scan** (local copy): no active-scan alerts. Its passive alerts were the security headers a local test server doesn't send (they're set in `app/_headers` for Netlify) and two false alarms.
-- **AI-assisted code review** (Claude Code, as a second opinion to Semgrep): no code problems. Three Informational hardening points in `app/_headers`: remove the unused `data:` from `img-src`, decide on `style-src 'unsafe-inline'`, and add `Cross-Origin-Opener-Policy: same-origin`. These are planned fixes, to be re-tested.
+- **AI-assisted code review** (Claude Code, as a second opinion to Semgrep): no code problems. Three Informational hardening points in `app/_headers`. Two are fixed: the unused `data:` was removed from `img-src`, and `Cross-Origin-Opener-Policy: same-origin` was added (checked locally with the headers applied: no policy violations, and printing and copying still work). The third, `style-src 'unsafe-inline'`, is still being decided. All three will be re-tested on the live site.
 
 Still planned before launch: header and HTTPS scans and the ZAP baseline scan of the live site. Results will be summarized here and on the app's help page.
 

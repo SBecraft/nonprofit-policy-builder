@@ -242,7 +242,7 @@ th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:
       <li><strong>Source code scan.</strong> Semgrep, an automated code scanner, ran 130 security rules and found nothing. Every place the code adds text to the page was also checked by hand: everything you type is made safe first.</li>
       <li><strong>Script injection.</strong> Five well-known attack strings were typed into each of the 14 text boxes and checked in all twelve documents, the print tab and copied text. None ran; each one showed up as plain text.</li>
       <li><strong>Automated attack scan.</strong> OWASP ZAP, a free security scanner, attacked a copy of the app on a test computer and found no weaknesses in the app.</li>
-      <li><strong>AI-assisted code review.</strong> A second review of the code found no problems. It did suggest three small ways to tighten the site's security settings, which will be made and re-tested.</li>
+      <li><strong>AI-assisted code review.</strong> A second review of the code found no problems. It did suggest three small ways to tighten the site's security settings. Two have been made, and the third is being decided. All three will be re-tested on the live site.</li>
     </ul>
     <p>Still planned: the security header and HTTPS scans and a scan of the live site, which need the site to be online. Results will be summarized here once testing is complete.</p>
     <p class="note"><b>Using a downloaded copy?</b> If you open the app from your own computer instead of the website, the site's security settings don't apply, because they are sent by the web host. The app still never saves your answers or sends them over the internet.</p>
