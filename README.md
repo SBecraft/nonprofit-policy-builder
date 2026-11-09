@@ -169,6 +169,7 @@ app/                  Everything the live site needs. Deploy this folder only.
   og-image.png        Preview picture shown when the site is shared on LinkedIn, Teams, Slack and similar
   favicon.ico         Browser tab icon (16, 32 and 48 px)
   favicon.svg         Browser tab icon for modern browsers (sharp at any size)
+  apple-touch-icon.png  Icon for iPhone and iPad home screens (180 x 180)
   Nonprofit_Policy_Builder_Walkthrough.mp4   Two-minute video on how to use the page
   walkthrough-poster.jpg                     Still image shown on the video before it plays
 .github/ISSUE_TEMPLATE/problem-report.md   Form for reporting a problem on GitHub
