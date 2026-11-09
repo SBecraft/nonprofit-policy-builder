@@ -236,8 +236,13 @@ th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:
       <li>manual attempts to inject scripts into every text field</li>
       <li>a check for third-party code (dependencies)</li>
     </ul>
-    <p><strong>Dependency check: done (November 2026).</strong> The app uses no third-party code, libraries, fonts or packages, so there are no outside parts to scan for weaknesses or keep up to date.</p>
-    <p>Testing status for the other tests: planned. Results will be summarized here once testing is complete.</p>
+    <p><strong>Done (November 2026), with no problems found:</strong></p>
+    <ul>
+      <li><strong>Dependency check.</strong> The app uses no third-party code, libraries, fonts or packages, so there are no outside parts to scan for weaknesses or keep up to date.</li>
+      <li><strong>Source code scan.</strong> Semgrep, an automated code scanner, ran 130 security rules and found nothing. Every place the code adds text to the page was also checked by hand: everything you type is made safe first.</li>
+      <li><strong>Script injection.</strong> Five well-known attack strings were typed into each of the 14 text boxes and checked in all twelve documents, the print tab and copied text. None ran; each one showed up as plain text.</li>
+    </ul>
+    <p>Still planned: the security header and HTTPS scans and the automated vulnerability scanning, which need the live site. Results will be summarized here once testing is complete.</p>
     <p class="note"><b>Using a downloaded copy?</b> If you open the app from your own computer instead of the website, the site's security settings don't apply, because they are sent by the web host. The app still never saves your answers or sends them over the internet.</p>
   </section>
 

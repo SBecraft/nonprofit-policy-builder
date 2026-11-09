@@ -100,7 +100,13 @@ The app is a security tool, so it follows the practices it recommends:
 - **No third-party code:** no outside scripts, fonts or libraries, so there's no supply chain to tamper with.
 - **Other headers:** HSTS, `nosniff`, `Referrer-Policy: no-referrer` and a restrictive `Permissions-Policy`.
 
-**Testing.** A dependency check was done on November 8, 2026: the app has no third-party code, libraries, fonts or package files and makes no network calls, so there is nothing for tools such as `npm audit` or Dependabot to scan. The other tests (header and HTTPS scans, OWASP ZAP, Semgrep, and manual script-injection tests on every text field) are planned before launch. Results will be summarized here and on the app's help page.
+**Testing** (November 8, 2026, on a local copy; no problems found so far):
+
+- **Dependencies:** none. The app has no third-party code, libraries, fonts or package files and makes no network calls, so there is nothing for tools such as `npm audit` or Dependabot to scan.
+- **Semgrep:** 130 rules (JavaScript, XSS, security audit, secrets, OWASP Top Ten), 0 findings. All 16 places the code inserts HTML were also reviewed by hand: every typed answer passes through `esc()` first.
+- **Script injection:** the five payloads from the test plan were entered in each of the 14 text fields (70 checks) and checked across all 12 documents, the print tab and the copied HTML. All passed; every payload showed as plain text. The test ran without the site's security headers, so it checked the app's own escaping alone.
+
+Still planned before launch: header and HTTPS scans and the OWASP ZAP scans. Results will be summarized here and on the app's help page.
 
 **Found a problem?** Please report it privately. See [SECURITY.md](SECURITY.md).
 
