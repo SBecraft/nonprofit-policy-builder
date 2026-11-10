@@ -182,11 +182,11 @@ SECURITY.md           How to report a security problem
 CLAUDE.md             Standing rules for Claude Code when working on this project
 ```
 
-Only `app/` is deployed. Everything else stays in the repository.
+Only `app/` is deployed. Everything else stays in the repository. The one exception is `coming-soon/`: until the app goes live, Netlify serves it on its own as a placeholder, and it can be deleted once the app is deployed.
 
 ## How it was built
 
-The Nonprofit Policy Builder was conceived, designed, and developed by the creator as a GRC internship project to help small nonprofits build practical cybersecurity policies aligned with recognized security frameworks. The creator defined the application's purpose, scope, user experience, questionnaire flow, policy architecture, framework mappings, security requirements, and overall content strategy.
+The Nonprofit Policy Builder was conceived, designed, and developed by the creator as a GRC project to help small nonprofits build practical cybersecurity policies aligned with recognized security frameworks. The creator defined the application's purpose, scope, user experience, questionnaire flow, policy architecture, framework mappings, security requirements, and overall content strategy.
 
 **Claude Code**, Anthropic's AI coding assistant, was used as a development tool to help implement the application. It assisted with coding tasks, drafting policy language, generating policy templates, refining tailoring logic, reviewing code, and identifying potential issues.
 
