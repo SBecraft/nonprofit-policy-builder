@@ -129,10 +129,11 @@ The app is a security tool, so it follows the practices it recommends:
 - **No third-party code:** no outside scripts, fonts or libraries, so there's no supply chain to tamper with. Netlify adds a comment and a tag for its "Powered by Netlify" badge script to each page it serves; because the policy lists the app's scripts by name, browsers refuse to load the badge script.
 - **Other headers:** HSTS, `nosniff`, `Referrer-Policy: no-referrer`, a restrictive `Permissions-Policy` and `Cross-Origin-Opener-Policy: same-origin`.
 
-**Testing** (November 8, 2026, on a local copy; no problems in the code so far):
+**Testing** (November 8, 2026, on a local copy unless noted; no problems in the code so far):
 
-- **Dependencies:** none. The app has no third-party code, libraries, fonts or package files and makes no network calls, so there is nothing for tools such as `npm audit` or Dependabot to scan.
+- **Dependencies:** none. The app has no third-party code, libraries, fonts or package files and makes no network calls, so there is nothing for tools such as `npm audit` or Dependabot to scan. Dependabot alerts and Dependabot malware alerts are switched on anyway (November 10, 2026), so a package file added by mistake would be checked.
 - **Semgrep:** 130 rules (JavaScript, XSS, security audit, secrets, OWASP Top Ten), 0 findings. All 16 places the code inserts HTML were also reviewed by hand: every typed answer passes through `esc()` first.
+- **CodeQL** (GitHub code scanning, default setup, on GitHub, switched on November 10, 2026): scans the JavaScript on every push to `main` and once a week. First analysis: 0 alerts. Secret scanning and push protection are also on, so a password or key can't be pushed by mistake.
 - **Script injection:** the five payloads from the test plan were entered in each of the 14 text fields (70 checks) and checked across all 12 documents, the print tab and the copied HTML. All passed; every payload showed as plain text. The test ran without the site's security headers, so it checked the app's own escaping alone.
 
 - **OWASP ZAP 2.17.0 active scan** (local copy): no active-scan alerts. Its passive alerts were the security headers a local test server doesn't send (they're set in `app/_headers` for Netlify) and two false alarms.

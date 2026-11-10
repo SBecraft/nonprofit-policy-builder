@@ -71,3 +71,4 @@ For background, see the app's help page ("How this app works") or `how.html` in 
 - Everything typed is escaped and shown as plain text.
 - A strict Content Security Policy allows only the site's own scripts, blocks outgoing connections and form submissions, and prevents the app from being embedded in other sites.
 - There is no server, database, login or browser storage, and no third-party code.
+- This repository has GitHub code scanning (CodeQL), Dependabot alerts and secret scanning with push protection switched on.
