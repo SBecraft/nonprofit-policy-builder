@@ -20,21 +20,28 @@ Security policy templates online are usually written for corporations, with an I
 
 ## What it does
 
-A nonprofit answers a short questionnaire about its organization, the systems it uses and how it works. Six policies, an Incident Contact List, onboarding and offboarding checklists, a Policy Acknowledgment Form, an Asset Inventory and a Framework Summary update instantly as answers change:
+A nonprofit answers a short questionnaire about its organization, the systems it uses and how it works. Six policies and six forms update instantly as answers change. They are listed in the same order as the app's tabs.
 
-| Document | What it covers |
+**The six policies**
+
+| Policy | What it covers |
 |---|---|
 | **Acceptable Use** | How people may use the organization's accounts, devices and information, including approved software and online services, device setup, office Wi-Fi, personal devices, AI tools, reporting problems and what happens if it isn't followed |
+| **Security Awareness and Training** | When people are trained, what training covers, who runs it, training deadlines, third parties, how it is recorded and how long records are kept, and the yearly review and summary to the board |
 | **Passwords & MFA** | Passphrases, a password manager instead of the browser, MFA on key accounts, shared-account rules, two or three admins, giving and removing access, turning off unused accounts |
 | **Data Protection** | Classifying, storing, sharing and destroying information about donors, the people served, staff and volunteers, including card payments, consent for client photos and stories, and donor privacy requests |
 | **Backup & Recovery** | Who it covers, what gets backed up, the 3-2-1 rule, how backups run with or without a backup service, how long backups are kept, protecting backups, testing restores, who is responsible and step-by-step recovery after an incident |
 | **Incident Response Plan** | A short, step-by-step plan for what to do when something goes wrong |
-| **Security Awareness and Training** | When people are trained, what training covers, who runs it, training deadlines, third parties, how it is recorded and how long records are kept, and the yearly review and summary to the board |
-| **Incident Contact List** | A confidential two-page list of who to call (print it double-sided), kept separate from the plan and checked every three months. It fills in the primary IT contact, the alternate incident contact and the board chair from your answers |
-| **Onboarding** | A one-page checklist for giving access when someone joins, with a record of the access given |
-| **Offboarding** | A one-page checklist for removing access when someone leaves |
-| **Policy Acknowledgment Form** | A one-page form where each person initials the policies they received and signs |
+
+**The six forms**
+
+| Form | What it covers |
+|---|---|
 | **Asset Inventory** | A one-page landscape form listing every account, service, shared account and device, including whether each device belongs to the organization or a person, reviewed every six months |
+| **Incident Contact List** | A confidential two-page list of who to call (print it double-sided), kept separate from the plan and checked every three months. It fills in the primary IT contact, the alternate incident contact and the board chair from your answers |
+| **Onboarding Checklist** | A one-page checklist for giving access when someone joins, with a record of the access given |
+| **Policy Acknowledgment Form** | A one-page form where each person initials the policies they received and signs |
+| **Offboarding Checklist** | A one-page checklist for removing access when someone leaves |
 | **Framework Summary** | A one-page list of each document's CIS and NIST labels with a plain-English key and where to read each framework, for board packets and records |
 
 **Tailoring.** Answers change the policy text itself, not just names. Groups with no paid staff get wording that fits a volunteer-run team, groups with no organization-owned devices lose the device rules and Devices table, personal devices add rules for using them and an "Organization or personal?" column in the Asset Inventory, an office with Wi-Fi adds router and guest network rules, an office server or storage device adds rules for protecting it and backing it up off-site, shared logins add shared-account rules and a Shared accounts table in the Asset Inventory, high turnover means same-day access removal, cyber insurance means calling the insurer first, and so on. A "Highlight tailored text" switch marks every sentence that changed because of an answer, and every answer you typed in, such as names and phone numbers.
