@@ -73,7 +73,7 @@ Every document is mapped to the **CIS Critical Security Controls v8.1, Implement
 | Asset Inventory | 1&nbsp;Inventory&nbsp;and&nbsp;Control&nbsp;of&nbsp;Enterprise&nbsp;Assets&nbsp;· 2&nbsp;Inventory&nbsp;and&nbsp;Control&nbsp;of&nbsp;Software&nbsp;Assets&nbsp;· 15&nbsp;Service&nbsp;Provider&nbsp;Management | ID.AM |
 | Security Awareness and Training | 14&nbsp;Security&nbsp;Awareness&nbsp;and&nbsp;Skills&nbsp;Training | PR.AT · GV.RR |
 
-The mappings show alignment, not certification. The policy wording and mappings are reviewed once a year, and the app shows the date of the last review. When CIS or NIST publishes a new version, the mappings are updated by hand and reviewed by a person. The app never fetches framework data.
+**The mappings show alignment, not certification.** The policy wording and mappings are reviewed once a year, and the app shows the date of the last review. When CIS or NIST publishes a new version, the mappings are updated by hand and reviewed by a person. The app never fetches framework data.
 
 ## Privacy
 
