@@ -71,6 +71,8 @@ Every document is mapped to the **CIS Critical Security Controls v8.1, Implement
 | Asset Inventory | 1 Inventory and Control of Enterprise Assets · 2 Inventory and Control of Software Assets · 15 Service Provider Management | ID.AM |
 | Security Awareness and Training | 14 Security Awareness and Skills Training | PR.AT · GV.RR |
 
+[What do these mean?](https://policies-for-small-nonprofits.netlify.app/how.html#labels)
+
 The mappings show alignment, not certification. The policy wording and mappings are reviewed once a year, and the app shows the date of the last review. When CIS or NIST publishes a new version, the mappings are updated by hand and reviewed by a person. The app never fetches framework data.
 
 ## Privacy
