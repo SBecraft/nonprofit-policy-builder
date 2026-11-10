@@ -20,7 +20,7 @@
 
 ---
 
-**Contents:** [Why it exists](#why-it-exists) · [What it does](#what-it-does) · [Works on any device](#works-on-any-device) · [Framework mappings](#framework-mappings) · [Privacy](#privacy) · [Sharing, search engines and AI crawlers](#sharing-search-engines-and-ai-crawlers) · [Security](#security) · [Using the app](#using-the-app) · [Download the app](#download-the-app) · [Running it locally](#running-it-locally) · [Deploying](#deploying) · [Project structure](#project-structure) · [How it was built](#how-it-was-built) · [Tools used](#tools-used) · [Limitations](#limitations) · [License](#license)
+<a id="contents"></a>**Contents:** [Why it exists](#why-it-exists) · [What it does](#what-it-does) · [Works on any device](#works-on-any-device) · [Framework mappings](#framework-mappings) · [Privacy](#privacy) · [Sharing, search engines and AI crawlers](#sharing-search-engines-and-ai-crawlers) · [Security](#security) · [Using the app](#using-the-app) · [Download the app](#download-the-app) · [Running it locally](#running-it-locally) · [Deploying](#deploying) · [Project structure](#project-structure) · [How it was built](#how-it-was-built) · [Tools used](#tools-used) · [Limitations](#limitations) · [License](#license)
 
 ---
 
@@ -246,3 +246,5 @@ This software is made available for free use by nonprofit organizations for inte
 The full terms, including what you may do with the documents the app generates, are in the [Nonprofit Policy Builder License](LICENSE). See also [NOTICE](NOTICE).
 
 Nonprofit Policy Builder © 2026 SBecraft · Free for nonprofits to use · Not legal advice
+
+[Back to Contents ↑](#contents)
