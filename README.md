@@ -107,7 +107,7 @@ The app is a security tool, so it follows the practices it recommends:
 - **Script injection:** the five payloads from the test plan were entered in each of the 14 text fields (70 checks) and checked across all 12 documents, the print tab and the copied HTML. All passed; every payload showed as plain text. The test ran without the site's security headers, so it checked the app's own escaping alone.
 
 - **OWASP ZAP 2.17.0 active scan** (local copy): no active-scan alerts. Its passive alerts were the security headers a local test server doesn't send (they're set in `app/_headers` for Netlify) and two false alarms.
-- **AI-assisted code review** (Claude Code, as a second opinion to Semgrep): no code problems. Three Informational hardening points in `app/_headers`. Two are fixed: the unused `data:` was removed from `img-src`, and `Cross-Origin-Opener-Policy: same-origin` was added (checked locally with the headers applied: no policy violations, and printing and copying still work). The third, `style-src 'unsafe-inline'`, is still being decided. All three will be re-tested on the live site.
+- **AI-assisted code review** (Claude Code, as a second opinion to Semgrep): no code problems. Three Informational hardening points in `app/_headers`. Two are fixed: the unused `data:` was removed from `img-src`, and `Cross-Origin-Opener-Policy: same-origin` was added (checked locally with the headers applied: no policy violations, and printing and copying still work). The third, `style-src 'unsafe-inline'`, was reviewed and left as it is, with the reasons recorded: every typed answer is escaped, and the site's other rules stop styles from loading anything from another site, so removing it (moving all the CSS into separate files) wasn't worth the risk of breaking the print layouts. All three will be re-tested on the live site.
 
 Still planned before launch: header and HTTPS scans and the ZAP baseline scan of the live site. Results will be summarized here and on the app's help page.
 
@@ -174,7 +174,7 @@ app/                  Everything the live site needs. Deploy this folder only.
   walkthrough-poster.jpg                     Still image shown on the video before it plays
 .github/ISSUE_TEMPLATE/problem-report.md   Form for reporting a problem on GitHub
 coming-soon/          One-page "Coming soon" placeholder with its own security headers (not part of the app)
-assets/               Screenshots of the app (shown at the top of this file)
+assets/               Screenshot of the app (shown at the top of this file)
 LICENSE               Who may use the software and how
 NOTICE                Third-party, framework and legal notices
 README.md             This file
