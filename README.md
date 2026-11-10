@@ -20,7 +20,7 @@
 
 ---
 
-**Contents:** [Why it exists](#why-it-exists) · [What it does](#what-it-does) · [Framework mappings](#framework-mappings) · [Privacy](#privacy) · [Sharing, search engines and AI crawlers](#sharing-search-engines-and-ai-crawlers) · [Security](#security) · [Using the app](#using-the-app) · [Download the app](#download-the-app) · [Running it locally](#running-it-locally) · [Deploying](#deploying) · [Project structure](#project-structure) · [How it was built](#how-it-was-built) · [Tools used](#tools-used) · [Limitations](#limitations) · [License](#license)
+**Contents:** [Why it exists](#why-it-exists) · [What it does](#what-it-does) · [Works on any device](#works-on-any-device) · [Framework mappings](#framework-mappings) · [Privacy](#privacy) · [Sharing, search engines and AI crawlers](#sharing-search-engines-and-ai-crawlers) · [Security](#security) · [Using the app](#using-the-app) · [Download the app](#download-the-app) · [Running it locally](#running-it-locally) · [Deploying](#deploying) · [Project structure](#project-structure) · [How it was built](#how-it-was-built) · [Tools used](#tools-used) · [Limitations](#limitations) · [License](#license)
 
 ---
 
@@ -64,6 +64,12 @@ A nonprofit answers a short questionnaire about its organization, the systems it
 - Save as PDF from the print dialog.
 
 **Nonprofit-specific content** that corporate templates usually miss: gift-card and bank-change scams that impersonate the executive director, the 501(c)(3) limit on political activity, view-only, time-limited volunteer access, board members kept in scope, calling the cyber insurer before outside help, and reporting to the FBI (ic3.gov) and CISA.
+
+## Works on any device
+
+- **Computers, tablets and phones.** The app works in any up-to-date browser. On a phone or a narrow window, the questions sit above the document and the whole page scrolls, and wide tables turn into stacked cards. It has been checked on an iPhone. For printing and editing the documents, a computer is easier.
+- **Light and dark mode.** Both pages follow your device's light or dark setting. Printed documents always use dark text on a white background.
+- **Accessibility.** Every question has a label. The document tabs work with the arrow keys, Home and End. The highlight switch and the "Watch larger" button tell screen readers whether they are on, and pop-up boxes keep keyboard focus until they close. The app has not yet been formally tested for accessibility (with a screen reader or against the WCAG guidelines). If something doesn't work for you, please [report it](../../issues).
 
 ## Framework mappings
 
