@@ -43,6 +43,9 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);fo
 h1{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,4vw,36px);line-height:1.1;margin:4px 0 8px}
 .lede{color:var(--muted);margin:0 0 8px}
 .back{font-family:var(--f-display);font-size:14px}
+.totop{margin:24px 0 0;max-width:none;font-family:var(--f-display);font-size:14px;text-align:center} /* max-width:none: p's 70ch limit would pull it left of the boxes' center */
+h1#top:focus{outline:none} /* "Back to top" moves focus here so keyboard users start at the top; it is not a control */
+h1#top{scroll-margin-top:200px} /* so "Back to top" also shows the eyebrow line above the title (the page top) */
 nav.toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0 6px;font-family:var(--f-display);font-size:14px}
 section{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:clamp(18px,4vw,32px);margin-top:18px}
 h2{font-family:var(--f-display);font-size:22px;margin:0 0 8px}
@@ -71,7 +74,7 @@ th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:
   :root:not([data-print]){
     --bg:#ffffff; --panel:#ffffff; --paper:#ffffff; --ink:#000000; --muted:#444444;
     --line:#bbbbbb; --accent:#1d6b58; --warn:#9a5b10; color-scheme:light }
-  nav.toc,.back{display:none}
+  nav.toc,.back,.totop{display:none}
   .wrap{padding:0;max-width:none}
   section{border:0;padding:0}
   table{min-width:0}
@@ -84,7 +87,7 @@ th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:
 <body>
 <div class="wrap">
   <div class="eyebrow">Nonprofit Policy Builder · Help</div>
-  <h1>How this app works</h1>
+  <h1 id="top" tabindex="-1">How this app works</h1>
   <p class="lede">What the framework labels mean, what happens to your answers, and how the app is protected.</p>
   <p class="back">If you opened this from the policy builder, close this tab to get back to your answers. <a href="index.html">Go to the policy builder</a></p>
 
@@ -320,6 +323,8 @@ th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:
     <h2>Who maintains this</h2>
     <p>Nonprofit Policy Builder is built and maintained by SBecraft, a cybersecurity professional with an MS in Cybersecurity and Information Assurance.</p>
   </section>
+
+  <p class="totop"><a href="#top">Back to top ↑</a></p>
 
 </div>
 <script src="frameworks.js"></script>
