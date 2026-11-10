@@ -266,7 +266,7 @@ th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:
       <li><strong>Live site scan.</strong> OWASP ZAP looked over the live site without attacking it and found nothing new.</li>
       <li><strong>Browser checks on the live site.</strong> The page loads only its own files, sends nothing while you fill it in, stores nothing (no cookies or saved data) and forgets your answers when the tab closes. It refuses scripts it doesn't know, and it can't be shown inside another website.</li>
     </ul>
-    <p>Being considered: one suggestion from these tests, a newer browser setting called Trusted Types, which would add another layer of protection to how the page shows what you type. It doesn't point to a current weakness. The earlier code checks are also being repeated on a test computer.</p>
+    <p>All the earlier code checks were repeated after the changes, on a test computer, and found nothing new. One suggestion from these tests, a newer browser setting called Trusted Types, was reviewed and left as it is. It would add another layer of protection to how the page shows what you type, but it doesn't point to a current weakness: the app already makes everything you type safe.</p>
     <p class="note"><b>Using a downloaded copy?</b> If you open the app from your own computer instead of the website, the site's security settings don't apply, because they are sent by the web host. The app still never saves your answers or sends them over the internet.</p>
   </section>
 

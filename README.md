@@ -141,9 +141,10 @@ The app is a security tool, so it follows the practices it recommends:
 - **Live site header and HTTPS scans** (November 10, 2026): SecurityHeaders.com A+; Mozilla HTTP Observatory A+ (125, 12 of 12 tests passed); Qualys SSL Labs A+ on every server (TLS 1.2 and 1.3 only); Google CSP Evaluator, no high-severity findings.
 - **OWASP ZAP baseline scan of the live site** (passive only, November 10, 2026): no new findings. It lists `style-src 'unsafe-inline'` (accepted, above), the same two false alarms as the local scan, and two notes about Netlify's caching. The missing-header alerts from the local scan are gone.
 - **Browser checks on the live site** (November 10, 2026, Chrome): only the site's own files load, and no requests are made while using the form. There are no cookies or stored data, and answers are gone after reopening the tab. Inline and outside scripts are refused, and the page can't be framed. The only console error is the CSP blocking Netlify's badge script.
-- **Lighthouse Best Practices:** 92. Both deductions are that same blocked badge script. Its unscored notes suggest Trusted Types, an extra browser protection for how the page inserts HTML. That is recorded as an Informational point still to decide; it isn't a current weakness.
+- **Lighthouse Best Practices:** 92. Both deductions are that same blocked badge script. Its unscored notes suggest Trusted Types, an extra browser protection for how the page inserts HTML. It was reviewed and accepted as an Informational point, since it isn't a current weakness: every typed answer is already escaped.
+- **Re-run after the changes** (November 10, 2026, local copy): ESLint and HTMLHint clean; Stylelint only the reviewed rule-order warnings; Semgrep 0 findings; script injection 70 of 70; ZAP active scan, no attack alerts. The changes since the first round were also reviewed, with no security problems found.
 
-Still to do: decide on Trusted Types, and repeat the local tests (linting, script injection, Semgrep and the ZAP active scan) to finish the Round 2 re-test.
+Testing for version 1.0.0 is complete. GitHub's CodeQL scanning keeps checking the code after each change.
 
 **Found a problem?** Please report it privately. See [SECURITY.md](SECURITY.md).
 
