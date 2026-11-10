@@ -2,7 +2,12 @@
 
 **Plain-English security policies, tailored in about 15 minutes, free, and with nothing you type ever leaving your browser. Built for small nonprofits, including organizations with volunteers, shared logins and frequent turnover.**
 
-**Live site:** https://policies-for-small-nonprofits.netlify.app · **Version:** 1.0.0 · **[Download the app](#download-the-app)** · **Report a problem:** [Issues](../../issues) · **Report a security flaw in the app:** [SECURITY.md](SECURITY.md)
+| | |
+|---|---|
+| **Live site** | [policies-for-small-nonprofits.netlify.app](https://policies-for-small-nonprofits.netlify.app) |
+| **Version** | 1.0.0 |
+| **Download** | [Get the app](#download-the-app) |
+| **Report** | [A problem](../../issues) · [A security flaw in the app](SECURITY.md) |
 
 > **Not legal advice.** These are starting templates for discussion. Have your board approve them, and ask a lawyer to check your state's breach notification and record retention rules.
 
