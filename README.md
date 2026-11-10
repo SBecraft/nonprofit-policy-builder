@@ -235,7 +235,7 @@ AI-generated code and content were treated as drafts. The creator reviewed, edit
 - The policies are templates, not legal advice.
 - A policy only works if people know about it and follow it. The app doesn't provide training or track acknowledgments.
 - Industry-specific rules such as HIPAA and FERPA are not covered.
-- The framework mappings show alignment, not compliance or certification.
+- **The framework mappings show alignment, not compliance or certification.**
 
 ## License
 
