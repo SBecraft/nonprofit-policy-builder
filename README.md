@@ -57,6 +57,8 @@ A nonprofit answers a short questionnaire about its organization, the systems it
 
 Every document is mapped to the **CIS Critical Security Controls v8.1, Implementation Group 1** and the **NIST Cybersecurity Framework 2.0**, and shows its mappings as labels.
 
+<p align="right"><a href="https://policies-for-small-nonprofits.netlify.app/how.html#labels">What do these mean?</a></p>
+
 | Document | CIS Controls v8.1 | NIST CSF 2.0 |
 |---|---|---|
 | Acceptable Use | 3 Data Protection · 4 Secure Configuration · 7 Continuous Vulnerability Management · 10 Malware Defenses · 14 Security Awareness and Skills Training | GV.PO · PR.AT · PR.PS |
@@ -70,8 +72,6 @@ Every document is mapped to the **CIS Critical Security Controls v8.1, Implement
 | Policy Acknowledgment Form | 14 Security Awareness and Skills Training | GV.PO · PR.AT |
 | Asset Inventory | 1 Inventory and Control of Enterprise Assets · 2 Inventory and Control of Software Assets · 15 Service Provider Management | ID.AM |
 | Security Awareness and Training | 14 Security Awareness and Skills Training | PR.AT · GV.RR |
-
-[What do these mean?](https://policies-for-small-nonprofits.netlify.app/how.html#labels)
 
 The mappings show alignment, not certification. The policy wording and mappings are reviewed once a year, and the app shows the date of the last review. When CIS or NIST publishes a new version, the mappings are updated by hand and reviewed by a person. The app never fetches framework data.
 
