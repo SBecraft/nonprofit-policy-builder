@@ -7,7 +7,7 @@
 > **Not legal advice.** These are starting templates for discussion. Have your board approve them, and ask a lawyer to check your state's breach notification and record retention rules.
 
 <p align="center">
-  <img src="assets/app-screenshot.png" width="640" alt="The Nonprofit Policy Builder: the questionnaire on the left, the walkthrough video at the top right, and the tailored Acceptable Use Policy with its tailored text highlighted">
+  <a href="assets/app-full-page.png"><img src="assets/app-screenshot.png" width="640" alt="The Nonprofit Policy Builder: the questionnaire on the left, the walkthrough video at the top right, and the tailored Acceptable Use Policy with its tailored text highlighted"></a>
 </p>
 
 <p align="center"><em>The app with its sample answers. Click the picture to see the whole page.</em></p>
@@ -176,7 +176,7 @@ app/                  Everything the live site needs. Deploy this folder only.
   walkthrough-poster.jpg                     Still image shown on the video before it plays
 .github/ISSUE_TEMPLATE/problem-report.md   Form for reporting a problem on GitHub
 coming-soon/          One-page "Coming soon" placeholder with its own security headers (not part of the app)
-assets/               Screenshot of the app (shown at the top of this file)
+assets/               Screenshots of the app: the first screen (shown at the top of this file) and the whole page
 LICENSE               Who may use the software and how
 NOTICE                Third-party, framework and legal notices
 README.md             This file
