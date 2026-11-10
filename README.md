@@ -247,4 +247,4 @@ The full terms, including what you may do with the documents the app generates, 
 
 Nonprofit Policy Builder © 2026 SBecraft · Free for nonprofits to use · Not legal advice
 
-[Back to Contents ↑](#contents)
+<p align="center"><a href="#contents">Back to Contents ↑</a></p>
