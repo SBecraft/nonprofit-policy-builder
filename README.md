@@ -2,7 +2,7 @@
 
 **Plain-English security policies for any small nonprofit, including volunteer-run teams, tailored in about 15 minutes, free, and with nothing you type ever leaving your browser.**
 
-**Live site:** https://policies-for-small-nonprofits.netlify.app (coming soon) · **Version:** 1.0.0 · **[Download the app](#download-the-app)** · **Report a problem:** [Issues](../../issues) · **Report a security flaw in the app:** [SECURITY.md](SECURITY.md)
+**Live site:** https://policies-for-small-nonprofits.netlify.app · **Version:** 1.0.0 · **[Download the app](#download-the-app)** · **Report a problem:** [Issues](../../issues) · **Report a security flaw in the app:** [SECURITY.md](SECURITY.md)
 
 > **Not legal advice.** These are starting templates for discussion. Have your board approve them, and ask a lawyer to check your state's breach notification and record retention rules.
 
@@ -111,7 +111,7 @@ The app is a security tool, so it follows the practices it recommends:
 - **OWASP ZAP 2.17.0 active scan** (local copy): no active-scan alerts. Its passive alerts were the security headers a local test server doesn't send (they're set in `app/_headers` for Netlify) and two false alarms.
 - **AI-assisted code review** (Claude Code, as a second opinion to Semgrep): no code problems. Three Informational hardening points in `app/_headers`. Two are fixed: the unused `data:` was removed from `img-src`, and `Cross-Origin-Opener-Policy: same-origin` was added (checked locally with the headers applied: no policy violations, and printing and copying still work). The third, `style-src 'unsafe-inline'`, was reviewed and left as it is, with the reasons recorded: every typed answer is escaped, and the site's other rules stop styles from loading anything from another site, so removing it (moving all the CSS into separate files) wasn't worth the risk of breaking the print layouts. All three will be re-tested on the live site.
 
-Still planned before launch: header and HTTPS scans and the ZAP baseline scan of the live site. Results will be summarized here and on the app's help page.
+Still to do, now that the site is live: header and HTTPS scans and the ZAP baseline scan of the live site. Results will be summarized here and on the app's help page.
 
 **Found a problem?** Please report it privately. See [SECURITY.md](SECURITY.md).
 
@@ -175,7 +175,7 @@ app/                  Everything the live site needs. Deploy this folder only.
   Nonprofit_Policy_Builder_Walkthrough.mp4   Two-minute video on how to use the page
   walkthrough-poster.jpg                     Still image shown on the video before it plays
 .github/ISSUE_TEMPLATE/problem-report.md   Form for reporting a problem on GitHub
-coming-soon/          One-page "Coming soon" placeholder with its own security headers (not part of the app)
+coming-soon/          The "Coming soon" page shown before launch (no longer deployed; not part of the app)
 assets/               Screenshots of the app: the first screen (shown at the top of this file) and the whole page
 LICENSE               Who may use the software and how
 NOTICE                Third-party, framework and legal notices
@@ -184,7 +184,7 @@ SECURITY.md           How to report a security problem
 CLAUDE.md             Standing rules for Claude Code when working on this project
 ```
 
-Only `app/` is deployed. Everything else stays in the repository. The one exception is `coming-soon/`: until the app goes live, Netlify serves it on its own as a placeholder, and it can be deleted once the app is deployed.
+Only `app/` is deployed. Everything else stays in the repository. `coming-soon/` is the placeholder page Netlify showed until the app went live on November 9, 2026. It is no longer deployed and can be deleted.
 
 ## How it was built
 
