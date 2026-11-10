@@ -11,12 +11,12 @@
 
 > **Not legal advice.** These are starting templates for discussion. Have your board approve them, and ask a lawyer to check your state's breach notification and record retention rules.
 
-<p>
-  <a href="assets/app-full-page.png"><img src="assets/app-screenshot.png" width="640" align="left" alt="The Nonprofit Policy Builder: the questionnaire on the left, the walkthrough video at the top right, and the tailored Acceptable Use Policy with its tailored text highlighted"></a>
-  <em>The app with its sample answers.</em><br>
-  <em>Click the picture to see the whole page.</em>
-</p>
-<br clear="left">
+<table>
+  <tr>
+    <td valign="middle"><a href="assets/app-full-page.png"><img src="assets/app-screenshot.png" width="640" alt="The Nonprofit Policy Builder: the questionnaire on the left, the walkthrough video at the top right, and the tailored Acceptable Use Policy with its tailored text highlighted"></a></td>
+    <td valign="middle" align="center"><em>The app with its sample answers.</em><br><br><em>Click the picture to see the whole page.</em></td>
+  </tr>
+</table>
 
 ## Why it exists
 
