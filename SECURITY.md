@@ -31,6 +31,7 @@ Please include:
 - **Acknowledgment within 7 days** of your report.
 - **An initial assessment within 14 days**: whether it's confirmed, how serious it is, and what happens next.
 - **A fix as quickly as the severity requires**, released as a new version. Serious problems take priority.
+- **Fixes are announced** in the release notes and, for serious problems, as a GitHub security advisory in this repository's **Security** tab.
 - **Credit** in the release notes if you'd like it. Tell us the name or handle to use, or say if you'd rather stay anonymous.
 
 Please give us a reasonable chance to fix a problem before you discuss it publicly. We'll keep you updated and agree on a disclosure date with you.
