@@ -75,7 +75,7 @@ A nonprofit answers a short questionnaire about its organization, the systems it
 
 Every document is mapped to the **CIS Critical Security Controls v8.1, Implementation Group 1** and the **NIST Cybersecurity Framework 2.0**, and shows its mappings as labels.
 
-<p align="right"><a href="https://policies-for-small-nonprofits.netlify.app/how.html#labels">What do these mean?</a></p>
+<p align="right"><a href="app/how.html">What do these mean?</a></p>
 
 | Document | CIS Controls v8.1 | NIST CSF 2.0 |
 |---|---|---|
