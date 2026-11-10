@@ -75,7 +75,7 @@ A nonprofit answers a short questionnaire about its organization, the systems it
 
 Every document is mapped to the **CIS Critical Security Controls v8.1, Implementation Group 1** and the **NIST Cybersecurity Framework 2.0**, and shows its mappings as labels.
 
-<p align="right"><a href="app/how.html">What do these mean?</a></p>
+<p align="right"><a href="assets/framework-labels.md">What do these mean?</a></p>
 
 | Document | CIS Controls v8.1 | NIST CSF 2.0 |
 |---|---|---|
@@ -203,7 +203,7 @@ app/                  Everything the live site needs. Deploy this folder only.
   walkthrough-poster.jpg                     Still image shown on the video before it plays
 .github/ISSUE_TEMPLATE/problem-report.md   Form for reporting a problem on GitHub
 coming-soon/          The "Coming soon" page shown before launch (no longer deployed; not part of the app)
-assets/               Screenshots of the app: the first screen (shown at the top of this file) and the whole page
+assets/               Screenshots of the app (the first screen, shown at the top of this file, and the whole page) and framework-labels.md, the plain-English label key
 LICENSE               Who may use the software and how
 NOTICE                Third-party, framework and legal notices
 README.md             This file
