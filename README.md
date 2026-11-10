@@ -61,17 +61,17 @@ Every document is mapped to the **CIS Critical Security Controls v8.1, Implement
 
 | Document | CIS Controls v8.1 | NIST CSF 2.0 |
 |---|---|---|
-| Acceptable Use | 3 Data Protection · 4 Secure Configuration · 7 Continuous Vulnerability Management · 10 Malware Defenses · 14 Security Awareness and Skills Training | GV.PO · PR.AT · PR.PS |
-| Passwords & MFA | 5 Account Management · 6 Access Control Management | PR.AA |
-| Data Protection | 3 Data Protection · 15 Service Provider Management | PR.DS · ID.AM |
-| Backup & Recovery | 11 Data Recovery | PR.DS · RC.RP |
-| Incident Response Plan | 17 Incident Response Management | RS · RC |
-| Incident Contact List | 17 Incident Response Management (17.2) | RS.CO |
-| Onboarding | 5 Account Management · 6 Access Control Management | PR.AA |
-| Offboarding | 5 Account Management · 6 Access Control Management | PR.AA |
-| Policy Acknowledgment Form | 14 Security Awareness and Skills Training | GV.PO · PR.AT |
-| Asset Inventory | 1 Inventory and Control of Enterprise Assets · 2 Inventory and Control of Software Assets · 15 Service Provider Management | ID.AM |
-| Security Awareness and Training | 14 Security Awareness and Skills Training | PR.AT · GV.RR |
+| Acceptable Use | 3&nbsp;Data&nbsp;Protection&nbsp;· 4&nbsp;Secure&nbsp;Configuration&nbsp;· 7&nbsp;Continuous&nbsp;Vulnerability&nbsp;Management&nbsp;· 10&nbsp;Malware&nbsp;Defenses&nbsp;· 14&nbsp;Security&nbsp;Awareness&nbsp;and&nbsp;Skills&nbsp;Training | GV.PO · PR.AT · PR.PS |
+| Passwords & MFA | 5&nbsp;Account&nbsp;Management&nbsp;· 6&nbsp;Access&nbsp;Control&nbsp;Management | PR.AA |
+| Data Protection | 3&nbsp;Data&nbsp;Protection&nbsp;· 15&nbsp;Service&nbsp;Provider&nbsp;Management | PR.DS · ID.AM |
+| Backup & Recovery | 11&nbsp;Data&nbsp;Recovery | PR.DS · RC.RP |
+| Incident Response Plan | 17&nbsp;Incident&nbsp;Response&nbsp;Management | RS · RC |
+| Incident Contact List | 17&nbsp;Incident&nbsp;Response&nbsp;Management&nbsp;(17.2) | RS.CO |
+| Onboarding | 5&nbsp;Account&nbsp;Management&nbsp;· 6&nbsp;Access&nbsp;Control&nbsp;Management | PR.AA |
+| Offboarding | 5&nbsp;Account&nbsp;Management&nbsp;· 6&nbsp;Access&nbsp;Control&nbsp;Management | PR.AA |
+| Policy Acknowledgment Form | 14&nbsp;Security&nbsp;Awareness&nbsp;and&nbsp;Skills&nbsp;Training | GV.PO · PR.AT |
+| Asset Inventory | 1&nbsp;Inventory&nbsp;and&nbsp;Control&nbsp;of&nbsp;Enterprise&nbsp;Assets&nbsp;· 2&nbsp;Inventory&nbsp;and&nbsp;Control&nbsp;of&nbsp;Software&nbsp;Assets&nbsp;· 15&nbsp;Service&nbsp;Provider&nbsp;Management | ID.AM |
+| Security Awareness and Training | 14&nbsp;Security&nbsp;Awareness&nbsp;and&nbsp;Skills&nbsp;Training | PR.AT · GV.RR |
 
 The mappings show alignment, not certification. The policy wording and mappings are reviewed once a year, and the app shows the date of the last review. When CIS or NIST publishes a new version, the mappings are updated by hand and reviewed by a person. The app never fetches framework data.
 
