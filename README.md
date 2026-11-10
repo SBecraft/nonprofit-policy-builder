@@ -107,8 +107,8 @@ When someone shares the site's link on LinkedIn, Facebook, Microsoft Teams, Slac
 The app is a security tool, so it follows the practices it recommends:
 
 - **Output escaping:** everything typed is shown as plain text and can never run as code.
-- **Strict Content Security Policy** (`app/_headers`): only the site's own script files run. Inline and injected scripts are refused, outgoing connections and form submissions are blocked, and the app can't be embedded in another site.
-- **No third-party code:** no outside scripts, fonts or libraries, so there's no supply chain to tamper with.
+- **Strict Content Security Policy** (`app/_headers`): only the site's own two script files run, listed by their full addresses. Inline and injected scripts are refused, outgoing connections and form submissions are blocked, and the app can't be embedded in another site.
+- **No third-party code:** no outside scripts, fonts or libraries, so there's no supply chain to tamper with. Netlify adds a comment and a tag for its "Powered by Netlify" badge script to each page it serves; because the policy lists the app's scripts by name, browsers refuse to load the badge script.
 - **Other headers:** HSTS, `nosniff`, `Referrer-Policy: no-referrer`, a restrictive `Permissions-Policy` and `Cross-Origin-Opener-Policy: same-origin`.
 
 **Testing** (November 8, 2026, on a local copy; no problems in the code so far):

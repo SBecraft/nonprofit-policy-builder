@@ -225,9 +225,10 @@ th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:
     <h3>Protections built in</h3>
     <ul>
       <li><strong>Typed text can't run as code.</strong> Everything you type is displayed as plain text, so a malicious entry can't turn into a script (cross-site scripting).</li>
-      <li><strong>Strict security policy.</strong> The site only runs its own script files. Scripts injected into the page are refused, outgoing connections are blocked, and forms can't be submitted anywhere.</li>
+      <li><strong>Strict security policy.</strong> The site runs only its own two script files, listed by name. Any other script, including one injected into the page, is refused, outgoing connections are blocked, and forms can't be submitted anywhere.</li>
       <li><strong>Can't be hidden inside another website.</strong> The app refuses to load inside another site's frame, which blocks "clickjacking" tricks.</li>
       <li><strong>No third-party code.</strong> No outside scripts, fonts or libraries, so there is nothing outside the site that could be tampered with to change the app.</li>
+      <li><strong>What the web host adds.</strong> The site's host, Netlify, adds a short comment and a tag for its "Powered by Netlify" badge script to every page it serves. Because the security policy lists the app's own script files by name, browsers refuse to load the badge script, so it never runs. The downloaded copy has neither.</li>
       <li><strong>Encrypted connection.</strong> The live site is served only over HTTPS.</li>
     </ul>
     <h3>Testing</h3>

@@ -1,5 +1,5 @@
 /*
-  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; media-src 'self'; connect-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'
+  Content-Security-Policy: default-src 'none'; script-src https://policies-for-small-nonprofits.netlify.app/app.js https://policies-for-small-nonprofits.netlify.app/frameworks.js; style-src 'self' 'unsafe-inline'; img-src 'self'; media-src 'self'; connect-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer
