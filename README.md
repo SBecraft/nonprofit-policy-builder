@@ -89,7 +89,7 @@ When someone shares the site's link on LinkedIn, Facebook, Microsoft Teams, Slac
 ### Search engines and AI crawlers
 
 - **`robots.txt`** lets search engines and AI search tools list the site, and asks AI training crawlers (such as GPTBot, ClaudeBot, Google-Extended and CCBot) not to copy it. It is a request, not a security control, and it lists no private paths, because the site has none. The crawlers that build share previews are allowed.
-- **`sitemap.xml`** lists the site's two pages for search engines and is linked from the footer. `robots.txt` points to it with a `Sitemap:` line.
+- **`sitemap.xml`** lists the site's two pages for search engines. `robots.txt` points to it with a `Sitemap:` line.
 
 ## Security
 
@@ -165,7 +165,7 @@ app/                  Everything the live site needs. Deploy this folder only.
   how.html            Help page: framework mappings, privacy, printing and security
   _headers            Netlify security headers (keep this exact name)
   robots.txt          Lets search engines list the site; asks AI training crawlers to stay out
-  sitemap.xml         Lists the site's two pages for search engines (linked in the footer)
+  sitemap.xml         Lists the site's two pages for search engines (found through robots.txt)
   og-image.png        Preview picture shown when the site is shared on LinkedIn, Teams, Slack and similar
   favicon.ico         Browser tab icon (16, 32 and 48 px)
   favicon.svg         Browser tab icon for modern browsers (sharp at any size)
