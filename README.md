@@ -48,7 +48,7 @@ A nonprofit answers a short questionnaire about its organization, the systems it
 
 **Getting the policies out:**
 - Copy one document, or any combination, into Word or Google Docs with headings and tables intact. Add table rows there if you need more.
-- Print them in a separate tab, so your answers aren't lost. The Incident Contact List takes two pages, so print it double-sided.
+- Print the document you're viewing, or several at once from the **More** menu. Print opens them in a new tab and brings up your browser's print dialog. When you print or cancel, that tab closes itself and you're back on the app with your answers still there, because the page holding them is never reloaded. The Incident Contact List takes two pages, so print it double-sided.
 - Save as PDF from the print dialog.
 
 **Nonprofit-specific content** that corporate templates usually miss: gift-card and bank-change scams that impersonate the executive director, the 501(c)(3) limit on political activity, view-only, time-limited volunteer access, board members kept in scope, calling the cyber insurer before outside help, and reporting to the FBI (ic3.gov) and CISA.
