@@ -18,7 +18,12 @@ Framework references
   NIST Cybersecurity Framework 2.0, a U.S. government work in the public domain.
 
 FRAMEWORKS
-This software maps its documents to the CIS Controls, from the Center for Internet Security, and the NIST Cybersecurity Framework, from the U.S. National Institute of Standards and Technology. Those names belong to their owners. This software is not affiliated with or endorsed by either organization, and using it does not make an organization certified or compliant.
+This software maps its documents to the CIS Controls, from the Center for
+Internet Security, and the NIST Cybersecurity Framework, from the U.S. National
+Institute of Standards and Technology.
+Those names belong to their owners.
+This software is not affiliated with or endorsed by either organization, and
+using it does not make an organization certified or compliant.
 
 NOT LEGAL ADVICE
 The documents this software generates are starting templates, not legal advice.

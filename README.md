@@ -192,7 +192,6 @@ app/                  Everything the live site needs
   Nonprofit_Policy_Builder_Walkthrough.mp4   Two-minute video on how to use the page
   walkthrough-poster.jpg                     Still image shown on the video before it plays
 .github/ISSUE_TEMPLATE/problem-report.md   Form for reporting a problem on GitHub
-coming-soon/          The "Coming soon" page shown before launch (no longer deployed; not part of the app)
 assets/               Screenshots of the app (the first screen, shown at the top of this file, and the whole page) and framework-labels.md, the plain-English label key
 LICENSE               Who may use the software and how
 NOTICE                Third-party, framework and legal notices
@@ -201,7 +200,7 @@ SECURITY.md           How to report a security problem
 CLAUDE.md             Standing rules for Claude Code when working on this project
 ```
 
-Only `app/` is deployed. Everything else stays in the repository. `coming-soon/` is the placeholder page Netlify showed until the app went live on November 9, 2026. It is no longer deployed and can be deleted.
+Only `app/` is deployed. Everything else stays in the repository.
 
 ## How it was built
 
