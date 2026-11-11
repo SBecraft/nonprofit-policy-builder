@@ -25,17 +25,17 @@
 /* Same palette and fonts as index.html. Keep the two in step when colors change. */
 :root{
   --bg:#e9eeec; --panel:#f6f8f7; --paper:#ffffff; --ink:#1b2726; --muted:#596a67;
-  --line:#cfd8d5; --accent:#1d6b58; --warn:#9a5b10;
+  --line:#cfd8d5; --accent:#1d6b58; --warn:#9a5b10; --mark:#fbeaa6;
   --f-display:"Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
   --f-body:Charter, "Bitstream Charter", Cambria, Georgia, "Times New Roman", serif;
   --f-mono:ui-monospace, "Cascadia Mono", Consolas, Menlo, monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#101615; --panel:#161e1d; --paper:#1b2423; --ink:#e2eae8; --muted:#94a6a2;
-  --line:#2c3b39; --accent:#5ec2a5; --warn:#e3a95a; color-scheme:dark }}
+  --line:#2c3b39; --accent:#5ec2a5; --warn:#e3a95a; --mark:rgba(245,205,80,.24); color-scheme:dark }}
 :root[data-theme="dark"]{
   --bg:#101615; --panel:#161e1d; --paper:#1b2423; --ink:#e2eae8; --muted:#94a6a2;
-  --line:#2c3b39; --accent:#5ec2a5; --warn:#e3a95a; color-scheme:dark }
+  --line:#2c3b39; --accent:#5ec2a5; --warn:#e3a95a; --mark:rgba(245,205,80,.24); color-scheme:dark }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6}
 .wrap{max-width:52rem;margin:0 auto;padding-inline:20px;padding-block:28px 56px}
@@ -63,6 +63,7 @@ code{font-family:var(--f-mono);font-size:.88em;white-space:nowrap}
 code.url{display:block;white-space:normal;overflow-wrap:anywhere;user-select:all;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:6px 8px;margin:6px 0}
 .note{border-left:3px solid var(--warn);padding:4px 12px;margin:12px 0}
 .note b{color:var(--warn)}
+mark{background:var(--mark);color:inherit;border-radius:2px;padding:0 2px}
 .tablewrap{overflow-x:auto}
 .nw{white-space:nowrap} /* keeps a CIS Control's number and name on one line */
 table{border-collapse:collapse;width:100%;min-width:32rem;font-size:14px;margin:8px 0}
@@ -73,7 +74,7 @@ th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:
 @media print{
   :root:not([data-print]){
     --bg:#ffffff; --panel:#ffffff; --paper:#ffffff; --ink:#000000; --muted:#444444;
-    --line:#bbbbbb; --accent:#1d6b58; --warn:#9a5b10; color-scheme:light }
+    --line:#bbbbbb; --accent:#1d6b58; --warn:#9a5b10; --mark:#fbeaa6; color-scheme:light }
   nav.toc,.back,.totop{display:none}
   .wrap{padding:0;max-width:none}
   section{border:0;padding:0}
@@ -176,12 +177,21 @@ th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:
 
     <h3>Nothing is sent over the internet</h3>
     <ul>
-      <li>The app has no server, no database, no accounts and no logins.</li>
-      <li>It makes no network calls, and nothing you type ever leaves your computer.</li>
-      <li>It loads no outside fonts, analytics, trackers or ads. Many sites get their fonts from services such as Google Fonts, which lets that company see every visitor's IP address. This site uses fonts already on your computer, so no other company learns that you visited.</li>
-      <li>The site's security settings block outgoing connections and form submissions, so even a later change to the code could not quietly send your answers anywhere.</li>
+      <li><strong>No backend.</strong> The site is hosted on Cloudflare, which stores the app's files and sends them to your browser. That's all Cloudflare does: no code runs on a server, and there's no database, accounts or logins. Once the page loads, the app runs entirely in your browser.</li>
+      <li><strong>Your answers stay in your browser.</strong> The app makes no network requests after the page loads, so nothing you type is sent to Cloudflare, to us or to anyone else.</li>
+      <li><strong>What Cloudflare sees.</strong> Like any web host, Cloudflare receives a standard request for each file it sends: your IP address, your browser type, which file and when. It never receives anything you type.</li>
+      <li><strong>No outside services.</strong> The app loads no outside fonts, analytics, trackers or ads. Many sites get their fonts from services such as Google Fonts, which lets that company see every visitor's IP address. This site uses fonts already on your computer, so no other company learns that you visited.</li>
+      <li><strong>Locked down by design.</strong> <mark>The site's security settings block outgoing connections and form submissions, so even a later change to the code could not quietly send your answers anywhere.</mark></li>
     </ul>
-    <p>Like every website, the host that delivers the page sees your IP address. It never sees anything you type.</p>
+
+    <h3>What the web host keeps</h3>
+    <ul>
+      <li><strong>What the host keeps.</strong> Cloudflare, which hosts this site, keeps standard server logs of each request, including your IP address, under its own privacy policy (www.cloudflare.com/privacypolicy). This site adds no cookies, analytics or tracking scripts, so Cloudflare sees only that a file was requested, never what you type.</li>
+      <li><strong>Cloudflare acts as a service provider.</strong> Its privacy policy says it processes visitors' data on behalf of the sites it serves, and that it doesn't sell or rent personal information. The interest-based ads it mentions are for visitors to Cloudflare's own website, not to the sites it hosts, like this one.</li>
+      <li><strong>How long the logs are kept.</strong> Cloudflare's privacy policy gives no set time: it says data is kept as long as its business purposes need. Cloudflare's blog says that for most sites it discards access logs within 4 hours (blog.cloudflare.com/what-cloudflare-logs).</li>
+      <li><strong>What Cloudflare adds, and doesn't.</strong> Every page is sent over HTTPS, so no one in between can read or change it. Cloudflare adds no branding, ads or analytics to the pages.</li>
+      <li><strong>For the most privacy, use the downloaded copy.</strong> After you download it, the app runs from your own computer and never contacts a web host. (GitHub, where you download it, sees that one download request.) See <a href="#download">Download the app</a>.</li>
+    </ul>
 
     <h3>After you print, copy or save</h3>
     <p>Once you print, copy or save, your devices take over. This app can’t protect documents after they leave this page. Print and save only on a trusted network, such as your organization’s network or a secured home network, not public Wi-Fi. Use a printer and storage you trust. Shared printers and folders that copy to the cloud, like OneDrive, Google Drive or Dropbox, may keep a copy. Pick up printouts right away, and save only to your organization’s account, not a personal one. Treat these documents like any other internal record.</p>

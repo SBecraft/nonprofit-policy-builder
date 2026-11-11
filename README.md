@@ -100,7 +100,7 @@ Every document is mapped to the **CIS Critical Security Controls v8.1, Implement
 - **After you print, copy or save, your devices take over.** This app can’t protect documents after they leave this page. Print and save only on a trusted network, such as your organization’s network or a secured home network, not public Wi-Fi. Use a printer and storage you trust. Shared printers and folders that copy to the cloud, like OneDrive, Google Drive or Dropbox, may keep a copy. Pick up printouts right away, and save only to your organization’s account, not a personal one. Treat these documents like any other internal record.
 - **You can check this yourself.** Open the browser's developer tools, clear the Network tab, then fill in the form. No new requests appear. Entries from browser extensions aren't the app; a private window usually turns extensions off.
 
-Like every website, the host that delivers the page sees visitors' IP addresses. It never receives anything typed into the app.
+Like every website, the host that delivers the page (Cloudflare) sees visitors' IP addresses. It never receives anything typed into the app.
 
 ## Sharing, search engines and AI crawlers
 
@@ -136,7 +136,7 @@ The app is a security tool, so it follows the practices it recommends:
 - **CodeQL** (GitHub code scanning, default setup, on GitHub, switched on November 10, 2026): scans the JavaScript on every push to `main` and once a week. First analysis: 0 alerts. Secret scanning and push protection are also on, so a password or key can't be pushed by mistake.
 - **Script injection:** the five payloads from the test plan were entered in each of the 14 text fields (70 checks) and checked across all 12 documents, the print tab and the copied HTML. All passed; every payload showed as plain text. The test ran without the site's security headers, so it checked the app's own escaping alone.
 
-- **OWASP ZAP 2.17.0 active scan** (local copy): no active-scan alerts. Its passive alerts were the security headers a local test server doesn't send (they're set in `app/_headers` for Netlify) and two false alarms.
+- **OWASP ZAP 2.17.0 active scan** (local copy): no active-scan alerts. Its passive alerts were the security headers a local test server doesn't send (they're set in `app/_headers` for Cloudflare) and two false alarms.
 - **AI-assisted code review** (Claude Code, as a second opinion to Semgrep): no code problems. Three Informational hardening points in `app/_headers`. Two are fixed: the unused `data:` was removed from `img-src`, and `Cross-Origin-Opener-Policy: same-origin` was added (checked locally with the headers applied: no policy violations, and printing and copying still work). The third, `style-src 'unsafe-inline'`, was reviewed and left as it is, with the reasons recorded: every typed answer is escaped, and the site's other rules stop styles from loading anything from another site, so removing it (moving all the CSS into separate files) wasn't worth the risk of breaking the print layouts. All three were re-tested on the live site (November 10): the two fixes are in place, and the third is unchanged, as accepted.
 - **Live site header and HTTPS scans** (November 10, 2026): SecurityHeaders.com A+; Mozilla HTTP Observatory A+ (125, 12 of 12 tests passed); Qualys SSL Labs A+ on every server (TLS 1.2 and 1.3 only); Google CSP Evaluator, no high-severity findings.
 - **OWASP ZAP baseline scan of the live site** (passive only, November 10, 2026): no new findings. It lists `style-src 'unsafe-inline'` (accepted, above), the same two false alarms as the local scan, and two notes about Netlify's caching. The missing-header alerts from the local scan are gone.
@@ -182,11 +182,11 @@ The app needs no build step and no server.
   python -m http.server 8000
   ```
 
-The security headers in `app/_headers` are sent by Netlify, so they only apply on the live site. A local copy still never saves your answers or sends them over the internet.
+The security headers in `app/_headers` are sent by Cloudflare, so they only apply on the live site. A local copy still never saves your answers or sends them over the internet.
 
 ## Deploying
 
-Upload the **whole `app` folder** to Netlify, either by drag-and-drop or with `netlify deploy --prod`. It contains only the files the site needs. Keep the `_headers` file name exactly as it is, with no file extension. After deploying, re-test the live site. Netlify's deploy history allows an instant rollback.
+Upload the **whole `app` folder** to Cloudflare Pages, by drag-and-drop in the Cloudflare dashboard. It contains only the files the site needs. Keep the `_headers` file name exactly as it is, with no file extension. After deploying, re-test the live site. Cloudflare Pages keeps every deployment, so you can roll back to an earlier one.
 
 **The site's address** (https://policies-for-small-nonprofits.netlify.app) is written into `index.html` and `how.html` (the Open Graph tags), `sitemap.xml` and the `Sitemap:` line in `robots.txt`. If the address ever changes, update all four. After deploying, check the share preview with LinkedIn Post Inspector and Facebook's Sharing Debugger, which also refresh old previews.
 
@@ -198,7 +198,7 @@ app/                  Everything the live site needs. Deploy this folder only.
   app.js              All of the app's logic
   frameworks.js       CIS and NIST version names, shared by both pages
   how.html            Help page: framework mappings, privacy, printing and security
-  _headers            Netlify security headers (keep this exact name)
+  _headers            Cloudflare security headers (keep this exact name)
   robots.txt          Lets search engines list the site; asks AI training crawlers to stay out
   sitemap.xml         Lists the site's two pages for search engines (found through robots.txt)
   og-image.png        Preview picture shown when the site is shared on LinkedIn, Teams, Slack and similar
