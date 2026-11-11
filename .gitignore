@@ -10,3 +10,6 @@ HANDOFF.md
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# Share preview picture: removed from the site and kept out of GitHub (November 11, 2026)
+app/og-image.png

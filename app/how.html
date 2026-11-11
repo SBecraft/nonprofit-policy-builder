@@ -8,19 +8,14 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="How the Nonprofit Policy Builder works: its CIS Controls and NIST CSF mappings, privacy (no sign-up, no tracking, nothing saved or sent online), printing and copying, and security.">
-<!-- Share previews (LinkedIn, Facebook, Teams, Slack, Discord, messaging apps). og:url and og:image need the site's full address. -->
+<!-- Share previews (LinkedIn, Facebook, Teams, Slack, Discord, messaging apps). og:url needs the site's full address. No picture tag (removed November 11, 2026). -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Nonprofit Policy Builder">
 <meta property="og:title" content="How the Nonprofit Policy Builder Works">
 <meta property="og:description" content="How the Nonprofit Policy Builder works: framework mappings, privacy, printing and security. Nothing you type is saved or sent online.">
 <meta property="og:url" content="https://nonprofit-policy-builder.pages.dev/how">
-<meta property="og:image" content="https://nonprofit-policy-builder.pages.dev/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:type" content="image/png">
-<meta property="og:image:alt" content="Nonprofit Policy Builder: free security policies and forms for small nonprofits, tailored to your answers. No sign-up or login, nothing saved or sent online, mapped to CIS Controls and NIST CSF. Shows a sample Acceptable Use Policy.">
 <meta property="og:locale" content="en_US">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <style>
 /* Same palette and fonts as index.html. Keep the two in step when colors change. */
 :root{
@@ -213,9 +208,9 @@ th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:
 
     <h3>Sharing the link</h3>
     <ul>
-      <li>When you share this site's link on LinkedIn, Facebook, Teams, Slack, Discord or in a text message, a preview card appears with a picture, a title and a short description. Hidden tags in the page (called Open Graph tags) set what the card shows.</li>
+      <li>When you share this site's link on LinkedIn, Facebook, Teams, Slack, Discord or in a text message, a preview card may appear with a title and a short description. Hidden tags in the page (called Open Graph tags) set what the card shows.</li>
       <li>The card is built from the site's public page, the same one anyone can open. It never includes your answers.</li>
-      <li>The tags load nothing, track nothing and send nothing about you. The picture comes from this site, not from another company.</li>
+      <li>The tags load nothing, track nothing and send nothing about you.</li>
     </ul>
   </section>
 
@@ -273,11 +268,11 @@ th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:
       <li><strong>Script injection.</strong> Five well-known attack strings were typed into each of the 14 text boxes and checked in all twelve documents, the print tab and copied text. None ran; each one showed up as plain text.</li>
       <li><strong>Automated attack scan.</strong> OWASP ZAP, a free security scanner, attacked a copy of the app on a test computer and found no weaknesses in the app.</li>
       <li><strong>AI-assisted code review.</strong> A second review of the code found no problems. It did suggest three small ways to tighten the site's security settings. Two have been made. The third was reviewed and left as it is, because the risk is very low and changing it could break the printed layouts. All three were re-tested on the live site, and the two changes are in place.</li>
-      <li><strong>Security settings on the live site.</strong> On the earlier host, Netlify, four free scanners checked the site's security settings and its encrypted connection. It scored A+ on SecurityHeaders.com, Mozilla HTTP Observatory and Qualys SSL Labs, and Google's CSP Evaluator found no serious problems.</li>
-      <li><strong>Live site scan.</strong> OWASP ZAP looked over the live site on Netlify without attacking it and found nothing new.</li>
-      <li><strong>Browser checks on the live site.</strong> On Netlify, the page loads only its own files, sends nothing while you fill it in, stores nothing (no cookies or saved data) and forgets your answers when the tab closes. It refuses scripts it doesn't know, and it can't be shown inside another website.</li>
+      <li><strong>Security settings on the live site.</strong> Free scanners checked the site's security settings and its encrypted connection on Cloudflare. It scored A+ on Mozilla HTTP Observatory and Qualys SSL Labs, and Google's CSP Evaluator found no serious problems. On the earlier host, Netlify, it also scored A+ on SecurityHeaders.com.</li>
+      <li><strong>Live site scan.</strong> OWASP ZAP looked over the live site without attacking it and found nothing new.</li>
+      <li><strong>Browser checks on the live site.</strong> The page loads only its own files, sends nothing while you fill it in, stores nothing (no cookies or saved data) and forgets your answers when the tab closes. It refuses scripts it doesn't know, and it can't be shown inside another website.</li>
     </ul>
-    <p>The site moved to Cloudflare on November 11, 2026, and the live-site tests will be repeated there. All the earlier code checks were repeated after the changes, on a test computer, and found nothing new. One suggestion from these tests, a newer browser setting called Trusted Types, was reviewed and left as it is. It would add another layer of protection to how the page shows what you type, but it doesn't point to a current weakness: the app already makes everything you type safe.</p>
+    <p>The site moved from Netlify to Cloudflare on November 11, 2026, and the live-site tests were repeated there the same day, with the same results. All the earlier code checks were repeated after the changes, on a test computer, and found nothing new. One suggestion from these tests, a newer browser setting called Trusted Types, was reviewed and left as it is. It would add another layer of protection to how the page shows what you type, but it doesn't point to a current weakness: the app already makes everything you type safe.</p>
     <p class="note"><b>Using a downloaded copy?</b> If you open the app from your own computer instead of the website, the site's security settings don't apply, because they are sent by the web host. The app still never saves your answers or sends them over the internet.</p>
   </section>
 

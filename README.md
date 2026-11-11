@@ -110,14 +110,11 @@ Like every website, the host that delivers the page (Cloudflare) sees visitors' 
 
 ### Share previews (Open Graph)
 
-When someone shares the site's link on LinkedIn, Facebook, Microsoft Teams, Slack, Discord or a messaging app, that app builds a preview card from Open Graph tags in each page's `<head>`. Both pages (`index.html` and `how.html`) have their own title, description and picture tags, plus a plain `meta name="description"` for search results.
+When someone shares the site's link on LinkedIn, Facebook, Microsoft Teams, Slack, Discord or a messaging app, that app builds a preview card from Open Graph tags in each page's `<head>`. Both pages (`index.html` and `how.html`) have their own title and description tags, plus a plain `meta name="description"` for search results. There is no preview picture.
 
-![The preview card: Nonprofit Policy Builder, "Free for small nonprofits", a three-item checklist, and a sample Acceptable Use Policy](app/og-image.png)
-
-- **The picture** (`app/og-image.png`, 1200 × 630) was made for this project in the app's own colors. On the left: "Free for small nonprofits", the name, "Security policies and forms, tailored to your answers.", then, under a thin line, a checklist with green check marks: No sign-up or login · Nothing saved or sent online · Mapped to CIS & NIST CSF ("mapped to", not certified). On the right: a tilted view of the sample Acceptable Use Policy with its tailored text highlighted.
-- **The title and description** repeat the privacy points, because some apps show a small picture or none.
+- **The title and description** repeat the privacy points.
 - **Privacy:** visitors' browsers ignore the tags. They load nothing and share nothing about the visitor. Only the app building the preview reads them, and it sees just the page with sample answers.
-- **Full addresses:** `og:url` and `og:image` need the site's full address, so they use https://nonprofit-policy-builder.pages.dev.
+- **Full address:** `og:url` needs the site's full address, so they use https://nonprofit-policy-builder.pages.dev.
 
 ### Search engines and AI crawlers
 
@@ -133,7 +130,7 @@ The app is a security tool, so it follows the practices it recommends:
 - **No third-party code:** no outside scripts, fonts or libraries, so there's no supply chain to tamper with. The host, Cloudflare, serves the pages exactly as they are in this repository, with nothing added.
 - **Other headers:** HSTS, `nosniff`, `Referrer-Policy: no-referrer`, a restrictive `Permissions-Policy` and `Cross-Origin-Opener-Policy: same-origin`.
 
-**Testing** (November 8 to 10, 2026, on a local copy unless noted; no problems in the code so far):
+**Testing** (November 8 to 11, 2026, on a local copy unless noted; no problems in the code so far):
 
 - **Dependencies:** none. The app has no third-party code, libraries, fonts or package files and makes no network calls, so there is nothing for tools such as `npm audit` or Dependabot to scan. Dependabot alerts and Dependabot malware alerts are switched on anyway (November 10, 2026), so a package file added by mistake would be checked.
 - **Semgrep:** 130 rules (JavaScript, XSS, security audit, secrets, OWASP Top Ten), 0 findings. All 16 places the code inserts HTML were also reviewed by hand: every typed answer passes through `esc()` first.
@@ -142,13 +139,13 @@ The app is a security tool, so it follows the practices it recommends:
 
 - **OWASP ZAP 2.17.0 active scan** (local copy): no active-scan alerts. Its passive alerts were the security headers a local test server doesn't send (they're set in `app/_headers` for Cloudflare) and two false alarms.
 - **AI-assisted code review** (Claude Code, as a second opinion to Semgrep): no code problems. Three Informational hardening points in `app/_headers`. Two are fixed: the unused `data:` was removed from `img-src`, and `Cross-Origin-Opener-Policy: same-origin` was added (checked locally with the headers applied: no policy violations, and printing and copying still work). The third, `style-src 'unsafe-inline'`, was reviewed and left as it is, with the reasons recorded: every typed answer is escaped, and the site's other rules stop styles from loading anything from another site, so removing it (moving all the CSS into separate files) wasn't worth the risk of breaking the print layouts. All three were re-tested on the live site (November 10): the two fixes are in place, and the third is unchanged, as accepted.
-- **Live site header and HTTPS scans** (November 10, 2026, on Netlify, the earlier host): SecurityHeaders.com A+; Mozilla HTTP Observatory A+ (125, 12 of 12 tests passed); Qualys SSL Labs A+ on every server (TLS 1.2 and 1.3 only); Google CSP Evaluator, no high-severity findings.
-- **OWASP ZAP baseline scan of the live site** (passive only, November 10, 2026, on Netlify): no new findings. It lists `style-src 'unsafe-inline'` (accepted, above), the same two false alarms as the local scan, and two notes about Netlify's caching. The missing-header alerts from the local scan are gone.
-- **Browser checks on the live site** (November 10, 2026, Chrome, on Netlify): only the site's own files load, and no requests are made while using the form. There are no cookies or stored data, and answers are gone after reopening the tab. Inline and outside scripts are refused, and the page can't be framed. The only console error is the CSP blocking Netlify's badge script.
-- **Lighthouse Best Practices** (on Netlify): 92. Both deductions are that same blocked badge script. Its unscored notes suggest Trusted Types, an extra browser protection for how the page inserts HTML. It was reviewed and accepted as an Informational point, since it isn't a current weakness: every typed answer is already escaped.
+- **Live site header and HTTPS scans** (November 11, 2026, on Cloudflare): Mozilla HTTP Observatory A+ (125, 12 of 12 tests passed); Qualys SSL Labs A+ on all four servers (TLS 1.2 and 1.3 only); Google CSP Evaluator, no high-severity findings. On Netlify (November 10), SecurityHeaders.com also gave A+.
+- **OWASP ZAP baseline scan of the live site** (passive only, November 11, 2026, on Cloudflare): no new findings. It lists `style-src 'unsafe-inline'` (accepted, above), the same two false alarms as the local scan, and a note about caching. The missing-header alerts from the local scan are gone. (Same result on Netlify, November 10.)
+- **Browser checks on the live site** (November 11, 2026, Chrome, on Cloudflare): only the site's own files load, and no requests are made while using the form. There are no cookies or stored data, and answers are gone after reopening the tab. Inline and outside scripts are refused, and the page can't be framed. No console errors, and the host adds no scripts. (On Netlify, the only console error was the CSP blocking Netlify's badge script.)
+- **Lighthouse Best Practices:** 100 on Cloudflare (92 on Netlify, where both deductions were that blocked badge script). Its unscored notes suggest Trusted Types, an extra browser protection for how the page inserts HTML. It was reviewed and accepted as an Informational point, since it isn't a current weakness: every typed answer is already escaped.
 - **Re-run after the changes** (November 10, 2026, local copy): ESLint and HTMLHint clean; Stylelint only the reviewed rule-order warnings; Semgrep 0 findings; script injection 70 of 70; ZAP active scan, no attack alerts. The changes since the first round were also reviewed, with no security problems found.
 
-Testing for version 1.0.0 is complete. The site moved from Netlify to Cloudflare on November 11, 2026; the live-site tests will be repeated there. GitHub's CodeQL scanning keeps checking the code after each change.
+Testing for version 1.0.0 is complete. The site moved from Netlify to Cloudflare on November 11, 2026, and the live-site tests were repeated there. GitHub's CodeQL scanning keeps checking the code after each change.
 
 **Found a problem?** Please report it privately. See [SECURITY.md](SECURITY.md).
 
@@ -199,7 +196,6 @@ app/                  Everything the live site needs
   _headers            Cloudflare security headers (keep this exact name)
   robots.txt          Lets search engines list the site; asks AI training crawlers to stay out
   sitemap.xml         Lists the site's two pages for search engines (found through robots.txt)
-  og-image.png        Preview picture shown when the site is shared on LinkedIn, Teams, Slack and similar
   favicon.ico         Browser tab icon (16, 32 and 48 px)
   favicon.svg         Browser tab icon for modern browsers (sharp at any size)
   apple-touch-icon.png  Icon for iPhone and iPad home screens (180 x 180)
@@ -231,7 +227,6 @@ AI-generated code and content were treated as drafts. The creator reviewed, edit
 
 - **Visual Studio Code:** code editor.
 - **Claude Code CLI:** AI coding assistant used in the terminal to help write and review the code and draft content.
-- **Claude desktop app:** used to make the share preview picture (`app/og-image.png`).
 - **Piper TTS (voice: en_US-lessac-medium):** text-to-speech voice for the walkthrough video's narration, licensed for non-commercial use only. See [NOTICE](NOTICE).
 
 ## Limitations
