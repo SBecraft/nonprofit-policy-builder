@@ -24,7 +24,7 @@
 
 ---
 
-<a id="contents"></a>**Contents:** [Why it exists](#why-it-exists) · [What it does](#what-it-does) · [Works on any device](#works-on-any-device) · [Framework mappings](#framework-mappings) · [Privacy](#privacy) · [Sharing, search engines and AI crawlers](#sharing-search-engines-and-ai-crawlers) · [Security](#security) · [Using the app](#using-the-app) · [Download the app](#download-the-app) · [Running it locally](#running-it-locally) · [Project structure](#project-structure) · [How it was built](#how-it-was-built) · [Tools used](#tools-used) · [Limitations](#limitations) · [License](#license)
+<a id="contents"></a>**Contents:** [Why it exists](#why-it-exists) · [What it does](#what-it-does) · [Works on any device](#works-on-any-device) · [Framework mappings](#framework-mappings) · [Privacy](#privacy) · [Sharing, search engines and AI crawlers](#sharing-search-engines-and-ai-crawlers) · [Security](#security) · [Using the app](#using-the-app) · [Download the app](#download-the-app) · [Running it locally](#running-it-locally) · [Project structure](#project-structure) · [How it was built](#how-it-was-built) · [Tools used](#tools-used) · [Limitations](#limitations) · [Terms of Use](#terms-of-use) · [License](#license)
 
 ---
 
@@ -241,6 +241,22 @@ AI-generated code and content were treated as drafts. The creator reviewed, edit
 - Industry-specific rules such as HIPAA and FERPA are not covered.
 - **The framework mappings show alignment, not compliance or certification.**
 
+## Terms of Use
+
+Last updated: November 10, 2026
+
+By using the Nonprofit Policy Builder, you agree to these terms.
+
+- **Free to use.** The app is free for individuals and nonprofit organizations, for internal use, under the Nonprofit Policy Builder License (see [License](#license)).
+- **Templates, not legal advice.** The policies and forms are starting templates. They are not legal advice and may not fit every organization or meet every law that applies to you. Review and adapt them, have a lawyer check them, and have your board approve them before you use them.
+- **Your answers and documents.** The app doesn't save or send what you type. Once you print, copy or save a document, keeping it safe is your responsibility.
+- **Provided as is.** The app and its documents are provided as is, without warranty of any kind. They may change, contain errors, or stop being available at any time.
+- **Limitation of liability.** To the fullest extent the law allows, SBecraft is not liable for any loss or damage arising from your use of the app or the documents it produces.
+- **Fair use of the site.** Don't attempt to disrupt, overload or misuse the site.
+- **Changes to these terms.** These terms may be updated. The date at the top shows the latest version.
+
+Questions? See [Report a problem](../../issues).
+
 ## License
 
 **Proprietary Software - All Rights Reserved**
@@ -248,8 +264,6 @@ AI-generated code and content were treated as drafts. The creator reviewed, edit
 This software is made available for free use by nonprofit organizations for internal purposes. Modification, creation of derivative works, redistribution, rebranding, incorporation into other products, and commercial use are prohibited without prior written permission from SBecraft.
 
 The full terms, including what you may do with the documents the app generates, are in the [Nonprofit Policy Builder License](LICENSE). See also [NOTICE](NOTICE).
-
-<a id="terms-of-use"></a>**Terms of Use:** The app and its documents are free templates, provided as is, and are not legal advice. Using the app means you agree to the Terms of Use on the live site's "How this app works" page. See also [LICENSE](LICENSE).
 
 Nonprofit Policy Builder © 2026 SBecraft · Free for nonprofits to use · Not legal advice
 
