@@ -2,18 +2,22 @@
 
 **Plain-English security policies, tailored in about 15 minutes, free, and with nothing you type ever leaving your browser. Built for small nonprofits, including organizations with volunteers, shared logins and frequent turnover.**
 
-| | |
-|---|---|
-| **Live site** | [nonprofit-policy-builder.pages.dev](https://nonprofit-policy-builder.pages.dev) |
-| **Version** | 1.0.0 |
-| **Download** | [Get the app](#download-the-app) |
-| **Report** | [A problem](../../issues) · [A security flaw in the app](SECURITY.md) |
+<table>
+  <tr>
+    <td><strong>Live site</strong></td>
+    <td><a href="https://nonprofit-policy-builder.pages.dev">nonprofit-policy-builder.pages.dev</a></td>
+    <td rowspan="4" valign="middle" align="center"><a href="#terms-of-use">Terms of Use</a></td>
+  </tr>
+  <tr><td><strong>Version</strong></td><td>1.0.0</td></tr>
+  <tr><td><strong>Download</strong></td><td><a href="#download-the-app">Get the app</a></td></tr>
+  <tr><td><strong>Report</strong></td><td><a href="../../issues">A problem</a> · <a href="SECURITY.md">A security flaw in the app</a></td></tr>
+</table>
 
 > **Not legal advice.** These are starting templates for discussion. Have your board approve them, and ask a lawyer to check your state's breach notification and record retention rules.
 
 <table>
   <tr>
-    <td valign="middle"><a href="assets/app-full-page.png"><img src="assets/app-screenshot.png" width="640" alt="The Nonprofit Policy Builder: the questionnaire on the left, the walkthrough video at the top right, and the tailored Acceptable Use Policy with its tailored text highlighted"></a></td>
+    <td valign="middle"><a href="assets/app-full-page.png"><img src="assets/app-screenshot.png" width="640" alt="The Nonprofit Policy Builder: the questionnaire on the left, the walkthrough video at the top right, and the tailored Data Protection Policy with its tailored text highlighted"></a></td>
     <td valign="middle" align="center"><em>The app with its sample answers.</em><br><br><em>Click the picture to see the whole page.</em></td>
   </tr>
 </table>
@@ -245,7 +249,7 @@ This software is made available for free use by nonprofit organizations for inte
 
 The full terms, including what you may do with the documents the app generates, are in the [Nonprofit Policy Builder License](LICENSE). See also [NOTICE](NOTICE).
 
-**Terms of Use:** The app and its documents are free templates, provided as is, and are not legal advice. Using the app means you agree to the Terms of Use on the live site's "How this app works" page. See also [LICENSE](LICENSE).
+<a id="terms-of-use"></a>**Terms of Use:** The app and its documents are free templates, provided as is, and are not legal advice. Using the app means you agree to the Terms of Use on the live site's "How this app works" page. See also [LICENSE](LICENSE).
 
 Nonprofit Policy Builder © 2026 SBecraft · Free for nonprofits to use · Not legal advice
 
