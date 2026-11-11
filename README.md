@@ -24,7 +24,7 @@
 
 ---
 
-<a id="contents"></a>**Contents:** [Why it exists](#why-it-exists) · [What it does](#what-it-does) · [Works on any device](#works-on-any-device) · [Framework mappings](#framework-mappings) · [Privacy](#privacy) · [Sharing, search engines and AI crawlers](#sharing-search-engines-and-ai-crawlers) · [Security](#security) · [Using the app](#using-the-app) · [Download the app](#download-the-app) · [Running it locally](#running-it-locally) · [Project structure](#project-structure) · [How it was built](#how-it-was-built) · [Tools used](#tools-used) · [Limitations](#limitations) · [Terms of Use](#terms-of-use) · [License](#license)
+<a id="contents"></a>**Contents:** [Why it exists](#why-it-exists) · [What it does](#what-it-does) · [Works on any device](#works-on-any-device) · [Framework mappings](#framework-mappings) · [Privacy](#privacy) · [Search engines and AI crawlers](#search-engines-and-ai-crawlers) · [Security](#security) · [Using the app](#using-the-app) · [Download the app](#download-the-app) · [Running it locally](#running-it-locally) · [Project structure](#project-structure) · [How it was built](#how-it-was-built) · [Tools used](#tools-used) · [Limitations](#limitations) · [Terms of Use](#terms-of-use) · [License](#license)
 
 ---
 
@@ -106,17 +106,7 @@ Every document is mapped to the **CIS Critical Security Controls v8.1, Implement
 
 Like every website, the host that delivers the page (Cloudflare) sees visitors' IP addresses. It never receives anything typed into the app.
 
-## Sharing, search engines and AI crawlers
-
-### Share previews (Open Graph)
-
-When someone shares the site's link on LinkedIn, Facebook, Microsoft Teams, Slack, Discord or a messaging app, that app builds a preview card from Open Graph tags in each page's `<head>`. Both pages (`index.html` and `how.html`) have their own title and description tags, plus a plain `meta name="description"` for search results. There is no preview picture.
-
-- **The title and description** repeat the privacy points.
-- **Privacy:** visitors' browsers ignore the tags. They load nothing and share nothing about the visitor. Only the app building the preview reads them, and it sees just the page with sample answers.
-- **Full address:** `og:url` needs the site's full address, so they use https://nonprofit-policy-builder.pages.dev.
-
-### Search engines and AI crawlers
+## Search engines and AI crawlers
 
 - **`robots.txt`** lets search engines and AI search tools list the site, and asks AI training crawlers (such as GPTBot, ClaudeBot, Google-Extended and CCBot) not to copy it. It is a request, not a security control, and it lists no private paths, because the site has none. The crawlers that build share previews are allowed.
 - **`sitemap.xml`** lists the site's two pages for search engines. `robots.txt` points to it with a `Sitemap:` line.
