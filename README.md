@@ -8,7 +8,7 @@
     <td><a href="https://nonprofit-policy-builder.pages.dev">nonprofit-policy-builder.pages.dev</a></td>
     <td rowspan="4" valign="middle" align="center"><a href="#terms-of-use">Terms of Use</a></td>
   </tr>
-  <tr><td><strong>Version</strong></td><td>1.0.0</td></tr>
+  <tr><td><strong>Version</strong></td><td>1.1.0</td></tr>
   <tr><td><strong>Download</strong></td><td><a href="#download-the-app">Get the app</a></td></tr>
   <tr><td><strong>Report</strong></td><td><a href="../../issues">A problem</a> · <a href="SECURITY.md">A security flaw in the app</a></td></tr>
 </table>
@@ -135,7 +135,7 @@ The app is a security tool, so it follows the practices it recommends:
 - **Lighthouse Best Practices:** 100 on Cloudflare (92 on Netlify, where both deductions were that blocked badge script). Its unscored notes suggest Trusted Types, an extra browser protection for how the page inserts HTML. It was reviewed and accepted as an Informational point, since it isn't a current weakness: every typed answer is already escaped.
 - **Re-run after the changes** (November 10, 2026, local copy): ESLint and HTMLHint clean; Stylelint only the reviewed rule-order warnings; Semgrep 0 findings; script injection 70 of 70; ZAP active scan, no attack alerts. The changes since the first round were also reviewed, with no security problems found.
 
-Testing for version 1.0.0 is complete. The site moved from Netlify to Cloudflare on November 11, 2026, and the live-site tests were repeated there. GitHub's CodeQL scanning keeps checking the code after each change.
+Testing for version 1.0.0 is complete. Version 1.1.0 changes only page text, the security headers and the video, not the app's code (`app.js` is unchanged); the site moved from Netlify to Cloudflare on November 11, 2026, and the live-site tests were repeated there. GitHub's CodeQL scanning keeps checking the code after each change.
 
 **Found a problem?** Please report it privately. See [SECURITY.md](SECURITY.md).
 
@@ -152,7 +152,7 @@ Testing for version 1.0.0 is complete. The site moved from Netlify to Cloudflare
 You can keep your own copy of the app on your computer. It's free, needs no installation and works without an internet connection. Use this if your organization doesn't allow staff to use websites or online tools for this kind of work.
 
 1. Go to the [latest release](../../releases/latest).
-2. Under **Assets**, download **`nonprofit-policy-builder-<version>.zip`** (for example, `nonprofit-policy-builder-1.0.0.zip`). It holds only the app, plus the LICENSE and NOTICE files. You don't need the **Source code** files that GitHub adds to every release.
+2. Under **Assets**, download **`nonprofit-policy-builder-<version>.zip`** (for example, `nonprofit-policy-builder-1.1.0.zip`). It holds only the app, plus the LICENSE and NOTICE files. You don't need the **Source code** files that GitHub adds to every release.
 3. Unzip the file.
 4. Open the `app` folder and double-click `index.html`. The app opens in your browser.
 

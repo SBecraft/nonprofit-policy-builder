@@ -23,6 +23,6 @@ Which document, question or button? (For example: Incident Response Plan, Step 4
 For example: Edge on Windows 11, Safari on iPhone.
 
 **App version**
-The number in the app's footer, such as 1.0.0.
+The number in the app's footer, such as 1.1.0.
 
 **Website or downloaded copy?**
