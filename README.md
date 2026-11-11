@@ -20,7 +20,7 @@
 
 ---
 
-<a id="contents"></a>**Contents:** [Why it exists](#why-it-exists) · [What it does](#what-it-does) · [Works on any device](#works-on-any-device) · [Framework mappings](#framework-mappings) · [Privacy](#privacy) · [Sharing, search engines and AI crawlers](#sharing-search-engines-and-ai-crawlers) · [Security](#security) · [Using the app](#using-the-app) · [Download the app](#download-the-app) · [Running it locally](#running-it-locally) · [Deploying](#deploying) · [Project structure](#project-structure) · [How it was built](#how-it-was-built) · [Tools used](#tools-used) · [Limitations](#limitations) · [License](#license)
+<a id="contents"></a>**Contents:** [Why it exists](#why-it-exists) · [What it does](#what-it-does) · [Works on any device](#works-on-any-device) · [Framework mappings](#framework-mappings) · [Privacy](#privacy) · [Sharing, search engines and AI crawlers](#sharing-search-engines-and-ai-crawlers) · [Security](#security) · [Using the app](#using-the-app) · [Download the app](#download-the-app) · [Running it locally](#running-it-locally) · [Project structure](#project-structure) · [How it was built](#how-it-was-built) · [Tools used](#tools-used) · [Limitations](#limitations) · [License](#license)
 
 ---
 
@@ -184,16 +184,10 @@ The app needs no build step and no server.
 
 The security headers in `app/_headers` are sent by Cloudflare, so they only apply on the live site. A local copy still never saves your answers or sends them over the internet.
 
-## Deploying
-
-Upload the **whole `app` folder** to Cloudflare Pages, by drag-and-drop in the Cloudflare dashboard. It contains only the files the site needs. Keep the `_headers` file name exactly as it is, with no file extension. After deploying, re-test the live site. Cloudflare Pages keeps every deployment, so you can roll back to an earlier one.
-
-**The site's address** (https://policies-for-small-nonprofits.netlify.app) is written into `index.html` and `how.html` (the Open Graph tags), `sitemap.xml` and the `Sitemap:` line in `robots.txt`. If the address ever changes, update all four. After deploying, check the share preview with LinkedIn Post Inspector and Facebook's Sharing Debugger, which also refresh old previews.
-
 ## Project structure
 
 ```
-app/                  Everything the live site needs. Deploy this folder only.
+app/                  Everything the live site needs
   index.html          The page and its styles (no JavaScript inside)
   app.js              All of the app's logic
   frameworks.js       CIS and NIST version names, shared by both pages
@@ -250,6 +244,8 @@ AI-generated code and content were treated as drafts. The creator reviewed, edit
 This software is made available for free use by nonprofit organizations for internal purposes. Modification, creation of derivative works, redistribution, rebranding, incorporation into other products, and commercial use are prohibited without prior written permission from SBecraft.
 
 The full terms, including what you may do with the documents the app generates, are in the [Nonprofit Policy Builder License](LICENSE). See also [NOTICE](NOTICE).
+
+**Terms of Use:** The app and its documents are free templates, provided as is, and are not legal advice. Using the app means you agree to the Terms of Use on the live site's "How this app works" page. See also [LICENSE](LICENSE).
 
 Nonprofit Policy Builder © 2026 SBecraft · Free for nonprofits to use · Not legal advice
 
