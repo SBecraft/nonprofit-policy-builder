@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| **Live site** | [policies-for-small-nonprofits.netlify.app](https://policies-for-small-nonprofits.netlify.app) |
+| **Live site** | [nonprofit-policy-builder.pages.dev](https://nonprofit-policy-builder.pages.dev) |
 | **Version** | 1.0.0 |
 | **Download** | [Get the app](#download-the-app) |
 | **Report** | [A problem](../../issues) · [A security flaw in the app](SECURITY.md) |
@@ -113,7 +113,7 @@ When someone shares the site's link on LinkedIn, Facebook, Microsoft Teams, Slac
 - **The picture** (`app/og-image.png`, 1200 × 630) was made for this project in the app's own colors. On the left: "Free for small nonprofits", the name, "Security policies and forms, tailored to your answers.", then, under a thin line, a checklist with green check marks: No sign-up or login · Nothing saved or sent online · Mapped to CIS & NIST CSF ("mapped to", not certified). On the right: a tilted view of the sample Acceptable Use Policy with its tailored text highlighted.
 - **The title and description** repeat the privacy points, because some apps show a small picture or none.
 - **Privacy:** visitors' browsers ignore the tags. They load nothing and share nothing about the visitor. Only the app building the preview reads them, and it sees just the page with sample answers.
-- **Full addresses:** `og:url` and `og:image` need the site's full address, so they use https://policies-for-small-nonprofits.netlify.app.
+- **Full addresses:** `og:url` and `og:image` need the site's full address, so they use https://nonprofit-policy-builder.pages.dev.
 
 ### Search engines and AI crawlers
 
@@ -126,7 +126,7 @@ The app is a security tool, so it follows the practices it recommends:
 
 - **Output escaping:** everything typed is shown as plain text and can never run as code.
 - **Strict Content Security Policy** (`app/_headers`): only the site's own two script files run, listed by their full addresses. Inline and injected scripts are refused, outgoing connections and form submissions are blocked, and the app can't be embedded in another site.
-- **No third-party code:** no outside scripts, fonts or libraries, so there's no supply chain to tamper with. Netlify adds a comment and a tag for its "Powered by Netlify" badge script to each page it serves; because the policy lists the app's scripts by name, browsers refuse to load the badge script.
+- **No third-party code:** no outside scripts, fonts or libraries, so there's no supply chain to tamper with. The host, Cloudflare, serves the pages exactly as they are in this repository, with nothing added.
 - **Other headers:** HSTS, `nosniff`, `Referrer-Policy: no-referrer`, a restrictive `Permissions-Policy` and `Cross-Origin-Opener-Policy: same-origin`.
 
 **Testing** (November 8 to 10, 2026, on a local copy unless noted; no problems in the code so far):
@@ -138,19 +138,19 @@ The app is a security tool, so it follows the practices it recommends:
 
 - **OWASP ZAP 2.17.0 active scan** (local copy): no active-scan alerts. Its passive alerts were the security headers a local test server doesn't send (they're set in `app/_headers` for Cloudflare) and two false alarms.
 - **AI-assisted code review** (Claude Code, as a second opinion to Semgrep): no code problems. Three Informational hardening points in `app/_headers`. Two are fixed: the unused `data:` was removed from `img-src`, and `Cross-Origin-Opener-Policy: same-origin` was added (checked locally with the headers applied: no policy violations, and printing and copying still work). The third, `style-src 'unsafe-inline'`, was reviewed and left as it is, with the reasons recorded: every typed answer is escaped, and the site's other rules stop styles from loading anything from another site, so removing it (moving all the CSS into separate files) wasn't worth the risk of breaking the print layouts. All three were re-tested on the live site (November 10): the two fixes are in place, and the third is unchanged, as accepted.
-- **Live site header and HTTPS scans** (November 10, 2026): SecurityHeaders.com A+; Mozilla HTTP Observatory A+ (125, 12 of 12 tests passed); Qualys SSL Labs A+ on every server (TLS 1.2 and 1.3 only); Google CSP Evaluator, no high-severity findings.
-- **OWASP ZAP baseline scan of the live site** (passive only, November 10, 2026): no new findings. It lists `style-src 'unsafe-inline'` (accepted, above), the same two false alarms as the local scan, and two notes about Netlify's caching. The missing-header alerts from the local scan are gone.
-- **Browser checks on the live site** (November 10, 2026, Chrome): only the site's own files load, and no requests are made while using the form. There are no cookies or stored data, and answers are gone after reopening the tab. Inline and outside scripts are refused, and the page can't be framed. The only console error is the CSP blocking Netlify's badge script.
-- **Lighthouse Best Practices:** 92. Both deductions are that same blocked badge script. Its unscored notes suggest Trusted Types, an extra browser protection for how the page inserts HTML. It was reviewed and accepted as an Informational point, since it isn't a current weakness: every typed answer is already escaped.
+- **Live site header and HTTPS scans** (November 10, 2026, on Netlify, the earlier host): SecurityHeaders.com A+; Mozilla HTTP Observatory A+ (125, 12 of 12 tests passed); Qualys SSL Labs A+ on every server (TLS 1.2 and 1.3 only); Google CSP Evaluator, no high-severity findings.
+- **OWASP ZAP baseline scan of the live site** (passive only, November 10, 2026, on Netlify): no new findings. It lists `style-src 'unsafe-inline'` (accepted, above), the same two false alarms as the local scan, and two notes about Netlify's caching. The missing-header alerts from the local scan are gone.
+- **Browser checks on the live site** (November 10, 2026, Chrome, on Netlify): only the site's own files load, and no requests are made while using the form. There are no cookies or stored data, and answers are gone after reopening the tab. Inline and outside scripts are refused, and the page can't be framed. The only console error is the CSP blocking Netlify's badge script.
+- **Lighthouse Best Practices** (on Netlify): 92. Both deductions are that same blocked badge script. Its unscored notes suggest Trusted Types, an extra browser protection for how the page inserts HTML. It was reviewed and accepted as an Informational point, since it isn't a current weakness: every typed answer is already escaped.
 - **Re-run after the changes** (November 10, 2026, local copy): ESLint and HTMLHint clean; Stylelint only the reviewed rule-order warnings; Semgrep 0 findings; script injection 70 of 70; ZAP active scan, no attack alerts. The changes since the first round were also reviewed, with no security problems found.
 
-Testing for version 1.0.0 is complete. GitHub's CodeQL scanning keeps checking the code after each change.
+Testing for version 1.0.0 is complete. The site moved from Netlify to Cloudflare on November 11, 2026; the live-site tests will be repeated there. GitHub's CodeQL scanning keeps checking the code after each change.
 
 **Found a problem?** Please report it privately. See [SECURITY.md](SECURITY.md).
 
 ## Using the app
 
-1. Open the live site (https://policies-for-small-nonprofits.netlify.app). No sign-up, download or login.
+1. Open the live site (https://nonprofit-policy-builder.pages.dev). No sign-up, download or login.
 2. Watch the two-minute walkthrough video at the top of the page, then open **Before you start** to see what information to gather first.
 3. Replace the example organization's answers with your own. **Clear all** beside "Your organization" or "How you work" removes the sample answers in that section in one click. Every question is optional; anything left blank shows as a dash or a line to fill in later. Pin the tab so it's harder to close by accident.
 4. Review each document, then copy or print them, and finish in one sitting. If a document still has a sample answer in it, the app lists those answers first, so you can change them or carry on anyway.

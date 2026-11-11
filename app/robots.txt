@@ -20,4 +20,4 @@ User-agent: *
 Allow: /
 
 # The list of pages for search engines.
-Sitemap: https://policies-for-small-nonprofits.netlify.app/sitemap.xml
+Sitemap: https://nonprofit-policy-builder.pages.dev/sitemap.xml
