@@ -626,7 +626,7 @@ contacts(a, pol){
   const donorRecords = a.crmRaw==='spreadsheet'
     ? `Spreadsheets in ${a.platform==='other' ? 'cloud storage' : a.platformName}` : a.crm;
   const processor = a.cards || a.online;
-  return `<div class="onepage"><div class="eyebrow">${a.org} · Confidential · Page 1 of 2</div>
+  return `<div class="onepage"><div class="eyebrow pages"><span>${a.org} · Confidential</span><span class="pageno">1 of 2</span></div>
   <h2>Incident Contact List</h2>
   ${chips(pol)}
   <div class="docmeta">
@@ -664,7 +664,7 @@ contacts(a, pol){
     a.insurance ? row(t('Cyber insurance carrier (call before hiring outside help)'), '', '', 'Policy no.') : '',
     row('Legal counsel', '', '', ''),
   ])}
-  <div class="eyebrow pagetwo">${a.org} · Confidential · Incident Contact List, page 2 of 2</div>
+  <div class="eyebrow pagetwo pages"><span>${a.org} · Confidential · Incident&nbsp;Contact&nbsp;List</span><span class="pageno">2 of 2</span></div>
   <h3>Outside agencies</h3>
   ${table(['Agency','Phone','When to contact'], [
     row('FBI field office', '', 'Urgent fraud, such as a wire transfer. Also report at ic3.gov.'),
@@ -938,6 +938,11 @@ function pasteHTML(html){
     m.outerHTML = `<table style="border-collapse:collapse;width:100%;margin:8pt 0;border-top:1px solid #bbbbbb;border-bottom:1px solid #bbbbbb"><tr>${
       [...m.children].map(d => `<td style="padding:4px 6px;vertical-align:top;font-size:10pt"><span style="font-size:8pt;color:#444444">${esc(d.firstChild.textContent)}</span><br><b>${d.querySelector('b').innerHTML}</b></td>`).join('')
     }</tr></table>`;
+  });
+  // The Incident Contact List's top line keeps "# of #" at the right margin; Word ignores flex, so it becomes a two-cell table
+  box.querySelectorAll('.eyebrow.pages').forEach(e => {
+    const cell = 'padding:0;border:none;font-family:Consolas,monospace;font-size:8pt;letter-spacing:1px;text-transform:uppercase;color:#1d6b58';
+    e.innerHTML = `<table style="border-collapse:collapse;border:none;width:100%"><tr><td style="${cell}">${e.children[0].innerHTML}</td><td style="${cell};text-align:right;white-space:nowrap">${e.children[1].innerHTML}</td></tr></table>`;
   });
   box.querySelectorAll('.sig').forEach(s => {
     // Word ignores cell spacing, so empty spacer cells keep the lines apart; the blank top row is the room to sign
