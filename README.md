@@ -177,29 +177,37 @@ The security headers in `app/_headers` are sent by Cloudflare, so they only appl
 ## Project structure
 
 ```
-app/                  Everything the live site needs
-  index.html          The page and its styles (no JavaScript inside)
-  app.js              All of the app's logic
-  frameworks.js       CIS and NIST version names, shared by both pages
-  how.html            Help page: framework mappings, privacy, printing and security
-  _headers            Cloudflare security headers (keep this exact name)
-  robots.txt          Lets search engines list the site; asks AI training crawlers to stay out
-  sitemap.xml         Lists the site's two pages for search engines (found through robots.txt)
-  favicon.ico         Browser tab icon (16, 32 and 48 px)
-  favicon.svg         Browser tab icon for modern browsers (sharp at any size)
-  apple-touch-icon.png  Icon for iPhone and iPad home screens (180 x 180)
+.github/ISSUE_TEMPLATE/
+  problem-report.md                          Form for reporting a problem on GitHub
+
+app/                                         Everything the live site needs
+  index.html                                 The page and its styles (no JavaScript inside)
+  app.js                                     All of the app's logic
+  frameworks.js                              CIS and NIST version names, shared by both pages
+  how.html                                   Help page: framework mappings, privacy, printing and security
+  _headers                                   Cloudflare security headers (keep this exact name)
+  robots.txt                                 Lets search engines list the site; asks AI training crawlers to stay out
+  sitemap.xml                                Lists the site's two pages for search engines
+  favicon.ico                                Browser tab icon (16, 32 and 48 px)
+  favicon.svg                                Browser tab icon for modern browsers (sharp at any size)
+  apple-touch-icon.png                       Icon for iPhone and iPad home screens (180 x 180)
   Nonprofit_Policy_Builder_Walkthrough.mp4   Two-minute video on how to use the page
   walkthrough-poster.jpg                     Still image shown on the video before it plays
-.github/ISSUE_TEMPLATE/problem-report.md   Form for reporting a problem on GitHub
-assets/               Screenshots of the app (the first screen, shown at the top of this file, and the whole page) and framework-labels.md, the plain-English label key
-LICENSE               Who may use the software and how
-NOTICE                Third-party, framework and legal notices
-README.md             This file
-SECURITY.md           How to report a security problem
-CLAUDE.md             Standing rules for Claude Code when working on this project
+
+assets/                                      Images and pages used by this README
+  app-screenshot.png                         The first screen, shown at the top of this file
+  app-full-page.png                          The whole page (opens when you click the screenshot)
+  framework-labels.md                        The plain-English key to the framework labels
+
+.gitignore                                   Files kept out of the repository
+CLAUDE.md                                    Standing rules for Claude Code when working on this project
+LICENSE                                      Who may use the software and how
+NOTICE                                       Third-party, framework and legal notices
+README.md                                    This file
+SECURITY.md                                  How to report a security problem
 ```
 
-Only `app/` is deployed. Everything else stays in the repository.
+**Only `app/` is deployed. Everything else stays in the repository.**
 
 ## How it was built
 
