@@ -21,7 +21,7 @@ It also produces six forms: the **Onboarding Checklist**, the **Offboarding Chec
 Any small nonprofit, including volunteer-run teams with no IT staff, personal devices, shared logins and high turnover. Write in plain English, short sentences, no jargon.
 
 ## Frameworks
-Each policy maps to CIS Controls v8.1 Implementation Group 1 and NIST CSF 2.0. Keep those mappings accurate when adding or changing content.
+Each policy maps to CIS Controls v8.1 (Implementation Group 1) and NIST CSF 2.0. Every sentence or heading in the project that names the CIS Controls gives the version and "(Implementation Group 1)"; only the builder's "Before you start" panel and the README's "Framework mappings" intro add ", the starter set for small organizations" (the user's request, November 13, 2026). Table column headers say only "CIS Controls v8.1". Private files in `documents/` were left as they were. Keep those mappings accurate when adding or changing content.
 
 The labels shown on each policy come from the `POLICIES` array in `app.js`. The project plan lists the same mappings, so change both together.
 
@@ -44,8 +44,8 @@ IG1 Safeguards not yet covered: 5.1 as a written list, the rest of 2.1 and 15.1,
 ### When a framework version changes
 The app never fetches framework data. `_headers` blocks all network calls, and the privacy design depends on that. Updates are made by hand and reviewed by a person. Check for new CIS Controls and NIST CSF versions at each yearly template review.
 1. Get the new version's change log or old-to-new mapping from cisecurity.org or nist.gov.
-2. Update the version names in `FRAMEWORKS` in `frameworks.js`, and its web addresses (`cisUrl`, `nistUrl`) if the new version has its own page. The builder's footer and `how.html` read them from there, and so does the NIST framework name in the "Before you start" panel (`data-fw="csf"`). That panel says "CIS Controls" with no version on purpose.
-3. Update the `POLICIES` labels in `app.js` for any renumbered, moved or removed Controls, and the mapping table and "What each label means" table in `how.html` (and its copy in `assets/framework-labels.md`, including the version names in its intro).
+2. Update the version names in `FRAMEWORKS` in `frameworks.js`, and its web addresses (`cisUrl`, `nistUrl`) if the new version has its own page. The builder's footer, the "Before you start" panel (`data-fw="cis"` and `data-fw="csf"`), `how.html` (its CIS heading, intro sentence and mapping table header) and the Framework Summary's table header read them from there.
+3. Update the `POLICIES` labels in `app.js` for any renumbered, moved or removed Controls, and the mapping table and "What each label means" table in `how.html` (and its copy in `assets/framework-labels.md`, including the version names in its intro). Also the version in `how.html`'s meta description, the README's "Framework mappings" intro and `NOTICE`'s FRAMEWORKS section, which are typed in.
 4. Update the mapping table, the IG1 gaps list and the version numbers in this file, and the framework versions in `NOTICE`'s "Third-party material" section (check the new version's license too).
 5. Check new or changed IG1 Safeguards. Add plain-English policy lines for any the policies should now cover.
 6. Update the project plan: search it for "v8.1" and "CSF 2.0" and update every match.

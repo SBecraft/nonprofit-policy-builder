@@ -2,7 +2,7 @@
 
 # What each label means
 
-Each document in the Nonprofit Policy Builder is labelled with the parts of the **CIS Critical Security Controls v8.1 (Implementation Group 1)** and the **NIST Cybersecurity Framework 2.0** it supports. This table explains each label in plain English. It is the same table as "What each label means" on the app's help page.
+Each document in the Nonprofit Policy Builder is labelled with the parts of the **CIS Critical Security Controls v8.1** (Implementation Group 1) and the **NIST Cybersecurity Framework 2.0** it supports. This table explains each label in plain English. It is the same table as "What each label means" on the app's help page.
 
 | Label | Name | In plain English |
 |---|---|---|

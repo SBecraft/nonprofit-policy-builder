@@ -567,7 +567,7 @@ train(a, pol){
   <p>Onboarding training is completed before first access. Yearly and other assigned training is completed within 30 days, unless the policy owner approves an extension.</p>
   <p>People with extra access, such as admin rights, the donor database or online banking, also learn the rules for their role before they get that access.</p>
   <h3>4. What training covers</h3>
-  <p>Each topic matches a ${FRAMEWORKS.cis} Implementation Group 1 safeguard.</p>
+  <p>Each topic matches a safeguard in the ${FRAMEWORKS.cis} (Implementation Group 1).</p>
   ${cardTable('topics', ['Topic', 'What people learn', 'CIS safeguard'], [
     ['Scams and phishing', "Spotting phishing emails, fake text messages, suspicious phone calls, and people pretending to be someone they're not, such as leadership, a vendor or a bank", '14.2'],
     ['Passwords and MFA', "Using passphrases and the password manager, never reusing passwords, and never approving an MFA prompt they didn't start", '14.3'],
@@ -803,10 +803,10 @@ summary(a){
   const labels = (p, fw) => p.maps.filter(m => m.startsWith(fw)).map(m => m.slice(fw.length + 1).replace(' · ', ' ')).join(', ');
   return `<div class="onepage"><h2>Framework Summary</h2>
   <p>Organization: <b>${a.org}</b> &nbsp;&nbsp; Date: <b>${a.date}</b></p>
-  <p>This summary shows which parts of two recognized security frameworks each document supports: the ${FRAMEWORKS.cis} (Implementation Group 1, the starter set for small organizations) and the ${FRAMEWORKS.nist}. To read them, type ${FRAMEWORKS.cisUrl} or ${FRAMEWORKS.nistUrl} into a web browser.</p>
+  <p>This summary shows which parts of two recognized security frameworks each document supports: the ${FRAMEWORKS.cis} (Implementation Group 1) and the ${FRAMEWORKS.nist}. To read them, type ${FRAMEWORKS.cisUrl} or ${FRAMEWORKS.nistUrl} into a web browser.</p>
   <p class="note"><b>Alignment, not certification.</b> The labels show which parts of each framework a document supports. Using these documents does not make an organization "compliant" or "certified". Following them in practice is what reduces risk.</p>
   <h3>Documents and their labels</h3>
-  ${cardTable('fwmap', ['Document', 'CIS Controls', 'NIST CSF'], docs.map(p => [p.name, labels(p, 'CIS'), labels(p, 'NIST')]))}
+  ${cardTable('fwmap', ['Document', FRAMEWORKS.cis, 'NIST CSF'], docs.map(p => [p.name, labels(p, 'CIS'), labels(p, 'NIST')]))}
   <h3>What each label means</h3>
   ${cardTable('fwkey', ['Label', 'Name', 'In plain English'], LABEL_KEY.filter(([l]) => docs.some(p => p.maps.some(m => m === l || m.startsWith(l + ' ·')))))}</div>`;
 }

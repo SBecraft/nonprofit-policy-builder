@@ -77,7 +77,7 @@ A nonprofit answers a short questionnaire about its organization, the systems it
 
 ## Framework mappings
 
-Every document is mapped to the **CIS Critical Security Controls v8.1, Implementation Group 1** and the **NIST Cybersecurity Framework 2.0**, and shows its mappings as labels.
+Every document is mapped to the **CIS Critical Security Controls v8.1** (Implementation Group 1, the starter set for small organizations) and the **NIST Cybersecurity Framework 2.0**, and shows its mappings as labels.
 
 <p align="right"><a href="assets/framework-labels.md">What do these mean?</a></p>
 

@@ -7,7 +7,7 @@
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="description" content="How the Nonprofit Policy Builder works: its CIS Controls and NIST CSF mappings, privacy (no sign-up, no tracking, nothing saved or sent online), printing and copying, and security.">
+<meta name="description" content="How the Nonprofit Policy Builder works: its CIS Controls v8.1 and NIST CSF mappings, privacy (no sign-up, no tracking, nothing saved or sent online), printing and copying, and security.">
 <style>
 /* Same palette and fonts as index.html. Keep the two in step when colors change. */
 :root{
@@ -97,15 +97,15 @@ th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:
     <p>To give these mappings to your board or keep them with your records, use the <strong>Framework Summary</strong> tab in the policy builder. It prints on one page with your organization's name, and you can add it to the policies with <strong>More</strong>.</p>
     <p>The six policies are designed as a set, and the mappings assume you adopt all six. If you leave one out, the parts of the frameworks it covers are no longer covered, and the other policies may still mention it, so edit those references after you copy them.</p>
 
-    <h3><span data-fw="cis"></span>, Implementation Group 1</h3>
-    <p>The CIS Controls, from the Center for Internet Security, are 18 groups of practical security steps, listed in priority order. <strong>Implementation Group 1 (IG1)</strong> is the starting set, the "essential cyber hygiene" meant for small organizations with limited IT help. A label like <code>CIS 5 · Accounts</code> means the policy supports CIS Control 5.</p>
+    <h3><span data-fw="cis"></span> (Implementation Group 1)</h3>
+    <p>The <span data-fw="cis"></span>, from the Center for Internet Security, are 18 groups of practical security steps, listed in priority order. <strong>Implementation Group 1 (IG1)</strong> is the starting set, the "essential cyber hygiene" meant for small organizations with limited IT help. A label like <code>CIS 5 · Accounts</code> means the policy supports CIS Control 5.</p>
 
     <h3>The <span data-fw="nist"></span></h3>
     <p>The NIST Cybersecurity Framework, from the U.S. National Institute of Standards and Technology, sorts security work into six functions: <strong>Govern, Identify, Protect, Detect, Respond and Recover</strong>. A label like <code>NIST PR.AA</code> means the Protect function, Identity Management, Authentication and Access Control category.</p>
 
     <h3>Which policy maps to what</h3>
     <div class="tablewrap"><table>
-      <thead><tr><th>Document</th><th>CIS Controls</th><th>NIST CSF</th></tr></thead>
+      <thead><tr><th>Document</th><th><span data-fw="cis"></span></th><th>NIST CSF</th></tr></thead>
       <tbody>
         <tr><td>Acceptable Use</td><td><span class="nw">3 Data Protection</span>&nbsp;· <span class="nw">4 Secure Configuration</span>&nbsp;· <span class="nw">7 Continuous Vulnerability Management</span>&nbsp;· <span class="nw">10 Malware Defenses</span>&nbsp;· <span class="nw">14 Security Awareness and Skills Training</span></td><td>GV.PO Policy · PR.AT Awareness and Training · PR.PS Platform Security</td></tr>
         <tr><td>Passwords &amp; MFA</td><td><span class="nw">5 Account Management</span>&nbsp;· <span class="nw">6 Access Control Management</span></td><td>PR.AA Identity Management, Authentication and Access Control</td></tr>
