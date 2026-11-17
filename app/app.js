@@ -224,10 +224,10 @@ aup(a, pol){
 
 pw(a, pol){
   const pmText = a.pm === 'none'
-    ? `<p class="note"><b>Action needed:</b> ${t(`${a.org} does not yet use a password manager. ${midSentence(a.contact)} will choose one within 60 days.`)} Until then, never store passwords in spreadsheets, documents or email.</p>`
+    ? `<p class="note"><b>Action needed:</b> ${t(`${a.org} does not yet use a password manager. ${midSentence(a.contact)} will choose one within 60 days, or tell the board why not.`)} Many password managers offer free or discounted plans for nonprofits. Until then, ${t('keep organization passwords only in an encrypted PDF or Excel file, or in a physical password book kept in a locked cabinet or safe.')} Never store them in unprotected spreadsheets, documents or email.</p>`
     : `<p>${t(`${a.org} provides ${esc(a.pm)}`)} for storing organization passwords. Use it for every organization account. Never keep passwords in spreadsheets, sticky notes, documents or email.</p>`;
   const browserText = a.pm === 'none'
-    ? `<p>${t("Until a password manager is chosen, you may save organization passwords in your web browser's built-in password manager, but only on a device with a screen lock, and only if your browser account uses MFA.")} Never save them on a shared or public computer.</p>`
+    ? `<p>Don't let your web browser save organization passwords, even before a password manager is chosen. ${t(`Until then, use a different passphrase for each organization account, and ask ${midSentence(a.contact)} to reset one if you forget it.`)}</p>`
     : `<p>Don't let your web browser save organization passwords. Use ${t(esc(a.pm))} instead.</p>`;
   const backupCodes = a.pm === 'none'
     ? `<li>${t('Save your MFA backup codes somewhere safe, such as printed and locked away, so you can still sign in if you get a new phone.')}</li>`
@@ -238,7 +238,7 @@ pw(a, pol){
     <p>${t('Some accounts, such as social media or event platforms, are shared by several people.')} They must follow these rules:</p>
     <ul>
       <li>${a.staff ? `Each shared account has a named owner who is a staff member or board member${a.volunteers ? t(', not a short-term volunteer') : ''}` : t('Each shared account has a named owner who is a board member')}.</li>
-      <li>The password is stored ${a.pm==='none' ? 'in the approved password manager once one is chosen' : t('in a shared ' + esc(a.pm) + ' vault')}. It is never sent by text or email.</li>
+      <li>${a.pm==='none' ? t(`Until a password manager is chosen, ${midSentence(a.contact)} keeps the password and gives it out only in person`) : `The password is stored ${t('in a shared ' + esc(a.pm) + ' vault')}`}. It is never sent by text or email.</li>
       <li>${a.staff ? `MFA codes go to an organization email or phone, or to the account owner's own device${a.volunteers ? t(", never a short-term volunteer's personal number") : ''}.` : t("MFA codes go to an email address the organization controls, not one person's personal phone, so the account isn't lost if that person leaves.")}</li>
       <li>${t('The password is changed whenever someone with access leaves.')}</li>
       <li>The owner reviews who has access every three months.</li>
@@ -478,7 +478,7 @@ backup(a, pol){
   <h3>7. Testing restores</h3>
   <p>A backup that has never been restored may not work. Every three months, ${midSentence(a.contact)} restores a sample file and a sample of donor records, and records the date, what was restored and whether it worked in a backup test log kept with the backup records.${a.server ? ' ' + t('Each test includes a file from the office server or storage device.') : ''} Once a year, restore a whole folder or mailbox to show a real recovery would work. This can be part of the yearly tabletop exercise in the Security Awareness and Training Policy.</p>
   <h3>8. Who is responsible</h3>
-  <p>${midSentence(a.contact)} owns the backups. ${second} Backup access is never held by only one person. When someone with access leaves, it moves to another person the same day.${noPM ? '' : ` A second administrator also has emergency access to ${t(esc(a.pm))}, so the vault isn't lost if one person leaves.`}</p>
+  <p>${midSentence(a.contact)} owns the backups. ${second} Backup access is never held by only one person. When someone with access leaves, it moves to another person the same day.${noPM ? ` ${t(`Backup codes for administrator accounts are printed, sealed and kept locked away at ${printedAt(a)}. At least two people know where they are.`)}` : ` A second administrator also has emergency access to ${t(esc(a.pm))}, so the vault isn't lost if one person leaves.`}</p>
   <h3>9. Restoring after an incident</h3>
   <ol>
     <li>Follow the Incident Response Plan and report the problem first.</li>${a.insurance ? `
@@ -652,7 +652,9 @@ contacts(a, pol){
     row('Cloud storage', '', '', ''),
     row('Donor records', t(donorRecords), '', ''),
     processor ? row(t('Payment processor (report possible card data exposure right away)'), '', '', '') : '',
-    a.pm==='none' ? '' : row('Password manager', t(esc(a.pm)), '', ''), // where the admin passwords are during an incident
+    a.pm==='none' // where the admin passwords, or their sealed backup codes, are during an incident
+      ? row(t('Administrator backup codes (printed and sealed)'), a.printPlace ? 'Kept at ' + a.printPlace : '', '', '')
+      : row('Password manager', t(esc(a.pm)), '', ''),
     a.backup ? row(t('Backup service'), a.backupName, '', '') : '',
     row('Domain registration (GoDaddy, Cloudflare, Squarespace, etc.)', '', '', ''),
     row('Website hosting', '', '', ''),
