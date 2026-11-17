@@ -223,6 +223,9 @@ AI-generated code and content were treated as drafts. The creator reviewed, edit
 
 - **Visual Studio Code:** code editor.
 - **Claude Code CLI:** AI coding assistant used in the terminal to help write and review the code and draft content.
+- **Claude desktop app:** AI assistant used for planning, questions and drafting content outside the terminal.
+- **Git:** version control for every change.
+- **GitHub CLI (`gh`):** command-line tool for working with the GitHub repository, releases and settings.
 - **Piper TTS (voice: en_US-lessac-medium):** text-to-speech voice for the walkthrough video's narration, licensed for non-commercial use only. See [NOTICE](NOTICE).
 
 ## Limitations
