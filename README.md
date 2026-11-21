@@ -36,7 +36,7 @@ The Nonprofit Policy Builder was created to make that process easier. It helps n
 
 ## What it does
 
-A nonprofit answers a short questionnaire about its organization, the systems it uses and how it works. Six policies and six forms update instantly as answers change. They are listed in the same order as the app's tabs.
+After gathering information about their organization, nonprofits answer a few questions about their organization including systems they use and how they work. Change an answer and every document updates instantly. These aren’t fill in the blank templates. Answers add, remove or reword whole sections, and names fill in throughout. A "Highlight tailored text" switch shows exactly what was written for them.
 
 **The six policies**
 
