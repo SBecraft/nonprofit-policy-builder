@@ -30,9 +30,9 @@
 
 ## Why it exists
 
-Small nonprofits hold sensitive information: donor names, home addresses, giving history, payment details and records about the people they serve. Most have no IT staff. Work is done by part-time staff and volunteers on their own phones and laptops, logins for social media and event accounts are shared, and people come and go every few months.
+Small nonprofits often face the same challenge: they need governance and operational policies, but they rarely have the time, staffing, or budget to develop them from scratch. During client meetings and discussions about organizational risk, I saw firsthand how difficult it can be for mission-driven organizations to prioritize policy creation while managing day-to-day operations and serving their communities.
 
-Security policy templates online are usually written for corporations, with an IT department, company devices and stable staff. Small nonprofits either skip policies or adopt documents that don't match how they work, so nobody follows them. This app writes policies for how small nonprofits actually operate.
+The Nonprofit Policy Builder was created to make that process easier. It helps nonprofits generate tailored, professional policies using clear, accessible language so staff, volunteers, and board members understand their roles, responsibilities, and expectations. The goal is to reduce the effort required to build a strong policy foundation while allowing organizations to stay focused on their mission.
 
 ## What it does
 
