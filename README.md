@@ -1,6 +1,6 @@
 # Nonprofit Policy Builder
 
-**Plain-English security policies, tailored in about 15 minutes, free, and with nothing you type ever leaving your browser. Built for small nonprofits, including organizations with volunteers, shared logins and frequent turnover.**
+**Six plain-English governance policies and six related forms, tailored in about 15 minutes, free, and with nothing you type ever leaving your browser. Mapped to the CIS Critical Security Controls v8.1 (Implementation Group 1) and the NIST Cybersecurity Framework (CSF) 2.0. Built for small nonprofits, including organizations with volunteers, shared logins and frequent turnover.**
 
 <table>
   <tr>
